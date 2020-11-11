@@ -23,7 +23,7 @@ DEBUG = bool(os.environ.get('DEBUG', False))
 # If set to True, Django's normal exception handling of view functions
 # will be suppressed, and exceptions will propagate upwards
 # https://docs.djangoproject.com/en/2.2/ref/settings/#debug-propagate-exceptions
-DEBUG_PROPAGATE_EXCEPTIONS = False
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 # Silence two security messages around SSL as router takes care of them
 # https://docs.djangoproject.com/en/2.2/ref/checks/#security
@@ -146,12 +146,12 @@ DRYCC_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': DRYCC_DATETIME_FORMAT,
     'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.ModelSerializer',
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
@@ -273,10 +273,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get(
-            'DRYCC_DATABASE_NAME', os.environ.get('DRYCC_DATABASE_USER', 'drycc')),
-        'USER': os.environ.get('DRYCC_DATABASE_USER', ''),
-        'PASSWORD': os.environ.get('DRYCC_DATABASE_PASSWORD', ''),
-        'HOST': os.environ.get('DRYCC_DATABASE_SERVICE_HOST', ''),
+            'DRYCC_DATABASE_NAME', os.environ.get('DRYCC_DATABASE_USER', 'drycc_manager')),
+        'USER': os.environ.get('DRYCC_DATABASE_USER', 'drycc_manager'),
+        'PASSWORD': os.environ.get('DRYCC_DATABASE_PASSWORD', '123456'),
+        'HOST': os.environ.get('DRYCC_DATABASE_SERVICE_HOST', '192.168.6.50'),
         'PORT': os.environ.get('DRYCC_DATABASE_SERVICE_PORT', 5432),
         'CONN_MAX_AGE': 600,
     }

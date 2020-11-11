@@ -22,7 +22,6 @@ import requests
 from requests_toolbelt import user_agent
 
 from api import __version__ as drycc_version
-from api.exceptions import DryccException, AlreadyExists, ServiceUnavailable, UnprocessableEntity  # noqa
 
 
 logger = logging.getLogger(__name__)
@@ -79,3 +78,5 @@ class UuidAuditedModel(AuditedModel):
     class Meta:
         """Mark :class:`UuidAuditedModel` as abstract."""
         abstract = True
+
+from .clusters import Clusters  # noqa
