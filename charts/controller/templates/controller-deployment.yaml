@@ -1,0 +1,119 @@
+{{ $nsqdNodeCount := .Values.nsqd.replicas | int }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drycc-manager
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.docker_tag }}
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: drycc-manager
+  template:
+    metadata:
+      labels:
+        app: drycc-manager
+    spec:
+      serviceAccount: drycc-manager
+      containers:
+        - name: drycc-manager
+          image: {{.Values.docker_registry}}{{.Values.org}}/manager:{{.Values.docker_tag}}
+          imagePullPolicy: {{.Values.pull_policy}}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 5
+          ports:
+            - containerPort: 8000
+              name: http
+{{- if or (.Values.limits_cpu) (.Values.limits_memory) }}
+          resources:
+            limits:
+{{- if (.Values.limits_cpu) }}
+              cpu: {{.Values.limits_cpu}}
+{{- end }}
+{{- if (.Values.limits_memory) }}
+              memory: {{.Values.limits_memory}}
+{{- end }}
+{{- end }}
+          env:
+          - name: REGISTRATION_MODE
+            value: {{ .Values.registration_mode }}
+          # NOTE(bacongobbler): use drycc/registry_proxy to work around Docker --insecure-registry requirements
+          - name: "DRYCC_REGISTRY_PROXY_HOST"
+            value: "127.0.0.1"
+          # Environmental variable value for $INGRESS_CLASS
+          - name: "DRYCC_INGRESS_CLASS"
+            value: "{{ .Values.global.ingress_class }}"
+          - name: "DRYCC_PLATFORM_DOMAIN"
+            value: "{{ .Values.global.platform_domain }}"
+          - name: "K8S_API_VERIFY_TLS"
+            value: "{{ .Values.k8s_api_verify_tls }}"
+          - name: "DRYCC_REGISTRY_PROXY_PORT"
+            value: "{{ .Values.global.registry_proxy_port }}"
+          - name: "APP_STORAGE"
+            value: "{{ .Values.global.storage}}"
+          - name: "DRYCC_REGISTRY_LOCATION"
+            value: "{{ .Values.global.registry_location }}"
+          - name: "DRYCC_REGISTRY_SECRET_PREFIX"
+            value: "{{ .Values.global.registry_secret_prefix }}"
+          - name: "IMAGE_PULL_POLICY"
+            value: "{{ .Values.app_pull_policy }}"
+          - name: "KUBERNETES_CLUSTER_DOMAIN"
+            value: "{{ .Values.global.cluster_domain }}"
+{{- if (.Values.app_storage_class) }}
+          - name: "DRYCC_APP_STORAGE_CLASS"
+            value: "{{ .Values.app_storage_class }}"
+{{- end }}
+          - name: "TZ"
+            value: {{ .Values.time_zone | default "UTC" | quote }}
+          - name: DRYCC_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database-creds
+                key: name
+          - name: DRYCC_DATABASE_SERVICE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-creds
+                key: host
+          - name: DRYCC_DATABASE_SERVICE_PORT
+            valueFrom:
+              secretKeyRef:
+                name: database-creds
+                key: port
+{{- end }}
+          - name: DRYCC_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: database-creds
+                key: user
+          - name: DRYCC_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-creds
+                key: password
+          - name: WORKFLOW_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}

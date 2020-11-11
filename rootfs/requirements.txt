@@ -1,0 +1,23 @@
+# Drycc manager requirements
+backoff==1.10.0
+django==2.2.14
+django-auth-ldap==2.2.0
+django-cors-middleware==1.5.0
+django-guardian==2.3.0
+djangorestframework==3.11.0
+docker==4.2.2
+gunicorn==20.0.4
+idna==2.10
+jmespath==0.10.0
+jsonfield==3.1.0
+jsonschema==3.2.0
+morph==0.1.4
+ndg-httpsclient==0.5.1
+packaging==20.4
+pyasn1==0.4.8
+pynsq==0.9.0
+psycopg2-binary==2.8.5
+pyOpenSSL==19.1.0
+pytz==2020.1
+requests==2.24.0
+requests-toolbelt==0.9.1

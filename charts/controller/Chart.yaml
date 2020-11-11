@@ -1,0 +1,7 @@
+name: controller
+home: https://github.com/drycc/manager
+version: <Will be populated by the ci before publishing the chart>
+description: Drycc Workflow Manager (API).
+maintainers:
+  - name: Drycc Team
+    email: engineering@drycc.com
