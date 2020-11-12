@@ -1,6 +1,10 @@
-class DryccProxy(object):
-    def session(session):
-        pass
+from proxy import get_session
 
-    def get_token(self):
+
+class DryccProxy(object):
+    def __init__(self, cluster_name, username):
+        self.session = get_session(cluster_name, username)
+
+    def request(self):
+        # self.session.get(url='')
         pass
