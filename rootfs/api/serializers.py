@@ -2,6 +2,7 @@
 Classes to serialize the RESTful representation of Drycc API models.
 """
 import logging
+import json
 from rest_framework import serializers
 from api import models
 
@@ -40,12 +41,14 @@ class ClustersSerializer(serializers.ModelSerializer):
     """Serialize a :class:`~api.models.Clusters` model."""
 
     name = serializers.CharField(max_length=64)
-    domain = serializers.URLField(max_length=200)
+    drycc_ingress = serializers.URLField(max_length=200)
     admin = serializers.CharField(max_length=64)
     passwd = serializers.CharField(max_length=128)
+    influxdb_ingress = serializers.URLField(max_length=200, required=False)
 
     class Meta:
         """Metadata options for a :class:`AppSerializer`."""
         model = models.Clusters
-        fields = ['uuid', 'name', 'domain', 'admin', 'passwd', 'created', 'updated']
+        fields = ['uuid', 'name', 'drycc_ingress', 'admin', 'passwd',
+                  'influx_ingress', 'created', 'updated']
 
