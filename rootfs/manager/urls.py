@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 
+from api.views import LivenessCheckView, ReadinessCheckView
 
 urlpatterns = [
+    url(r'^healthz$', LivenessCheckView.as_view()),
+    url(r'^readiness$', ReadinessCheckView.as_view()),
     url(r'^', include('api.urls')),
 ]

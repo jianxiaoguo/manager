@@ -14,21 +14,6 @@ develop-eggs
 lib
 lib64
 
-# Drycc' config file
-controller/drycc/local_settings.py
-controller/.secret_key
-
-# local binaries, installers, and artifacts
-client/drycc
-client/client
-client/drycc.exe
-client/*.run
-client/makeself/
-_dist/
-manifests/*.tmp.yml
-_tests/_tests.test
-_tests/example-*/
-
 # coverage reports
 .coverage
 coverage.out
@@ -38,9 +23,4 @@ htmlcov/
 # python virtual environments for testing
 venv/
 
-# vendored go source code
-vendor/
-
-# generated bintray scripts during ci
-client/_scripts/ci/bintray-ci.json
 .idea
