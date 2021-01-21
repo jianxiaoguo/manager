@@ -11,18 +11,25 @@ class AdminViewSet(viewsets.ModelViewSet):
     To use it, at minimum you'll need to provide the `serializer_class` attribute and
     the `model` attribute shortcut.
     """
-    permission_classes = [permissions.IsAdmin]
+    # permission_classes = [permissions.IsAdmin]
 
-    def get_queryset(self):
-        return self.model.objects.filter(owner=self.request.user)
 
-    def perform_create(self, serializer):
-        obj = serializer.save(owner=self.request.user)
-        self.post_save(obj)
+class NormalUserViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for objects filtered by their 'owner' attribute.
 
-    def post_save(self, obj):
-        """A post_save hook for performing actions after the object has been pushed to the
-        database.
+    To use it, at minimum you'll need to provide the `serializer_class` attribute and
+    the `model` attribute shortcut.
+    """
+    # todo debug
+    # permission_classes = [IsAuthenticated]
 
-        Leave it up to child classes to implement."""
-        pass
+
+class DryccViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for objects filtered by their 'owner' attribute.
+
+    To use it, at minimum you'll need to provide the `serializer_class` attribute and
+    the `model` attribute shortcut.
+    """
+    permission_classes = [permissions.IsDrycc]

@@ -5,7 +5,7 @@ metadata:
   labels:
     heritage: drycc
   annotations:
-    component.drycc.cc/version: {{ .Values.docker_tag }}
+    component.drycc.cc/version: {{ .Values.image_tag }}
 spec:
   replicas: 1
   strategy:
@@ -24,7 +24,7 @@ spec:
       serviceAccount: drycc-manager
       containers:
         - name: drycc-manager
-          image: {{.Values.docker_registry}}{{.Values.org}}/manager:{{.Values.docker_tag}}
+          image: {{.Values.image_registry}}{{.Values.org}}/manager:{{.Values.image_tag}}
           imagePullPolicy: {{.Values.pull_policy}}
           livenessProbe:
             httpGet:

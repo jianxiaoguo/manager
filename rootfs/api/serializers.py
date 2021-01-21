@@ -8,6 +8,7 @@ from api import models
 
 logger = logging.getLogger(__name__)
 
+
 class JSONFieldSerializer(serializers.JSONField):
     def __init__(self, *args, **kwargs):
         self.convert_to_str = kwargs.pop('convert_to_str', True)
@@ -38,17 +39,37 @@ class JSONFieldSerializer(serializers.JSONField):
 
 
 class ClustersSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.Clusters` model."""
+    """Serialize a :class:`~api.models.Cluster` model."""
 
     name = serializers.CharField(max_length=64)
-    drycc_ingress = serializers.URLField(max_length=200)
+    ingress = serializers.URLField(max_length=200)
     admin = serializers.CharField(max_length=64)
     passwd = serializers.CharField(max_length=128)
-    influxdb_ingress = serializers.URLField(max_length=200, required=False)
 
     class Meta:
         """Metadata options for a :class:`AppSerializer`."""
-        model = models.Clusters
-        fields = ['uuid', 'name', 'drycc_ingress', 'admin', 'passwd',
-                  'influx_ingress', 'created', 'updated']
+        model = models.Cluster
+        fields = ['uuid', 'name', 'ingress', 'admin', 'passwd',
+                  'created', 'updated']
 
+
+class MeasurementConfigSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.MeasurementConfig` model."""
+    cluster_id = serializers.UUIDField()
+    app_id = serializers.CharField(max_length=63)
+    owner_id = serializers.CharField(max_length=63)
+    container_type = serializers.CharField(max_length=63)
+    cpu = serializers.IntegerField()
+    memory = serializers.IntegerField()
+    timestamp = serializers.FloatField()
+
+    class Meta:
+        """Metadata options for a :class:`MeasurementConfigSerializer`."""
+        model = models.MeasurementConfig
+        fields = ['cluster_id', 'app_id', 'owner_id', 'container_type', 'cpu',
+                  'memory', 'timestamp']
+
+
+class MeasurementConfigListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.MeasurementConfig` model."""
+    child = MeasurementConfigSerializer()

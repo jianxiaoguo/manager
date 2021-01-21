@@ -1,12 +1,14 @@
 import logging
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
-from rest_framework import viewsets
-
-from api import permissions, models, serializers
+from rest_framework.response import Response
+from api import models, serializers
 from api.exceptions import AlreadyExists, ServiceUnavailable
+from api.viewset import AdminViewSet, NormalUserViewSet, DryccViewSet
+from proxy.workflow import WorkflowProxy
 
 logger = logging.getLogger(__name__)
 
@@ -41,24 +43,51 @@ class LivenessCheckView(View):
     head = get
 
 
-class ClustersViewSet(viewsets.ModelViewSet):
+# admin request
+class ClustersViewSet(AdminViewSet):
     # permission_classes = [permissions.IsAdmin]
-    model = models.Clusters
+    model = models.Cluster
     serializer_class = serializers.ClustersSerializer
-
-    def get_cluster(self, *args, **kwargs):
-        cluster = get_object_or_404(self.model, name=self.kwargs['name'])
-        return cluster
 
     def get_queryset(self, *args, **kwargs):
         return self.model.objects.all(*args, **kwargs)
 
     def get_object(self, **kwargs):
-        cluster = self.get_cluster()
+        cluster = get_object_or_404(self.model, cluster_id=kwargs['cluster_id'])
         return cluster
 
     def create(self, request, **kwargs):
-        cluster = get_object_or_404(self.model, name=request.data['name'])
+        try:
+            cluster = self.model.objects.get(name=self.request.data["name"])
+        except self.model.DoesNotExist:
+            cluster = None
         if cluster:
             raise AlreadyExists("cluster {} already exist".format(cluster.name))
         return super(ClustersViewSet, self).create(request, **kwargs)
+
+
+# drycc controller request
+class MeasurementConfigsViewSet(DryccViewSet):
+    serializer_class = serializers.MeasurementConfigListSerializer
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementConfigsViewSet, self).create(request, **kwargs)
+
+
+# UI request
+class ClusterProxyViewSet(NormalUserViewSet):
+
+    def get_cluster(self):
+        cluster = get_object_or_404(models.Cluster, pk=self.kwargs['cluster_id'])
+        return cluster
+
+    def list(self, request, *args, **kwargs):
+        # todo debug
+        request.user = User.objects.get(username='lijianguo')
+
+        cluster = self.get_cluster()
+        wfp = WorkflowProxy(cluster, request.user.username)
+        url = cluster.ingress + '/v2/' + kwargs.get('controller_url')
+        return Response(wfp.get(url=url).json())  # noqa

@@ -13,13 +13,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Clusters',
+            name='Cluster',
             fields=[
                 ('uuid', models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True, verbose_name='UUID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=64, unique=True)),
-                ('domain', models.URLField(unique=True)),
+                ('ingress', models.URLField(unique=True)),
                 ('admin', models.CharField(max_length=64)),
                 ('passwd', models.CharField(max_length=128)),
             ],

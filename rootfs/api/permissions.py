@@ -1,8 +1,10 @@
-
-from rest_framework import exceptions
+from django.shortcuts import get_object_or_404
 from rest_framework import permissions
+from django.contrib.auth.models import AnonymousUser
+
 from django.conf import settings
-from django.contrib.auth.models import AnonymousUser, User
+
+from api import models
 
 
 class IsAnonymous(permissions.BasePermission):
@@ -17,20 +19,6 @@ class IsAnonymous(permissions.BasePermission):
         return type(request.user) is AnonymousUser
 
 
-class IsOwnerOrAdmin(permissions.BasePermission):
-    """
-    Object-level permission to allow only owners of an object or administrators to access it.
-    Assumes the model instance has an `owner` attribute.
-    """
-    def has_object_permission(self, request, view, obj):
-        if request.user.is_superuser:
-            return True
-        if hasattr(obj, 'owner'):
-            return obj.owner == request.user
-        else:
-            return False
-
-
 class IsAdmin(permissions.BasePermission):
     """
     View permission to allow only admins.
@@ -43,72 +31,18 @@ class IsAdmin(permissions.BasePermission):
         return request.user.is_superuser
 
 
-class IsAdminOrSafeMethod(permissions.BasePermission):
+class IsDrycc(permissions.BasePermission):
     """
-    View permission to allow only admins to use unsafe methods
-    including POST, PUT, DELETE.
-
-    This allows
+    View permission to allow only admins.
     """
 
     def has_permission(self, request, view):
         """
         Return `True` if permission is granted, `False` otherwise.
         """
-        return request.method in permissions.SAFE_METHODS or request.user.is_superuser
-
-
-class HasRegistrationAuth(permissions.BasePermission):
-    """
-    Checks to see if registration is enabled
-    """
-    def has_permission(self, request, view):
-        """
-        If settings.REGISTRATION_MODE does not exist, such as during a test, return True
-        Return `True` if permission is granted, `False` otherwise.
-        """
-        try:
-            if settings.REGISTRATION_MODE == 'disabled':
-                raise exceptions.PermissionDenied('Registration is disabled')
-            if settings.REGISTRATION_MODE == 'enabled':
-                return True
-            elif settings.REGISTRATION_MODE == 'admin_only':
-                if not User.objects.filter(is_superuser=True).exists():
-                    return True
-                return request.user.is_superuser
-            else:
-                raise Exception("{} is not a valid registation mode"
-                                .format(settings.REGISTRATION_MODE))
-        except AttributeError:
+        if request.META.get("HTTP_AUTHORIZATION"):
+            cluster_id = request.META.get("HTTP_AUTHORIZATION").split(" ")[1]
+            request.cluster = get_object_or_404(models.Cluster, pk=cluster_id)
             return True
-
-
-class HasBuilderAuth(permissions.BasePermission):
-    """
-    View permission to allow builder to perform actions
-    with a special HTTP header
-    """
-
-    def has_permission(self, request, view):
-        """
-        Return `True` if permission is granted, `False` otherwise.
-        """
-        auth_header = request.environ.get('HTTP_X_DRYCC_BUILDER_AUTH')
-        if not auth_header:
-            return False
-        return auth_header == settings.BUILDER_KEY
-
-
-class CanRegenerateToken(permissions.BasePermission):
-    """
-    Checks if a user can regenerate a token
-    """
-
-    def has_permission(self, request, view):
-        """
-        Return `True` if permission is granted, `False` otherwise.
-        """
-        if 'username' in request.data or 'all' in request.data:
-            return request.user.is_superuser
         else:
-            return True
+            return False

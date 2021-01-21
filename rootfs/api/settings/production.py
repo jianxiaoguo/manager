@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'api.middleware.APIVersionMiddleware',
@@ -279,6 +279,14 @@ DATABASES = {
         'HOST': os.environ.get('DRYCC_DATABASE_SERVICE_HOST', '192.168.6.50'),
         'PORT': os.environ.get('DRYCC_DATABASE_SERVICE_PORT', 5432),
         'CONN_MAX_AGE': 600,
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': DATABASES['default']['NAME'],
+        'KEY_PREFIX': DATABASES['default']['NAME'],
     }
 }
 
