@@ -88,6 +88,9 @@ class ClusterProxyViewSet(NormalUserViewSet):
         request.user = User.objects.get(username='lijianguo')
 
         cluster = self.get_cluster()
-        wfp = WorkflowProxy(cluster, request.user.username)
-        url = cluster.ingress + '/v2/' + kwargs.get('proxy_url')
-        return Response(wfp.get(url=url).json())
+        wfp = WorkflowProxy(cluster, request.user.username) \
+            .get(url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'), **kwargs)
+        if wfp.status_code == 200:
+            return Response(wfp.json())
+        else:
+            return Response(status=wfp.status_code)
