@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^clusters/(?P<cluster_id>[-_\w]+)/?$',
         views.ClustersViewSet.as_view({'put': 'update',
                                        'delete': 'destroy'})),
-    url(r'^clusters/(?P<cluster_id>[-_\w]+)/(?P<controller_url>.+)/?$',
+    url(r'^clusters/(?P<cluster_id>[-_\w]+)/(?P<proxy_url>.+)/?$',
         views.ClusterProxyViewSet.as_view({'get': 'list'})),
 
     url(r'^measurements/config/?$',

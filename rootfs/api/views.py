@@ -89,5 +89,5 @@ class ClusterProxyViewSet(NormalUserViewSet):
 
         cluster = self.get_cluster()
         wfp = WorkflowProxy(cluster, request.user.username)
-        url = cluster.ingress + '/v2/' + kwargs.get('controller_url')
-        return Response(wfp.get(url=url).json())  # noqa
+        url = cluster.ingress + '/v2/' + kwargs.get('proxy_url')
+        return Response(wfp.get(url=url).json())

@@ -6,22 +6,22 @@ from api import __version__ as drycc_version, models
 
 logger = logging.getLogger(__name__)
 
-session = None
+# session = None
 
 
 def get_session(cluster, username):
-    global session
-    if session is None:
-        token = cache.get('drycc_controller_{}'.format(username))
-        if not token:
-            token = user_token(cluster=cluster,
-                               username=username)
-        session = requests.Session()
-        session.headers = {
-            'Authorization': 'token ' + token,
-            'Content-Type': 'application/json',
-            'User-Agent': user_agent('Drycc Manager ', drycc_version)
-        }
+    # global session
+    # if session is None:
+    token = cache.get('drycc_controller_{}'.format(username))
+    if not token:
+        token = user_token(cluster=cluster,
+                           username=username)
+    session = requests.Session()
+    session.headers = {
+        'Authorization': 'token ' + token,
+        'Content-Type': 'application/json',
+        'User-Agent': user_agent('Drycc Manager ', drycc_version)
+    }
     return session
 
 
