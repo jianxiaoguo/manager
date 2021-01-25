@@ -3,13 +3,14 @@ import logging
 from requests_toolbelt import user_agent
 from django.core.cache import cache
 from api import __version__ as drycc_version, models
+from api.models import Cluster
 
 logger = logging.getLogger(__name__)
 
 # session = None
 
 
-def get_session(cluster, username):
+def get_session(cluster: Cluster, username: str) -> requests.Session:
     # global session
     # if session is None:
     token = cache.get('drycc_controller_{}'.format(username))
@@ -25,8 +26,8 @@ def get_session(cluster, username):
     return session
 
 
-def user_token(cluster, username):
-    token = None
+def user_token(cluster: Cluster, username: str) -> str:
+    token = ''
     try:
         resp = requests.get(
             url=cluster.ingress + '/v2/auth/tokens/{}/'.format(username),
@@ -51,7 +52,7 @@ def user_token(cluster, username):
     return token
 
 
-def admin_token(cluster):
+def admin_token(cluster: Cluster) -> str:
     req_data = {
         'username': cluster.admin,
         'password': cluster.passwd
