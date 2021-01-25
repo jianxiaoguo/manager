@@ -5,7 +5,7 @@ from proxy import get_session
 
 
 class WorkflowProxy(object):
-    def __init__(self, cluster: Cluster, username: str):
+    def __init__(self, cluster: Cluster, username: str) -> None:
         self.session = get_session(cluster, username)
 
     def get(self, url: str, **kwargs) -> requests.Response:
