@@ -17,6 +17,7 @@ import json
 
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', False))
 
@@ -77,7 +78,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'api.middleware.APIVersionMiddleware',
@@ -89,11 +90,13 @@ ROOT_URLCONF = 'manager.urls'
 WSGI_APPLICATION = 'api.wsgi.application'
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.humanize',
-    'django.contrib.messages',
     'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',
     # Third-party apps
     'corsheaders',
     'guardian',
@@ -346,3 +349,8 @@ if LDAP_ENDPOINT:
     AUTH_LDAP_MIRROR_GROUPS = True
     AUTH_LDAP_FIND_GROUP_PERMS = True
     AUTH_LDAP_CACHE_GROUPS = False
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
