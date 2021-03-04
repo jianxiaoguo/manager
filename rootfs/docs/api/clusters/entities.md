@@ -1,11 +1,14 @@
 
 ## Cluster
 
-停车记录
+Cluster manager
 
 name              |type    |comments
 ------------------|--------|-----------------------
+uuid              |string  | id
 name              |string  | cluster name
 admin             |string  | superuser account
 passwd            |string  | password
-ingress           |string  | workflow ingress
+ingress           |url     | workflow controller ingress
+created           |date    | 创建时间
+updated           |date    | 更新时间
