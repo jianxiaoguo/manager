@@ -13,3 +13,6 @@ class Cluster(UuidAuditedModel):
     admin = models.CharField(max_length=64)
     passwd = models.CharField(max_length=128)
     ingress = models.URLField(unique=True)
+
+    def __str__(self):
+        return self.name
