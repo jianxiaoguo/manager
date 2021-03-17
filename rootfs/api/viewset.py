@@ -22,7 +22,7 @@ class NormalUserViewSet(viewsets.ModelViewSet):
     the `model` attribute shortcut.
     """
     # todo debug
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class DryccViewSet(viewsets.ModelViewSet):

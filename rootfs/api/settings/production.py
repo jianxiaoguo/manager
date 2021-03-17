@@ -14,12 +14,13 @@ import os.path
 import tempfile
 import ldap
 import json
+import dj_database_url
 
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', False))
+DEBUG = bool(os.environ.get('DEBUG', True))
 
 # If set to True, Django's normal exception handling of view functions
 # will be suppressed, and exceptions will propagate upwards
@@ -104,6 +105,7 @@ INSTALLED_APPS = (
     'jsonfield',
     'rest_framework',
     'rest_framework.authtoken',
+    'oauth2_provider',
     # manager apps
     'api'
 )
@@ -114,8 +116,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ANONYMOUS_USER_ID = -1
-LOGIN_URL = '/auth/login/'
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_URL = '/auth/login/'
+LOGIN_URL='/admin/login/'
 
 # Security settings
 CORS_ORIGIN_ALLOW_ALL = True
@@ -133,7 +135,8 @@ CORS_EXPOSE_HEADERS = (
 )
 
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
+# todo debug oauth2
+# CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 # SESSION_COOKIE_SECURE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -149,12 +152,12 @@ DRYCC_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': DRYCC_DATETIME_FORMAT,
     'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.ModelSerializer',
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework.authentication.TokenAuthentication',
-    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
@@ -232,7 +235,7 @@ LOGGING = {
         },
     }
 }
-TEST_RUNNER = 'api.tests.SilentDjangoTestSuiteRunner'
+# TEST_RUNNER = 'api.tests.SilentDjangoTestSuiteRunner'
 
 # default drycc manager settings
 LOG_LINES = 100
@@ -241,55 +244,31 @@ TEMPDIR = tempfile.mkdtemp(prefix='drycc')
 # names which apps cannot reserve for routing
 DRYCC_RESERVED_NAMES = os.environ.get('RESERVED_NAMES', '').replace(' ', '').split(',')
 
-# the k8s namespace in which the controller and workflow were installed.
-WORKFLOW_NAMESPACE = os.environ.get('WORKFLOW_NAMESPACE', 'drycc')
-
-# default scheduler settings
-SCHEDULER_MODULE = 'scheduler'
-SCHEDULER_URL = "https://{}:{}".format(
-    # accessing the k8s api server by IP address rather than hostname avoids
-    # intermittent DNS errors
-    os.environ.get(
-        'KUBERNETES_SERVICE_HOST',
-        'kubernetes.default.svc.{}'.format(os.environ.get(
-            "KUBERNETES_CLUSTER_DOMAIN", "cluster.local"
-        ))
-    ),
-    os.environ.get('KUBERNETES_SERVICE_PORT', '443')
-)
-
-K8S_API_VERIFY_TLS = bool(strtobool(os.environ.get('K8S_API_VERIFY_TLS', 'true')))
-
 # security keys and auth tokens
 random_secret = ')u_jckp95wule8#wxd8sm!0tj2j&aveozu!nnpgl)2x&&16gfj'
 SECRET_KEY = os.environ.get('DRYCC_SECRET_KEY', random_secret)
 BUILDER_KEY = os.environ.get('DRYCC_BUILDER_KEY', random_secret)
 
-# experimental native ingress
-INGRESS_CLASS = os.environ.get('DRYCC_INGRESS_CLASS', '')
-
-PLATFORM_DOMAIN = os.environ.get('DRYCC_PLATFORM_DOMAIN', 'local.drycc.cc')
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# database setting
+DRYCC_DATABASE_URL = os.environ.get('DRYCC_DATABASE_URL', 'postgres://postgres:123456@192.168.6.50:5432/drycc_manager')
+# DRYCC_DATABASE_URL = os.environ.get('DRYCC_DATABASE_URL', 'postgres://:@:5432/manager')
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get(
-            'DRYCC_DATABASE_NAME', os.environ.get('DRYCC_DATABASE_USER', 'drycc_manager')),
-        'USER': os.environ.get('DRYCC_DATABASE_USER', 'drycc_manager'),
-        'PASSWORD': os.environ.get('DRYCC_DATABASE_PASSWORD', '123456'),
-        'HOST': os.environ.get('DRYCC_DATABASE_SERVICE_HOST', '192.168.6.50'),
-        'PORT': os.environ.get('DRYCC_DATABASE_SERVICE_PORT', 5432),
-        'CONN_MAX_AGE': 600,
-    }
+    'default': dj_database_url.config(default=DRYCC_DATABASE_URL, conn_max_age=600)
 }
 
+# Redis Configuration
+DRYCC_REDIS_ADDRS = os.environ.get('DRYCC_REDIS_ADDRS', '127.0.0.1:6379').split(",")
+DRYCC_REDIS_PASSWORD = os.environ.get('DRYCC_REDIS_PASSWORD', '')
+
+# Cache Configuration
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': DATABASES['default']['NAME'],
-        'KEY_PREFIX': DATABASES['default']['NAME'],
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": ['redis://:{}@{}'.format(DRYCC_REDIS_PASSWORD, DRYCC_REDIS_ADDR) \
+                     for DRYCC_REDIS_ADDR in DRYCC_REDIS_ADDRS],  # noqa
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.ShardClient",
+        }
     }
 }
 
@@ -354,3 +333,34 @@ if LDAP_ENDPOINT:
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
+
+OAUTH_ENABLE = bool(os.environ.get('OAUTH_ENABLE', True))
+if OAUTH_ENABLE:
+    OAUTH2_PROVIDER = {
+        "PKCE_REQUIRED": False,
+        "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https"],
+        "ACCESS_TOKEN_EXPIRE_SECONDS": 30*86400, # #30 Days
+        "AUTHORIZATION_CODE_EXPIRE_SECONDS": 600, # RFC Recommendation is 10 Secs
+        "CLIENT_SECRET_GENERATOR_LENGTH": 64,
+        "REFRESH_TOKEN_EXPIRE_SECONDS": 60*86400, # 60 Days
+        "ROTATE_REFRESH_TOKEN": True, # New Refresh Token is issued everytime the access token is changed
+        "SCOPES": {
+            'profile': 'Khalti',
+            'balance': 'Available Balance',
+            'transactions': 'Fetch Transaction History',
+            'payments': 'Allow Payments to be made automatically' ,
+        },
+        "DEFAULT_SCOPES":['profile', ],
+        "DEFAULT_CODE_CHALLENGE_METHOD":'S256',
+    }
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES']= (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+EMAIL_FROM = ''
+DEFAULT_FROM_EMAIL = ''
