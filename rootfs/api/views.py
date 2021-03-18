@@ -83,13 +83,52 @@ class UserEmailView(NormalUserViewSet):
 
 
 # drycc controller request
-class MeasurementConfigsViewSet(DryccViewSet):
+class MeasurementsConfigViewSet(DryccViewSet):
     serializer_class = serializers.ConfigListSerializer
 
     def create(self, request, *args, **kwargs):
         for _ in request.data:
             _["cluster_id"] = request.cluster.pk
-        return super(MeasurementConfigsViewSet, self).create(request, **kwargs)
+        return super(MeasurementsConfigViewSet, self).create(request, **kwargs)
+
+
+class MeasurementsVolumeViewSet(DryccViewSet):
+    serializer_class = serializers.VolumeListSerializer
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementsVolumeViewSet, self).create(request, **kwargs)
+
+
+class MeasurementsNetworksViewSet(DryccViewSet):
+    serializer_class = serializers.NetworkListSerializer
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementsNetworksViewSet, self).create(request,
+                                                               **kwargs)
+
+
+class MeasurementsInstancesViewSet(DryccViewSet):
+    serializer_class = serializers.InstanceListSerializer
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementsInstancesViewSet, self).create(request,
+                                                                **kwargs)
+
+
+class MeasurementsResourcesViewSet(DryccViewSet):
+    serializer_class = serializers.ResourceListSerializer
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementsResourcesViewSet, self).create(request,
+                                                                **kwargs)
 
 
 # UI request

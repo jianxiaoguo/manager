@@ -87,3 +87,90 @@ class ConfigSerializer(serializers.ModelSerializer):
 class ConfigListSerializer(serializers.ListSerializer):
     """Serialize a :class:`~api.models.measurement.Config` model."""
     child = ConfigSerializer()
+
+
+class VolumeSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.measurement.Config` model."""
+    cluster_id = serializers.UUIDField()
+    app_id = serializers.CharField(max_length=63)
+    owner_id = serializers.CharField(max_length=63)
+    name = serializers.CharField(max_length=63)
+    size = serializers.IntegerField()
+    timestamp = serializers.FloatField()
+
+    class Meta:
+        """Metadata options for a :class:`VolumeSerializer`."""
+        model = models.Config
+        fields = ['cluster_id', 'app_id', 'owner_id', 'name', 'size',
+                  'timestamp']
+
+
+class VolumeListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.measurement.Volume` model."""
+    child = VolumeSerializer()
+
+
+class NetworkSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.measurement.Config` model."""
+    cluster_id = serializers.UUIDField()
+    app_id = serializers.CharField(max_length=63)
+    owner_id = serializers.CharField(max_length=63)
+    pod_name = serializers.CharField(max_length=63)
+    rx_bytes = serializers.IntegerField()
+    tx_bytes = serializers.IntegerField()
+    timestamp = serializers.FloatField()
+
+    class Meta:
+        """Metadata options for a :class:`NetworkSerializer`."""
+        model = models.Config
+        fields = ['cluster_id', 'app_id', 'owner_id', 'pod_name', 'rx_bytes',
+                  'tx_bytes',
+                  'timestamp']
+
+
+class NetworkListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.measurement.Network` model."""
+    child = NetworkSerializer()
+
+
+class InstanceSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.measurement.Instance` model."""
+    cluster_id = serializers.UUIDField()
+    app_id = serializers.CharField(max_length=63)
+    owner_id = serializers.CharField(max_length=63)
+    container_type = serializers.CharField(max_length=63)
+    container_count = serializers.IntegerField()
+    timestamp = serializers.FloatField()
+
+    class Meta:
+        """Metadata options for a :class:`InstanceSerializer`."""
+        model = models.Config
+        fields = ['cluster_id', 'app_id', 'owner_id', 'container_type',
+                  'container_count',
+                  'timestamp']
+
+
+class InstanceListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.measurement.Instance` model."""
+    child = InstanceSerializer()
+
+
+class ResourceSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.measurement.Resource` model."""
+    cluster_id = serializers.UUIDField()
+    app_id = serializers.CharField(max_length=63)
+    owner_id = serializers.CharField(max_length=63)
+    name = serializers.CharField(max_length=63)
+    plan = serializers.CharField(max_length=63)
+    timestamp = serializers.FloatField()
+
+    class Meta:
+        """Metadata options for a :class:`ResourceSerializer`."""
+        model = models.Config
+        fields = ['cluster_id', 'app_id', 'owner_id', 'name', 'plan',
+                  'timestamp']
+
+
+class ResourceListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.measurement.Resource` model."""
+    child = ResourceSerializer()
