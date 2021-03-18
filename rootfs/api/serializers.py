@@ -67,8 +67,8 @@ class ClustersSerializer(serializers.ModelSerializer):
                   'created', 'updated']
 
 
-class MeasurementConfigSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.MeasurementConfig` model."""
+class ConfigSerializer(serializers.ModelSerializer):
+    """Serialize a :class:`~api.models.measurement.Config` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -78,12 +78,12 @@ class MeasurementConfigSerializer(serializers.ModelSerializer):
     timestamp = serializers.FloatField()
 
     class Meta:
-        """Metadata options for a :class:`MeasurementConfigSerializer`."""
-        model = models.MeasurementConfig
+        """Metadata options for a :class:`ConfigSerializer`."""
+        model = models.Config
         fields = ['cluster_id', 'app_id', 'owner_id', 'container_type', 'cpu',
                   'memory', 'timestamp']
 
 
-class MeasurementConfigListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.MeasurementConfig` model."""
-    child = MeasurementConfigSerializer()
+class ConfigListSerializer(serializers.ListSerializer):
+    """Serialize a :class:`~api.models.measurement.Config` model."""
+    child = ConfigSerializer()

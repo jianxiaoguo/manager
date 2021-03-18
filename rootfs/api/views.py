@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from api import models, serializers
 from api.exceptions import AlreadyExists, ServiceUnavailable
 from api.viewset import AdminViewSet, NormalUserViewSet, DryccViewSet
-from proxy.workflow import WorkflowProxy
+from api.workflow_proxy import WorkflowProxy
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ class UserEmailView(NormalUserViewSet):
 
 # drycc controller request
 class MeasurementConfigsViewSet(DryccViewSet):
-    serializer_class = serializers.MeasurementConfigListSerializer
+    serializer_class = serializers.ConfigListSerializer
 
     def create(self, request, *args, **kwargs):
         for _ in request.data:

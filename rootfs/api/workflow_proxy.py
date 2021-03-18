@@ -1,5 +1,5 @@
-import requests
 import logging
+import requests
 from requests_toolbelt import user_agent
 from django.core.cache import cache
 from django.conf import settings
@@ -9,7 +9,8 @@ from api.models import Cluster
 logger = logging.getLogger(__name__)
 
 
-def get_session(cluster: Cluster, username: str, access_token: str) -> requests.Session:
+def get_session(cluster: Cluster, username: str,
+                access_token: str) -> requests.Session:
     session = requests.Session()
     session.headers = {
         'Content-Type': 'application/json',
@@ -20,9 +21,9 @@ def get_session(cluster: Cluster, username: str, access_token: str) -> requests.
         if not token:
             token = user_token(cluster=cluster,
                                username=username)
-        session.headers['Authorization']= 'token ' + token
+        session.headers['Authorization'] = 'token ' + token
     elif settings.OAUTH_ENABLE:
-        session.headers['Authorization']= 'token ' + access_token
+        session.headers['Authorization'] = 'token ' + access_token
 
     return session
 
@@ -72,3 +73,15 @@ def admin_token(cluster: Cluster) -> str:
     except Exception as e:
         logger.exception(e)
     return token
+
+
+class WorkflowProxy(object):
+    def __init__(self, cluster: Cluster, username: str,
+                 access_token: str) -> None:
+        self.session = get_session(cluster, username, access_token)
+
+    def get(self, url: str, **kwargs) -> requests.Response:
+        return self.session.get(url, params=kwargs)
+
+    def post(self, url: str, **kwargs) -> requests.Response:
+        return self.session.get(url, data=kwargs)

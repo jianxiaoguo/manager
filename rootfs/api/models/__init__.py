@@ -71,5 +71,14 @@ class UuidAuditedModel(AuditedModel):
         """Mark :class:`UuidAuditedModel` as abstract."""
         abstract = True
 
+
+from .bills import Bill  # noqa
+from .charge_rules import ChargeRule  # noqa
 from .clusters import Cluster  # noqa
-from .measurement import MeasurementConfig  # noqa
+from .funding import Funding  # noqa
+from .measurement import Config  # noqa
+from .measurement import Volume  # noqa
+from .measurement import Network  # noqa
+from .measurement import Instance  # noqa
+from .measurement import Resource  # noqa
+from .notifications import Message  # noqa

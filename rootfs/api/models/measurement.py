@@ -1,26 +1,43 @@
 import logging
 from django.db import models
-from jsonfield import JSONField
 from api.models import UuidAuditedModel
-from api.models.clusters import Cluster
 
 logger = logging.getLogger(__name__)
 
 
-class MeasurementConfig(UuidAuditedModel):
-    cluster = models.ForeignKey(Cluster, on_delete=models.PROTECT)
+class MeasurementModel(UuidAuditedModel):
+    cluster = models.ForeignKey('Cluster', on_delete=models.PROTECT)
     app_id = models.CharField(max_length=63, db_index=True)
     owner_id = models.CharField(max_length=63, db_index=True)
+    timestamp = models.FloatField(db_index=True)
+
+    class Meta:
+        """Mark :class:`MeasurementModel` as abstract."""
+        abstract = True
+
+
+class Config(MeasurementModel):
     container_type = models.CharField(max_length=63)
-    cpu = models.IntegerField()
-    memory = models.IntegerField()
-    timestamp = models.FloatField(db_index=True)
+    cpu = models.PositiveIntegerField()
+    memory = models.PositiveIntegerField()
 
 
-class MeasurementVolumes(UuidAuditedModel):
-    cluster = models.ForeignKey(Cluster, on_delete=models.PROTECT)
-    app_id = models.CharField(max_length=63, db_index=True)
-    owner_id = models.CharField(max_length=63, db_index=True)
+class Volume(MeasurementModel):
     name = models.CharField(max_length=63)
-    size = models.IntegerField()
-    timestamp = models.FloatField(db_index=True)
+    size = models.PositiveIntegerField()
+
+
+class Network(MeasurementModel):
+    pod_name = models.CharField(max_length=63)
+    rx_bytes = models.PositiveIntegerField()
+    tx_bytes = models.PositiveIntegerField()
+
+
+class Instance(MeasurementModel):
+    container_type = models.CharField(max_length=63)
+    container_count = models.PositiveIntegerField()
+
+
+class Resource(MeasurementModel):
+    name = models.CharField(max_length=63)
+    plan = models.CharField(max_length=63)
