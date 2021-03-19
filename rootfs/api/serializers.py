@@ -3,6 +3,7 @@ Classes to serialize the RESTful representation of Drycc API models.
 """
 import logging
 import json
+import time
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -67,8 +68,46 @@ class ClustersSerializer(serializers.ModelSerializer):
                   'created', 'updated']
 
 
+class BillsSerializer(serializers.ModelSerializer):
+    """Serialize admin status for a Bill model."""
+
+    class Meta:
+        model = models.Bill
+        fields = '__all__'
+        read_only_fields = ['owner', 'cluster', 'app_id', 'resource_type',
+                            'price_unit', 'price', 'quantity', 'total_price']
+
+
+class FundingsSerializer(serializers.ModelSerializer):
+    """Serialize admin status for a Funding model."""
+
+    class Meta:
+        model = models.Funding
+        fields = '__all__'
+        read_only_fields = ['operator', 'credit', 'trade_credit', 'owner']
+
+
+class ListSerializer(serializers.Serializer):
+    section = serializers.CharField(max_length=500, required=False)
+
+    @staticmethod
+    def validate_section(section):
+        field = section.split(',') if section else None
+        import datetime
+        if field is None:
+            return None
+        # else:
+        #     try:
+        #         start, stop = int(field[0]), int(field[1]) if field[
+        #             1] else None  # noqa
+        #     except ValueError as e:
+        #         raise serializers.ValidationError(e)
+        return [datetime.datetime.strptime(field[0], '%Y-%m-%d %H:%M:%S'),
+                datetime.datetime.strptime(field[1], '%Y-%m-%d %H:%M:%S')]
+
+
 class ConfigSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.measurement.Config` model."""
+    """Serialize a :class:`~api.models.Config` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -85,12 +124,12 @@ class ConfigSerializer(serializers.ModelSerializer):
 
 
 class ConfigListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.measurement.Config` model."""
+    """Serialize a :class:`~api.models.Config` model."""
     child = ConfigSerializer()
 
 
 class VolumeSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.measurement.Config` model."""
+    """Serialize a :class:`~api.models.Config` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -106,12 +145,12 @@ class VolumeSerializer(serializers.ModelSerializer):
 
 
 class VolumeListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.measurement.Volume` model."""
+    """Serialize a :class:`~api.models.Volume` model."""
     child = VolumeSerializer()
 
 
 class NetworkSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.measurement.Config` model."""
+    """Serialize a :class:`~api.models.Config` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -124,17 +163,16 @@ class NetworkSerializer(serializers.ModelSerializer):
         """Metadata options for a :class:`NetworkSerializer`."""
         model = models.Config
         fields = ['cluster_id', 'app_id', 'owner_id', 'pod_name', 'rx_bytes',
-                  'tx_bytes',
-                  'timestamp']
+                  'tx_bytes', 'timestamp']
 
 
 class NetworkListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.measurement.Network` model."""
+    """Serialize a :class:`~api.models.Network` model."""
     child = NetworkSerializer()
 
 
 class InstanceSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.measurement.Instance` model."""
+    """Serialize a :class:`~api.models.Instance` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -151,12 +189,12 @@ class InstanceSerializer(serializers.ModelSerializer):
 
 
 class InstanceListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.measurement.Instance` model."""
+    """Serialize a :class:`~api.models.Instance` model."""
     child = InstanceSerializer()
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-    """Serialize a :class:`~api.models.measurement.Resource` model."""
+    """Serialize a :class:`~api.models.Resource` model."""
     cluster_id = serializers.UUIDField()
     app_id = serializers.CharField(max_length=63)
     owner_id = serializers.CharField(max_length=63)
@@ -172,5 +210,5 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 
 class ResourceListSerializer(serializers.ListSerializer):
-    """Serialize a :class:`~api.models.measurement.Resource` model."""
+    """Serialize a :class:`~api.models.Resource` model."""
     child = ResourceSerializer()

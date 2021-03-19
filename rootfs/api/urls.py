@@ -35,6 +35,11 @@ urlpatterns = [
         views.ClusterProxyViewSet.as_view({'get': 'list',
                                            'post': 'post'})),
 
+    url(r'^bills/?$',
+        views.BillsViewSet.as_view({'get': 'list'})),
+    url(r'^fundings/?$',
+        views.FundingsViewSet.as_view({'get': 'list'})),
+
     url(r'^measurements/config/?$',
         views.MeasurementsConfigViewSet.as_view({'post': 'create'})),
     url(r'^measurements/volumes/?$',

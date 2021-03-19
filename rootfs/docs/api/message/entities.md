@@ -7,7 +7,6 @@ name        |type  |comments
 uuid        |string|
 user_id     |string|
 code        |int   |
-sender_type |int   |
 sender      |string|
 body        |string|
 created　　　|date  |

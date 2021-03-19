@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -142,6 +143,41 @@ class ClustersViewSet(NormalUserViewSet):
     def get_object(self, **kwargs):
         cluster = get_object_or_404(self.model, cluster_id=kwargs['cluster_id'])
         return cluster
+
+
+class BillsViewSet(NormalUserViewSet):
+    model = models.Bill
+    serializer_class = serializers.BillsSerializer
+
+    def get_queryset(self, **kwargs):
+        serializer = serializers.BillsSerializer(data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        serializerlist = serializers.ListSerializer(
+            data=self.request.query_params)
+        serializerlist.is_valid(raise_exception=True)
+        q = Q(owner=self.request.user)
+        if serializerlist.validated_data.get('section'):
+            q &= Q(created__range=serializerlist.validated_data.get('section'))
+        return self.model.objects.filter(q, **serializer.validated_data)
+
+
+class FundingsViewSet(NormalUserViewSet):
+    model = models.Funding
+    serializer_class = serializers.FundingsSerializer
+
+    def get_queryset(self, **kwargs):
+        serializer = serializers.FundingsSerializer(
+            data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        serializerlist = serializers.ListSerializer(
+            data=self.request.query_params)
+        serializerlist.is_valid(raise_exception=True)
+        q = Q(owner=self.request.user)
+        if serializerlist.validated_data.get('section'):
+            q &= Q(created__range=serializerlist.validated_data.get('section'))
+        return self.model.objects.filter(q, **serializer.validated_data)
 
 
 class ClusterProxyViewSet(NormalUserViewSet):

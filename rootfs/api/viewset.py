@@ -21,7 +21,6 @@ class NormalUserViewSet(viewsets.ModelViewSet):
     To use it, at minimum you'll need to provide the `serializer_class` attribute and
     the `model` attribute shortcut.
     """
-    # todo debug
     permission_classes = [IsAuthenticated]
 
 
