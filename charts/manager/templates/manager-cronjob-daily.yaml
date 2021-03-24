@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: drycc-manager-cronjob-daily
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.image_tag }}
+spec:
+  schedule: "0 */1 * * *"
+  concurrencyPolicy: {{ .Values.concurrency_policy }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccount: drycc-manager
+          containers:
+          - image: {{.Values.image_registry}}/{{.Values.org}}/manager:{{.Values.image_tag}}
+            imagePullPolicy: {{.Values.image_pull_policy}}
+            name: fee
+            command:
+              - /bin/bash
+              - -c
+            args:
+              - python /app/manage.py fee
+            {{- include "manager.limits" . | indent 12 }}
+            {{- include "manager.envs" . | indent 12 }}

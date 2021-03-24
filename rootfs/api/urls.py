@@ -19,13 +19,6 @@ urlpatterns = [
     url(r'users/?$', views.UserDetailView.as_view({'get': 'retrieve'})),
     url(r'users/emails/?$', views.UserEmailView.as_view({'get': 'retrieve'})),
 
-    # url(r'^clusters/?$',
-    #     views.ClustersViewSet.as_view({'get': 'list',
-    #                                    'post': 'create'})),
-    # url(r'^clusters/(?P<cluster_id>[-_\w]+)/?$',
-    #     views.ClustersViewSet.as_view({'put': 'update',
-    #                                    'delete': 'destroy'})),
-
     url(r'^clusters/?$',
         views.ClustersViewSet.as_view({'get': 'list'})),
     url(r'^clusters/(?P<cluster_id>[-_\w]+)?$',

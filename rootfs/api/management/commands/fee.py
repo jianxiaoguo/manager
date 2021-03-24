@@ -1,5 +1,4 @@
 import logging
-from datetime import timedelta
 
 from django.core.management.base import BaseCommand
 from django.db.models import Count
@@ -15,7 +14,6 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        # 1 计费(每个资源的计费)
         end = date2timestamp(now().date())
         start = end - 86400
         instances = Instance.objects.values_list('cluster_id', 'owner_id', 'app_id'). \

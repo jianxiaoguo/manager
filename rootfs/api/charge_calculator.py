@@ -31,9 +31,9 @@ class ChargeCalculator(object):
     def calc_with_rule(self):
         c = self.handled_rule
         if c[-2] == 'month':
-            duration = math.ceil((self.end_time - self.start_time) / (60 * 60 * 24 * 30))
+            duration = math.ceil((self.end_time - self.start_time) / (60 * 60 * 24 * 30))  # noqa
         elif c[-2] == 'day':
-            duration = math.ceil((self.end_time - self.start_time) / (60 * 60 * 24))
+            duration = math.ceil((self.end_time - self.start_time) / (60 * 60 * 24))  # noqa
         elif c[-2] == 'hour':
             duration = math.ceil((self.end_time - self.start_time) / (60 * 60))
         else:

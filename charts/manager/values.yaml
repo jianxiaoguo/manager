@@ -6,8 +6,6 @@ app_pull_policy: "Always"
 # A comma-separated list of URLs to send app release information to
 # See https://drycc.com/docs/workflow/managing-workflow/deploy-hooks
 deploy_hook_urls: ""
-# limits_cpu: "100m"
-# limits_memory: "50Mi"
 # Possible values are:
 # enabled - allows for open registration
 # disabled - turns off open registration
@@ -15,6 +13,15 @@ deploy_hook_urls: ""
 registration_mode: "admin_only"
 # Option to disable ssl verification to connect to k8s api server
 k8s_api_verify_tls: "true"
+# Set manager deployment replicas
+replicas: 1
+# limits_cpu: "100m"
+# limits_memory: "50Mi"
+# Set manager cronjob concurrencyPolicy
+# Allow (default): The cron job allows concurrently running jobs
+# Forbid: The cron job does not allow concurrent runs; if it is time for a new job run and the previous job run hasn't finished yet, the cron job skips the new job run
+# Replace: If it is time for a new job run and the previous job run hasn't finished yet, the cron job replaces the currently running job run with a new job run
+concurrency_policy: "Replace"
 
 global:
   # Admin email, used for each component to send email to administrator
@@ -41,5 +48,5 @@ global:
   #
   # This will be the hostname that is used to build endpoints such as "drycc.$HOSTNAME"
   platform_domain: ""
-  # Whether cert_manager is enabled to automatically generate controller certificates
+  # Whether cert_manager is enabled to automatically generate manager certificates
   cert_manager_enabled: "true"

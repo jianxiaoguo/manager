@@ -12,10 +12,6 @@ DEBUG = True
 # https://docs.djangoproject.com/en/2.2/ref/settings/#debug-propagate-exceptions
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
-# scheduler for testing
-SCHEDULER_MODULE = 'scheduler.mock'
-SCHEDULER_URL = 'http://test-scheduler.example.com'
-
 # router information
 ROUTER_HOST = 'drycc-router.example.com'
 ROUTER_PORT = 80

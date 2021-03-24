@@ -1,6 +1,5 @@
 import logging
 
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -8,6 +7,7 @@ from django.views.generic import View
 from oauth2_provider.contrib.rest_framework import TokenHasScope
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
 from api import models, serializers
 from api.exceptions import ServiceUnavailable
 from api.viewset import NormalUserViewSet, DryccViewSet
@@ -62,29 +62,6 @@ class UserEmailView(NormalUserViewSet):
 
     def get_object(self):
         return self.request.user
-
-
-# admin request
-# class ClustersViewSet(AdminViewSet):
-#     # permission_classes = [permissions.IsAdmin]
-#     model = models.Cluster
-#     serializer_class = serializers.ClustersSerializer
-#
-#     def get_queryset(self, *args, **kwargs):
-#         return self.model.objects.all(*args, **kwargs)
-#
-#     def get_object(self, **kwargs):
-#         cluster = get_object_or_404(self.model, cluster_id=kwargs['cluster_id'])
-#         return cluster
-#
-#     def create(self, request, **kwargs):
-#         try:
-#             cluster = self.model.objects.get(name=self.request.data["name"])
-#         except self.model.DoesNotExist:
-#             cluster = None
-#         if cluster:
-#             raise AlreadyExists("cluster {} already exist".format(cluster.name))
-#         return super(ClustersViewSet, self).create(request, **kwargs)
 
 
 # drycc controller request

@@ -11,7 +11,7 @@ cluster_id        |string  | 集群id
 credit            |float   | 积分余额
 trade_type        |string  | 收支类型（expend、income）
 trade_credit      |string  | 收支积分
-billing_id        |string  | 支出账单id
+bill_id        |string  | 支出账单id
 remark            |string  | 备注
 created           |date    | 创建时间
 updated           |date    | 更新时间
