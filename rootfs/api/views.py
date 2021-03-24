@@ -5,12 +5,12 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
-from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
-from rest_framework import permissions, generics
+from oauth2_provider.contrib.rest_framework import TokenHasScope
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from api import models, serializers
-from api.exceptions import AlreadyExists, ServiceUnavailable
-from api.viewset import AdminViewSet, NormalUserViewSet, DryccViewSet
+from api.exceptions import ServiceUnavailable
+from api.viewset import NormalUserViewSet, DryccViewSet
 from api.workflow_proxy import WorkflowProxy
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,8 @@ class LivenessCheckView(View):
 
 class UserDetailView(NormalUserViewSet):
     serializer_class = serializers.UserSerializer
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['profile']
 
     def get_object(self):
         return self.request.user
@@ -55,6 +57,8 @@ class UserDetailView(NormalUserViewSet):
 
 class UserEmailView(NormalUserViewSet):
     serializer_class = serializers.UserEmailSerializer
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['profile']
 
     def get_object(self):
         return self.request.user
@@ -204,7 +208,7 @@ class ClusterProxyViewSet(NormalUserViewSet):
         wfp = WorkflowProxy(cluster, request.user.username, token).post(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
             **request.data)
-        if wfp.status_code == 200:
-            return Response(wfp.json())
+        if wfp.status_code in [200, 201]:
+            return Response(wfp.json(), status=wfp.status_code)
         else:
-            return Response(status=wfp.status_code)
+            return Response(data=wfp.content, status=wfp.status_code)

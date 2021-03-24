@@ -11,7 +11,7 @@ class AdminViewSet(viewsets.ModelViewSet):
     To use it, at minimum you'll need to provide the `serializer_class` attribute and
     the `model` attribute shortcut.
     """
-    # permission_classes = [permissions.IsAdmin]
+    permission_classes = [permissions.IsAdmin]
 
 
 class NormalUserViewSet(viewsets.ModelViewSet):

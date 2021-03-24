@@ -84,4 +84,4 @@ class WorkflowProxy(object):
         return self.session.get(url, params=kwargs)
 
     def post(self, url: str, **kwargs) -> requests.Response:
-        return self.session.get(url, data=kwargs)
+        return self.session.post(url, data=kwargs)

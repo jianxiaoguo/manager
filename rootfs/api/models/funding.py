@@ -14,12 +14,9 @@ class Funding(UuidAuditedModel):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.PROTECT)
     operator = models.CharField(max_length=63)
-    # cluster = models.ForeignKey('Cluster', on_delete=models.PROTECT, null=True, blank=True)
-    # app_id = models.CharField(max_length=63, db_index=True)
-    billing = models.ForeignKey('Bill', on_delete=models.PROTECT, null=True,
-                                blank=True)
+    bill = models.ForeignKey('Bill', on_delete=models.PROTECT, null=True,
+                             blank=True)
     credit = models.DecimalField(max_digits=12, decimal_places=2)
-    # expend\income
     trade_type = models.IntegerField(choices=trade_types, db_index=True)
     trade_credit = models.DecimalField(max_digits=12, decimal_places=2)
     remark = models.TextField(blank=True, null=True)

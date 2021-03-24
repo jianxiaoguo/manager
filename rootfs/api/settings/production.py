@@ -261,14 +261,20 @@ DRYCC_REDIS_ADDRS = os.environ.get('DRYCC_REDIS_ADDRS', '127.0.0.1:6379').split(
 DRYCC_REDIS_PASSWORD = os.environ.get('DRYCC_REDIS_PASSWORD', '')
 
 # Cache Configuration
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": ['redis://:{}@{}'.format(DRYCC_REDIS_PASSWORD, DRYCC_REDIS_ADDR) \
+#                      for DRYCC_REDIS_ADDR in DRYCC_REDIS_ADDRS],  # noqa
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.ShardClient",
+#         }
+#     }
+# }
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": ['redis://:{}@{}'.format(DRYCC_REDIS_PASSWORD, DRYCC_REDIS_ADDR) \
-                     for DRYCC_REDIS_ADDR in DRYCC_REDIS_ADDRS],  # noqa
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.ShardClient",
-        }
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
     }
 }
 
@@ -345,10 +351,7 @@ if OAUTH_ENABLE:
         "REFRESH_TOKEN_EXPIRE_SECONDS": 60*86400, # 60 Days
         "ROTATE_REFRESH_TOKEN": True, # New Refresh Token is issued everytime the access token is changed
         "SCOPES": {
-            'profile': 'Khalti',
-            'balance': 'Available Balance',
-            'transactions': 'Fetch Transaction History',
-            'payments': 'Allow Payments to be made automatically' ,
+            'profile': 'Profile',
         },
         "DEFAULT_SCOPES":['profile', ],
         "DEFAULT_CODE_CHALLENGE_METHOD":'S256',
