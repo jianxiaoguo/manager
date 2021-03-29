@@ -9,11 +9,9 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-from distutils.util import strtobool
 import os.path
 import tempfile
 import ldap
-import json
 import dj_database_url
 
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
@@ -116,7 +114,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ANONYMOUS_USER_ID = -1
-LOGIN_URL='/accounts/login/'
+LOGIN_URL = '/accounts/login/'
 
 # Security settings
 CORS_ORIGIN_ALLOW_ALL = True
@@ -163,7 +161,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 1,
+    'PAGE_SIZE': 30,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'EXCEPTION_HANDLER': 'api.exceptions.custom_exception_handler'
 }
@@ -243,7 +241,9 @@ LOG_LINES = 100
 TEMPDIR = tempfile.mkdtemp(prefix='drycc')
 
 # names which apps cannot reserve for routing
-DRYCC_RESERVED_NAMES = os.environ.get('RESERVED_NAMES', '').replace(' ', '').split(',')
+DRYCC_RESERVED_NAMES = os.environ.get('RESERVED_NAMES', '').replace(' ',
+                                                                    '').split(
+    ',')
 
 # security keys and auth tokens
 random_secret = ')u_jckp95wule8#wxd8sm!0tj2j&aveozu!nnpgl)2x&&16gfj'
@@ -251,14 +251,18 @@ SECRET_KEY = os.environ.get('DRYCC_SECRET_KEY', random_secret)
 BUILDER_KEY = os.environ.get('DRYCC_BUILDER_KEY', random_secret)
 
 # database setting
-DRYCC_DATABASE_URL = os.environ.get('DRYCC_DATABASE_URL', 'postgres://postgres:123456@192.168.6.50:5432/drycc_manager')
+# todo debug test
+DRYCC_DATABASE_URL = os.environ.get('DRYCC_DATABASE_URL',
+                                    'postgres://postgres:123456@192.168.6.50:5432/drycc_manager')
 # DRYCC_DATABASE_URL = os.environ.get('DRYCC_DATABASE_URL', 'postgres://:@:5432/manager')
 DATABASES = {
-    'default': dj_database_url.config(default=DRYCC_DATABASE_URL, conn_max_age=600)
+    'default': dj_database_url.config(default=DRYCC_DATABASE_URL,
+                                      conn_max_age=600)
 }
 
 # Redis Configuration
-DRYCC_REDIS_ADDRS = os.environ.get('DRYCC_REDIS_ADDRS', '127.0.0.1:6379').split(",")
+DRYCC_REDIS_ADDRS = os.environ.get('DRYCC_REDIS_ADDRS', '127.0.0.1:6379').split(
+    ",")
 DRYCC_REDIS_PASSWORD = os.environ.get('DRYCC_REDIS_PASSWORD', '')
 
 # Cache Configuration
@@ -278,8 +282,6 @@ CACHES = {
         'LOCATION': '/var/tmp/django_cache',
     }
 }
-
-APP_URL_REGEX = '[a-z0-9-]+'
 
 # LDAP settings taken from environment variables.
 LDAP_ENDPOINT = os.environ.get('LDAP_ENDPOINT', '')
@@ -301,7 +303,7 @@ LDAP_SUPERUSER_GROUP = os.environ.get('LDAP_SUPERUSER_GROUP', '')
 # https://pythonhosted.org/django-auth-ldap/logging.html
 
 if LDAP_ENDPOINT:
-    AUTHENTICATION_BACKENDS = ("django_auth_ldap.backend.LDAPBackend",) + AUTHENTICATION_BACKENDS
+    AUTHENTICATION_BACKENDS = ("django_auth_ldap.backend.LDAPBackend",) + AUTHENTICATION_BACKENDS  # noqa
     AUTH_LDAP_SERVER_URI = LDAP_ENDPOINT
     AUTH_LDAP_BIND_DN = LDAP_BIND_DN
     AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
@@ -346,18 +348,18 @@ if OAUTH_ENABLE:
     OAUTH2_PROVIDER = {
         "PKCE_REQUIRED": False,
         "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https"],
-        "ACCESS_TOKEN_EXPIRE_SECONDS": 30*86400, # #30 Days
-        "AUTHORIZATION_CODE_EXPIRE_SECONDS": 600, # RFC Recommendation is 10 Secs
+        "ACCESS_TOKEN_EXPIRE_SECONDS": 30 * 86400,
+        "AUTHORIZATION_CODE_EXPIRE_SECONDS": 600,
         "CLIENT_SECRET_GENERATOR_LENGTH": 64,
-        "REFRESH_TOKEN_EXPIRE_SECONDS": 60*86400, # 60 Days
-        "ROTATE_REFRESH_TOKEN": True, # New Refresh Token is issued everytime the access token is changed
+        "REFRESH_TOKEN_EXPIRE_SECONDS": 60 * 86400,
+        "ROTATE_REFRESH_TOKEN": True,
         "SCOPES": {
             'profile': 'Profile',
         },
-        "DEFAULT_SCOPES":['profile', ],
-        "DEFAULT_CODE_CHALLENGE_METHOD":'S256',
+        "DEFAULT_SCOPES": ['profile', ],
+        "DEFAULT_CODE_CHALLENGE_METHOD": 'S256',
     }
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES']= (
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     )
 

@@ -1,5 +1,5 @@
 """
-Helper functions used by the Drycc server.
+Helper functions used by the Drycc Manager server.
 """
 import logging
 import datetime

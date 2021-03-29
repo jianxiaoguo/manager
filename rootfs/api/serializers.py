@@ -3,10 +3,10 @@ Classes to serialize the RESTful representation of Drycc API models.
 """
 import logging
 import json
-import time
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
 from api import models
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from jsonfield import JSONField
 
 from api.models import UuidAuditedModel
 

@@ -64,7 +64,7 @@ class UserEmailView(NormalUserViewSet):
         return self.request.user
 
 
-# drycc controller request
+# drycc manager request
 class MeasurementsConfigViewSet(DryccViewSet):
     serializer_class = serializers.ConfigListSerializer
 

@@ -1,7 +1,9 @@
 import random
 import string
+import os
 
 from api.settings.production import *  # noqa
+from api.settings.production import DATABASES
 
 # A boolean that turns on/off debug mode.
 # https://docs.djangoproject.com/en/2.2/ref/settings/#debug

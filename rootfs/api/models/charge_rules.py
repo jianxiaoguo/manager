@@ -24,7 +24,7 @@ class ChargeRule(UuidAuditedModel):
     def query_rules(cls, resource_type):
         """
         :type resource_type: int
-        :rtype: (list, list)
+        :rtype: list
         """
         rules_q = Q(resource_type=resource_type)
         rules = ChargeRule.objects.filter(rules_q).order_by('-created')

@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM docker.io/library/python:3.9-alpine
 
 COPY requirements.txt /app/requirements.txt
 

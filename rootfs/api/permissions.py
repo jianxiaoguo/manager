@@ -2,8 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from django.contrib.auth.models import AnonymousUser
 
-from django.conf import settings
-
 from api import models
 
 

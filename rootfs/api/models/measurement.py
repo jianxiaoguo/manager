@@ -2,7 +2,6 @@ import logging
 import uuid
 
 from django.db import models
-from django.utils.timezone import now
 
 from api.charge_calculator import ChargeCalculator
 from api.models import UuidAuditedModel, ChargeRule, Bill, Funding
@@ -52,7 +51,8 @@ class Resource(MeasurementModel):
 
 def config_fee(i, start, end):
     cs = Config.objects.filter(cluster_id=i[0], owner_id=i[1],
-        app_id=i[2], timestamp__gte=start, timestamp__lt=end)
+                               app_id=i[2], timestamp__gte=start,
+                               timestamp__lt=end)
     owner_id = get_user_by_name(i[1]).id
     try:
         credit = Funding.objects.filter(owner_id=owner_id). \
@@ -67,7 +67,8 @@ def config_fee(i, start, end):
 
 def volume_fee(instance, start, end):
     vs = Volume.objects.filter(cluster_id=instance[0], owner_id=instance[1],
-        app_id=instance[2], timestamp__gte=start, timestamp__lt=end)
+                               app_id=instance[2], timestamp__gte=start,
+                               timestamp__lt=end)
     owner_id = get_user_by_name(instance[1]).id
     try:
         credit = Funding.objects.filter(owner_id=owner_id). \
@@ -80,7 +81,8 @@ def volume_fee(instance, start, end):
 
 def network_fee(instance, start, end):
     ns = Network.objects.filter(cluster_id=instance[0], owner_id=instance[1],
-        app_id=instance[2], timestamp__gte=start, timestamp__lt=end)
+                                app_id=instance[2], timestamp__gte=start,
+                                timestamp__lt=end)
     owner_id = get_user_by_name(instance[1]).id
     try:
         credit = Funding.objects.filter(owner_id=owner_id). \
@@ -97,7 +99,7 @@ def _charge_fee(instance, resources, credit, _rule, start, end):
     fundings = []
     for r in resources:
         _fee = ChargeCalculator(r, 1, start_time=start, end_time=end,
-            rules=_rule, quantity=r.cpu).calc_with_rule()
+                                rules=_rule, quantity=r.cpu).calc_with_rule()
         quantity = {1: r.cpu, 2: r.memory, 3: r.size,
                     4: r.rx_bytes + r.tx_bytes, 5: r.plan}
         print(f'cpu:{_fee}')
