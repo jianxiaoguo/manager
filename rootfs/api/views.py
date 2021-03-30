@@ -1,10 +1,11 @@
 import logging
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from oauth2_provider.contrib.rest_framework import TokenHasScope
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -65,52 +66,32 @@ class UserEmailView(NormalUserViewSet):
 
 
 # drycc manager request
-class MeasurementsConfigViewSet(DryccViewSet):
+class MeasurementsViewSet(DryccViewSet):
+
+    def create(self, request, *args, **kwargs):
+        for _ in request.data:
+            _["cluster_id"] = request.cluster.pk
+        return super(MeasurementsViewSet, self).create(request, **kwargs)
+
+
+class MeasurementsConfigViewSet(MeasurementsViewSet):
     serializer_class = serializers.ConfigListSerializer
 
-    def create(self, request, *args, **kwargs):
-        for _ in request.data:
-            _["cluster_id"] = request.cluster.pk
-        return super(MeasurementsConfigViewSet, self).create(request, **kwargs)
 
-
-class MeasurementsVolumeViewSet(DryccViewSet):
+class MeasurementsVolumeViewSet(MeasurementsViewSet):
     serializer_class = serializers.VolumeListSerializer
 
-    def create(self, request, *args, **kwargs):
-        for _ in request.data:
-            _["cluster_id"] = request.cluster.pk
-        return super(MeasurementsVolumeViewSet, self).create(request, **kwargs)
 
-
-class MeasurementsNetworksViewSet(DryccViewSet):
+class MeasurementsNetworksViewSet(MeasurementsViewSet):
     serializer_class = serializers.NetworkListSerializer
 
-    def create(self, request, *args, **kwargs):
-        for _ in request.data:
-            _["cluster_id"] = request.cluster.pk
-        return super(MeasurementsNetworksViewSet, self).create(request,
-                                                               **kwargs)
 
-
-class MeasurementsInstancesViewSet(DryccViewSet):
+class MeasurementsInstancesViewSet(MeasurementsViewSet):
     serializer_class = serializers.InstanceListSerializer
 
-    def create(self, request, *args, **kwargs):
-        for _ in request.data:
-            _["cluster_id"] = request.cluster.pk
-        return super(MeasurementsInstancesViewSet, self).create(request,
-                                                                **kwargs)
 
-
-class MeasurementsResourcesViewSet(DryccViewSet):
+class MeasurementsResourcesViewSet(MeasurementsViewSet):
     serializer_class = serializers.ResourceListSerializer
-
-    def create(self, request, *args, **kwargs):
-        for _ in request.data:
-            _["cluster_id"] = request.cluster.pk
-        return super(MeasurementsResourcesViewSet, self).create(request,
-                                                                **kwargs)
 
 
 # UI request
@@ -126,12 +107,33 @@ class ClustersViewSet(NormalUserViewSet):
         return cluster
 
 
-class BillsViewSet(NormalUserViewSet):
+class ListViewSet(NormalUserViewSet):
+
+    def get_queryset(self, **kwargs):
+        serializer = self.serializer_class(data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        serializerlist = serializers.ListSerializer(
+            data=self.request.query_params)
+        serializerlist.is_valid(raise_exception=True)
+        q = Q(owner=self.request.user)
+        if serializerlist.validated_data.get('section'):
+            q &= Q(created__range=serializerlist.validated_data.get('section'))
+        return self.model.objects.filter(q, **serializer.validated_data)
+
+
+class BillsViewSet(ListViewSet):
     model = models.Bill
     serializer_class = serializers.BillsSerializer
 
+
+class BillsProductViewSet(NormalUserViewSet):
+    model = models.Bill
+    serializer_class = serializers.BillsProductSerializer
+
     def get_queryset(self, **kwargs):
-        serializer = serializers.BillsSerializer(data=self.request.query_params)
+        serializer = serializers.BillsProductSerializer(
+            data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
 
         serializerlist = serializers.ListSerializer(
@@ -140,25 +142,37 @@ class BillsViewSet(NormalUserViewSet):
         q = Q(owner=self.request.user)
         if serializerlist.validated_data.get('section'):
             q &= Q(created__range=serializerlist.validated_data.get('section'))
-        return self.model.objects.filter(q, **serializer.validated_data)
+        return self.model.objects. \
+            filter(q, **serializer.validated_data). \
+            order_by('cluster_id', 'app_id'). \
+            annotate(sum_total_price=Sum('total_price'))
 
 
-class FundingsViewSet(NormalUserViewSet):
+class FundingsViewSet(ListViewSet):
     model = models.Funding
     serializer_class = serializers.FundingsSerializer
 
-    def get_queryset(self, **kwargs):
-        serializer = serializers.FundingsSerializer(
-            data=self.request.query_params)
-        serializer.is_valid(raise_exception=True)
 
-        serializerlist = serializers.ListSerializer(
-            data=self.request.query_params)
-        serializerlist.is_valid(raise_exception=True)
-        q = Q(owner=self.request.user)
-        if serializerlist.validated_data.get('section'):
-            q &= Q(created__range=serializerlist.validated_data.get('section'))
-        return self.model.objects.filter(q, **serializer.validated_data)
+class MessagesViewSet(ListViewSet):
+    model = models.Message
+    serializer_class = serializers.MessagesSerializer
+
+
+class MessageViewSet(NormalUserViewSet):
+    model = models.Message
+    serializer_class = serializers.MessagesSerializer
+
+    def get_object(self):
+        return get_object_or_404(self.model, uuid=self.kwargs['pk'])
+
+    def update(self, request, *args, **kwargs):
+        msg = self.get_object()
+        msg = serializers.MessagesSerializer(data=request.data,
+                                             instance=msg,
+                                             partial=True)
+        msg.is_valid(raise_exception=True)
+        msg.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ClusterProxyViewSet(NormalUserViewSet):

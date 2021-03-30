@@ -27,8 +27,15 @@ urlpatterns = [
 
     url(r'^bills/?$',
         views.BillsViewSet.as_view({'get': 'list'})),
+    url(r'^bills_by_product/?$',
+        views.BillsProductViewSet.as_view({'get': 'list'})),
+
     url(r'^fundings/?$',
         views.FundingsViewSet.as_view({'get': 'list'})),
+    url(r'^messages/?$',
+        views.MessagesViewSet.as_view({'get': 'list'})),
+    url(r'^message/(?P<pk>[-_\w]+)?$',
+        views.MessageViewSet.as_view({'put': 'update'})),
 
     url(r'^measurements/config/?$',
         views.MeasurementsConfigViewSet.as_view({'post': 'create'})),

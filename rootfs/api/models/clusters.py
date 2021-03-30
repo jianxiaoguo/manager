@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 class Cluster(UuidAuditedModel):
     """
-    the kubernetes cluster drycc info, config LDAP superuser\drycc
+    the kubernetes cluster drycc info, config LDAP superuser drycc
     """
     name = models.CharField(max_length=64, unique=True)
     admin = models.CharField(max_length=64, blank=True, null=True)
