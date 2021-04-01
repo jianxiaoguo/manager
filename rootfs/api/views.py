@@ -183,7 +183,9 @@ class ClusterProxyViewSet(NormalUserViewSet):
         return cluster
 
     def list(self, request, *args, **kwargs):
-        token = request.auth.token if hasattr(request, 'auth') else ''
+        # token = request.auth.token if hasattr(request, 'auth') else ''
+        token = request.user__social_auth.filter(provider='drycc').last().\
+            extra_data.get('access_token')
         cluster = self.get_cluster()
         wfp = WorkflowProxy(cluster, request.user.username, token).get(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
@@ -194,7 +196,9 @@ class ClusterProxyViewSet(NormalUserViewSet):
             return Response(status=wfp.status_code)
 
     def post(self, request, *args, **kwargs):
-        token = request.auth.token if hasattr(request, 'auth') else ''
+        # token = request.auth.token if hasattr(request, 'auth') else ''
+        token = request.user__social_auth.filter(provider='drycc').last().\
+            extra_data.get('access_token')
         cluster = self.get_cluster()
         wfp = WorkflowProxy(cluster, request.user.username, token).post(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),

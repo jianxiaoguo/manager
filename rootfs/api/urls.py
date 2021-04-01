@@ -10,8 +10,9 @@ urlpatterns = [
 
     url(r'accounts/', include('django.contrib.auth.urls')),
 
-    url(r'oauth/',
-        include('oauth2_provider.urls', namespace='oauth2_provider')),
+    # url(r'oauth/',
+    #     include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url('', include('social_django.urls', namespace='social')),
 
     url(r'users/?$', views.UserDetailView.as_view({'get': 'retrieve'})),
     url(r'users/emails/?$', views.UserEmailView.as_view({'get': 'retrieve'})),
