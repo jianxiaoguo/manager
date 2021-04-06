@@ -27,6 +27,10 @@ echo ""
 echo "Database Migrations:"
 python /app/manage.py migrate --noinput
 
+echo ""
+echo "Create admin user"
+python /app/manage.py createadminuser --username "{$ADMIN_USERNAME}" --password "{$ADMIN_PASSWORD}" --noinput --email "$ADMIN_EMAIL"
+
 # spawn a gunicorn server in the background
 echo ""
 echo "Starting up Gunicorn"

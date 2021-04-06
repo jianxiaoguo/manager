@@ -22,7 +22,13 @@ env:
 - name: "KUBERNETES_CLUSTER_DOMAIN"
   value: "{{ .Values.global.cluster_domain }}"
 - name: "TZ"
-  value: {{ .Values.time_zone | default "UTC" | quote }}
+  value: "{{ .Values.time_zone | default "UTC" | quote }}"
+- name: "ADMIN_USERNAME"
+  value: "{{ .Values.admin_username | quote }}"
+- name: "ADMIN_PASSWORD"
+  value: "{{ .Values.admin_password | quote }}"
+- name: "ADMIN_EMAIL"
+  value: "{{ .Values.admin_email | quote }}"
 {{- if eq .Values.global.database_location "off-cluster" }}
 - name: DRYCC_DATABASE_URL
   valueFrom:

@@ -23,6 +23,12 @@ replicas: 1
 # Replace: If it is time for a new job run and the previous job run hasn't finished yet, the cron job replaces the currently running job run with a new job run
 concurrency_policy: "Replace"
 
+# Used to create Django admin users
+admin_username: "admin"
+admin_password: "admin"
+admin_email: "admin@email.com"
+
+
 global:
   # Admin email, used for each component to send email to administrator
   email: "drycc@drycc.cc"

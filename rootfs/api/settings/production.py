@@ -302,8 +302,8 @@ LDAP_SUPERUSER_GROUP = os.environ.get('LDAP_SUPERUSER_GROUP', '')
 # https://pythonhosted.org/django-auth-ldap/logging.html
 
 if LDAP_ENDPOINT:
-    AUTHENTICATION_BACKENDS = (
-                                  "django_auth_ldap.backend.LDAPBackend",) + AUTHENTICATION_BACKENDS  # noqa
+    AUTHENTICATION_BACKENDS = ("django_auth_ldap.backend.LDAPBackend",) + \
+                              AUTHENTICATION_BACKENDS
     AUTH_LDAP_SERVER_URI = LDAP_ENDPOINT
     AUTH_LDAP_BIND_DN = LDAP_BIND_DN
     AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
