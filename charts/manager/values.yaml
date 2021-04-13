@@ -28,6 +28,15 @@ admin_username: "admin"
 admin_password: "admin"
 admin_email: "admin@email.com"
 
+oauth:
+  drycc:
+    enabled: true
+    clientID: clientId
+    clientSecret: clientSecret
+    scopes: profile
+    auth_url: http://p.uucin.com/oauth/authorize/
+    token_url: http://p.uucin.com/oauth/token/
+    api_url: http://p.uucin.com/users/
 
 global:
   # Admin email, used for each component to send email to administrator

@@ -345,13 +345,13 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
 
 OAUTH_ENABLE = bool(os.environ.get('OAUTH_ENABLE', True))
 if OAUTH_ENABLE:
-    LOGIN_REDIRECT_URL = '/healthz'
-    SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = 'http://192.168.6.50:8003/oauth/authorize/'
-    SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = 'http://192.168.6.50:8003/oauth/access_token/'
-    SOCIAL_AUTH_DRYCC_ACCESS_API_URL = 'http://192.168.6.50:8003/users/'
+    LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
+    SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = os.environ.get('SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL', 'http://p.uucin.com/oauth/authorize/')
+    SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/token/')
+    SOCIAL_AUTH_DRYCC_ACCESS_API_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/users/')
+    SOCIAL_AUTH_DRYCC_KEY = os.environ.get('SOCIAL_AUTH_DRYCC_KEY', 'B6yQ4tW9wgR10blrkl9Vd5l371lUhCG98SMrzfwS')
+    SOCIAL_AUTH_DRYCC_SECRET = os.environ.get('SOCIAL_AUTH_DRYCC_SECRET', 'OYzST0cTHiNKxwbjbxRGiHIpxyuT445yJGxXZPPEPSeW9PSo6xIo0R4CgsjiRzYh')
     SOCIAL_AUTH_POSTGRES_JSONFIELD = True
-    SOCIAL_AUTH_DRYCC_KEY = 't6gOJOQFzz5t5iYufjzzh6NczOMSx5RcSpQL7t29'
-    SOCIAL_AUTH_DRYCC_SECRET = 'ca1IyS0ur4bahVLnFRPX3dsOWN2tmgYoN8i4YAq2ZFp9RH8cjTG17mOBxwEZNH1J'
     SOCIAL_AUTH_PIPELINE = (
         'social_core.pipeline.social_auth.social_details',
         'social_core.pipeline.social_auth.social_uid',
