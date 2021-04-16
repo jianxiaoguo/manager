@@ -1,11 +1,11 @@
 from django.conf import settings
-from urllib.parse import urlencode
 
 from social_core.backends.oauth import BaseOAuth2
+from social_core.backends.open_id_connect import OpenIdConnectAuth
 
 
 class DryccOAuth(BaseOAuth2):
-    """GitHub OAuth authentication backend"""
+    """Drycc OAuth authentication backend"""
     name = 'drycc'
     AUTHORIZATION_URL = settings.SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL
     ACCESS_TOKEN_URL = settings.SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL
@@ -17,6 +17,7 @@ class DryccOAuth(BaseOAuth2):
         ('refresh_token', 'refresh_token'),
         ('expires_in', 'expires_in'),
         ('token_type', 'token_type'),
+        ('id_token', 'id_token'),
         ('scope', 'scope'),
     ]
 
@@ -42,3 +43,29 @@ class DryccOAuth(BaseOAuth2):
     def get_user_id(self, details, response):
         """Use user account id as unique id"""
         return response.get('id')
+
+
+class DryccOIDC(OpenIdConnectAuth):
+    """Drycc Openid Connect authentication backend"""
+    name = 'drycc'
+    AUTHORIZATION_URL = settings.SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL
+    ACCESS_TOKEN_URL = settings.SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL
+    USERINFO_URL = settings.SOCIAL_AUTH_DRYCC_USERINFO_URL
+    JWKS_URI = settings.SOCIAL_AUTH_DRYCC_JWKS_URI
+    OIDC_ENDPOINT = settings.SOCIAL_AUTH_DRYCC_OIDC_ENDPOINT
+    DEFAULT_SCOPE = ['openid']
+    EXTRA_DATA = [
+        ('id', 'id'),
+        ('access_token', 'access_token'),
+        ('refresh_token', 'refresh_token'),
+        ('expires_in', 'expires_in'),
+        ('token_type', 'token_type'),
+        ('id_token', 'id_token'),
+        ('scope', 'scope'),
+    ]
+
+    from social_core.utils import cache
+    @cache(ttl=86400)
+    def oidc_config(self):
+        return self.get_json(self.OIDC_ENDPOINT +
+                             '/.well-known/openid-configuration/')

@@ -345,10 +345,35 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
 
 OAUTH_ENABLE = bool(os.environ.get('OAUTH_ENABLE', True))
 if OAUTH_ENABLE:
+    # LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
+    # SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = os.environ.get('SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL', 'http://p.uucin.com/oauth/authorize/')
+    # SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/token/')
+    # SOCIAL_AUTH_DRYCC_ACCESS_API_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/users/')
+    # SOCIAL_AUTH_DRYCC_KEY = os.environ.get('SOCIAL_AUTH_DRYCC_KEY', 'B6yQ4tW9wgR10blrkl9Vd5l371lUhCG98SMrzfwS')
+    # SOCIAL_AUTH_DRYCC_SECRET = os.environ.get('SOCIAL_AUTH_DRYCC_SECRET', 'OYzST0cTHiNKxwbjbxRGiHIpxyuT445yJGxXZPPEPSeW9PSo6xIo0R4CgsjiRzYh')
+    # SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+    # SOCIAL_AUTH_PIPELINE = (
+    #     'social_core.pipeline.social_auth.social_details',
+    #     'social_core.pipeline.social_auth.social_uid',
+    #     'social_core.pipeline.social_auth.social_user',
+    #     'social_core.pipeline.user.get_username',
+    #     'social_core.pipeline.social_auth.associate_by_email',
+    #     'social_core.pipeline.user.create_user',
+    #     'api.pipeline.update_user',
+    #     'social_core.pipeline.social_auth.associate_user',
+    #     'social_core.pipeline.social_auth.load_extra_data',
+    #     'social_core.pipeline.user.user_details',
+    # )
+    # AUTHENTICATION_BACKENDS = ("api.backend.DryccOAuth",) + \
+    #     AUTHENTICATION_BACKENDS
+
     LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
     SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = os.environ.get('SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL', 'http://p.uucin.com/oauth/authorize/')
     SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/token/')
     SOCIAL_AUTH_DRYCC_ACCESS_API_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/users/')
+    SOCIAL_AUTH_DRYCC_USERINFO_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/userinfo/')
+    SOCIAL_AUTH_DRYCC_JWKS_URI = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/oauth/.well-known/jwks.json')
+    SOCIAL_AUTH_DRYCC_OIDC_ENDPOINT = os.environ.get('SOCIAL_AUTH_DRYCC_OIDC_ENDPOINT', 'http://p.uucin.com/oauth')
     SOCIAL_AUTH_DRYCC_KEY = os.environ.get('SOCIAL_AUTH_DRYCC_KEY', 'B6yQ4tW9wgR10blrkl9Vd5l371lUhCG98SMrzfwS')
     SOCIAL_AUTH_DRYCC_SECRET = os.environ.get('SOCIAL_AUTH_DRYCC_SECRET', 'OYzST0cTHiNKxwbjbxRGiHIpxyuT445yJGxXZPPEPSeW9PSo6xIo0R4CgsjiRzYh')
     SOCIAL_AUTH_POSTGRES_JSONFIELD = True
@@ -364,5 +389,5 @@ if OAUTH_ENABLE:
         'social_core.pipeline.social_auth.load_extra_data',
         'social_core.pipeline.user.user_details',
     )
-    AUTHENTICATION_BACKENDS = ("api.backend.DryccOAuth",) + \
+    AUTHENTICATION_BACKENDS = ("api.backend.DryccOIDC",) + \
         AUTHENTICATION_BACKENDS
