@@ -4,9 +4,7 @@ from django.db.models import Q, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
-from oauth2_provider.contrib.rest_framework import TokenHasScope
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api import models, serializers
@@ -45,24 +43,6 @@ class LivenessCheckView(View):
         return HttpResponse("OK")
 
     head = get
-
-
-class UserDetailView(NormalUserViewSet):
-    serializer_class = serializers.UserSerializer
-    permission_classes = [IsAuthenticated, TokenHasScope]
-    required_scopes = ['profile']
-
-    def get_object(self):
-        return self.request.user
-
-
-class UserEmailView(NormalUserViewSet):
-    serializer_class = serializers.UserEmailSerializer
-    permission_classes = [IsAuthenticated, TokenHasScope]
-    required_scopes = ['profile']
-
-    def get_object(self):
-        return self.request.user
 
 
 # drycc manager request
@@ -184,8 +164,8 @@ class ClusterProxyViewSet(NormalUserViewSet):
 
     def list(self, request, *args, **kwargs):
         # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user__social_auth.filter(provider='drycc').last().\
-            extra_data.get('access_token')
+        token = request.user__social_auth.filter(provider='drycc').last(). \
+            extra_data.get('id_token')
         cluster = self.get_cluster()
         wfp = WorkflowProxy(cluster, request.user.username, token).get(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
@@ -197,8 +177,8 @@ class ClusterProxyViewSet(NormalUserViewSet):
 
     def post(self, request, *args, **kwargs):
         # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user__social_auth.filter(provider='drycc').last().\
-            extra_data.get('access_token')
+        token = request.user__social_auth.filter(provider='drycc').last(). \
+            extra_data.get('id_token')
         cluster = self.get_cluster()
         wfp = WorkflowProxy(cluster, request.user.username, token).post(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),

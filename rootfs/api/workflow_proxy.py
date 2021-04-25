@@ -14,7 +14,7 @@ def get_session(cluster: Cluster, username: str,
     session = requests.Session()
     session.headers = {
         'Content-Type': 'application/json',
-        'User-Agent': user_agent('drycc manager ', drycc_version)
+        'User-Agent': user_agent('Drycc Manager ', drycc_version)
     }
     if settings.LDAP_ENDPOINT:
         token = cache.get('drycc_controller_{}'.format(username))
@@ -36,7 +36,7 @@ def user_token(cluster: Cluster, username: str) -> str:
             headers={
                 'Authorization': 'token {}'.format(admin_token(cluster)),
                 'Content-Type': 'application/json',
-                'User-Agent': user_agent('drycc manager ', drycc_version)
+                'User-Agent': user_agent('Drycc Manager ', drycc_version)
             },
             timeout=10)
         if resp.status_code == 200 and resp.json().get('token'):

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+import sys
 import os.path
 import tempfile
 import ldap
@@ -17,6 +18,7 @@ import dj_database_url
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps_extra_test'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
@@ -155,7 +157,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'api.authentication.DryccOIDCAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -367,7 +369,7 @@ if OAUTH_ENABLE:
     # AUTHENTICATION_BACKENDS = ("api.backend.DryccOAuth",) + \
     #     AUTHENTICATION_BACKENDS
 
-    LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
+    LOGIN_REDIRECT_URL = 'http://d.uucin.com/admin/'
     SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = os.environ.get('SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL', 'http://p.uucin.com/oauth/authorize/')
     SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/token/')
     SOCIAL_AUTH_DRYCC_ACCESS_API_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/users/')
@@ -391,3 +393,5 @@ if OAUTH_ENABLE:
     )
     AUTHENTICATION_BACKENDS = ("api.backend.DryccOIDC",) + \
         AUTHENTICATION_BACKENDS
+
+    OAUTH_CACHE_USER_TIME = int(os.environ.get('OAUTH_CACHE_USER_TIME', 30 * 60))

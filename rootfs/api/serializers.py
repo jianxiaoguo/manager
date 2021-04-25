@@ -5,6 +5,7 @@ import logging
 import json
 
 from django.contrib.auth.models import User
+from django.utils import timezone
 from rest_framework import serializers
 
 from api import models
@@ -46,6 +47,28 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', "first_name", "last_name")
 
+    @staticmethod
+    def update_or_create(data):
+        now = timezone.now()
+        user, created = User.objects.update_or_create(
+            username=data['username'],
+            defaults={
+                'email': data['email'],
+                'first_name': data.get('first_name', ''),
+                'last_name': data.get('first_name', ''),
+                'last_login': now})
+        if created:
+            user.date_joined = now
+            user.is_active = True
+        if data.get('password'):
+            user.set_password(data['password'])
+        elif created and not data.get('password'):
+            user.set_unusable_password()
+        # Make the first signup an admin / superuser
+        if not User.objects.filter(is_superuser=True).exists():
+            user.is_superuser = user.is_staff = True
+        user.save()
+        return user
 
 class UserEmailSerializer(serializers.ModelSerializer):
     class Meta:
