@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication
 from rest_framework.authentication import TokenAuthentication, \
-    get_authorization_header
+    SessionAuthentication, get_authorization_header
 from rest_framework import exceptions
 
 from api.oauth import OAuthManager
@@ -35,12 +35,12 @@ class AnonymousOrAuthenticatedAuthentication(authentication.BaseAuthentication):
             return AnonymousUser(), None
 
 
-class DryccOIDCAuthentication(TokenAuthentication):
+class DryccOIDCAuthentication(SessionAuthentication):
     def authenticate(self, request):
         if 'Drycc' in request.META.get('HTTP_USER_AGENT', ''):
             auth = get_authorization_header(request).split()
 
-            if not auth or auth[0].lower() != self.keyword.lower().encode():
+            if not auth or auth[0].lower() != "token":
                 return None
 
             if len(auth) == 1:

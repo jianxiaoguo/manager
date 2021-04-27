@@ -12,13 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import sys
 import os.path
 import tempfile
-import ldap
 import dj_database_url
 
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps_extra_test'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
@@ -120,6 +117,7 @@ LOGIN_URL = '/accounts/login/'
 
 # Security settings
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = (
     'content-type',
     'accept',
@@ -138,6 +136,8 @@ X_FRAME_OPTIONS = 'DENY'
 # CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 # SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_DOMAIN = os.environ.get('SESSION_COOKIE_DOMAIN', None)
+SESSION_COOKIE_SAMESITE = os.environ.get('SESSION_COOKIE_SAMESITE', None)
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 
@@ -284,62 +284,6 @@ CACHES = {
     }
 }
 
-# LDAP settings taken from environment variables.
-LDAP_ENDPOINT = os.environ.get('LDAP_ENDPOINT', '')
-LDAP_BIND_DN = os.environ.get('LDAP_BIND_DN', '')
-LDAP_BIND_PASSWORD = os.environ.get('LDAP_BIND_PASSWORD', '')
-LDAP_USER_BASEDN = os.environ.get('LDAP_USER_BASEDN', '')
-LDAP_USER_FILTER = os.environ.get('LDAP_USER_FILTER', 'username')
-LDAP_GROUP_BASEDN = os.environ.get('LDAP_GROUP_BASEDN', '')
-LDAP_GROUP_FILTER = os.environ.get('LDAP_GROUP_FILTER', '')
-LDAP_ACTIVE_GROUP = os.environ.get('LDAP_ACTIVE_GROUP', '')
-LDAP_STAFF_GROUP = os.environ.get('LDAP_STAFF_GROUP', '')
-LDAP_SUPERUSER_GROUP = os.environ.get('LDAP_SUPERUSER_GROUP', '')
-
-# Django LDAP backend configuration.
-# See https://pythonhosted.org/django-auth-ldap/reference.html
-# for variables' details.
-# In order to debug LDAP configuration it is possible to enable
-# verbose logging from auth-ldap plugin:
-# https://pythonhosted.org/django-auth-ldap/logging.html
-
-if LDAP_ENDPOINT:
-    AUTHENTICATION_BACKENDS = ("django_auth_ldap.backend.LDAPBackend",) + \
-                              AUTHENTICATION_BACKENDS
-    AUTH_LDAP_SERVER_URI = LDAP_ENDPOINT
-    AUTH_LDAP_BIND_DN = LDAP_BIND_DN
-    AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
-    AUTH_LDAP_USER_SEARCH = LDAPSearch(
-        base_dn=LDAP_USER_BASEDN,
-        scope=ldap.SCOPE_SUBTREE,
-        filterstr="%s" % LDAP_USER_FILTER
-    )
-    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-        base_dn=LDAP_GROUP_BASEDN,
-        scope=ldap.SCOPE_SUBTREE,
-        filterstr="%s" % LDAP_GROUP_FILTER
-    )
-    AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-        'is_active': LDAP_ACTIVE_GROUP,
-        'is_staff': LDAP_STAFF_GROUP,
-        'is_superuser': LDAP_SUPERUSER_GROUP,
-    }
-    AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
-    AUTH_LDAP_USER_ATTR_MAP = {
-        "first_name": "givenName",
-        "last_name": "sn",
-        "email": "mail",
-        "username": LDAP_USER_FILTER,
-    }
-    AUTH_LDAP_GLOBAL_OPTIONS = {
-        ldap.OPT_X_TLS_REQUIRE_CERT: False,
-        ldap.OPT_REFERRALS: False
-    }
-    AUTH_LDAP_ALWAYS_UPDATE_USER = True
-    AUTH_LDAP_MIRROR_GROUPS = True
-    AUTH_LDAP_FIND_GROUP_PERMS = True
-    AUTH_LDAP_CACHE_GROUPS = False
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
@@ -369,7 +313,7 @@ if OAUTH_ENABLE:
     # AUTHENTICATION_BACKENDS = ("api.backend.DryccOAuth",) + \
     #     AUTHENTICATION_BACKENDS
 
-    LOGIN_REDIRECT_URL = 'http://d.uucin.com/admin/'
+    LOGIN_REDIRECT_URL = 'http://mydrycc.uucin.com'
     SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL = os.environ.get('SOCIAL_AUTH_DRYCC_AUTHORIZATION_URL', 'http://p.uucin.com/oauth/authorize/')
     SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_TOKEN_URL', 'http://p.uucin.com/oauth/token/')
     SOCIAL_AUTH_DRYCC_ACCESS_API_URL = os.environ.get('SOCIAL_AUTH_DRYCC_ACCESS_API_URL', 'http://p.uucin.com/users/')
