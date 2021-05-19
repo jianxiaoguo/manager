@@ -33,6 +33,7 @@ class ServiceUnavailable(APIException):
 
 def custom_exception_handler(exc, context):
     # give more context on the error since DRF masks it as Not Found
+    print(exc)  # todo debug
     if isinstance(exc, Http404):
         set_rollback()
         return Response(str(exc), status=status.HTTP_404_NOT_FOUND)

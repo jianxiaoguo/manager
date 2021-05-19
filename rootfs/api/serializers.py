@@ -81,14 +81,11 @@ class ClustersSerializer(serializers.ModelSerializer):
 
     name = serializers.CharField(max_length=64)
     ingress = serializers.URLField(max_length=200)
-    admin = serializers.CharField(max_length=64)
-    passwd = serializers.CharField(max_length=128)
 
     class Meta:
         """Metadata options for a :class:`AppSerializer`."""
         model = models.Cluster
-        fields = ['uuid', 'name', 'ingress', 'admin', 'passwd',
-                  'created', 'updated']
+        fields = ['uuid', 'name', 'ingress', 'created', 'updated']
 
 
 class BillsSerializer(serializers.ModelSerializer):

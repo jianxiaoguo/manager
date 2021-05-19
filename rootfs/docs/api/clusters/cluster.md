@@ -13,8 +13,6 @@ POST /clusters/
 name|type|required
 :--|:--|:--
 name|string|F|
-admin|string|F|
-passwd|string|F|
 ingress|string|F|
 
 #### 返回结果

@@ -31,4 +31,5 @@ class DryccViewSet(viewsets.ModelViewSet):
     To use it, at minimum you'll need to provide the `serializer_class` attribute and
     the `model` attribute shortcut.
     """
-    permission_classes = [permissions.IsDrycc]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = [permissions.IsDrycc]

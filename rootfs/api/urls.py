@@ -14,10 +14,10 @@ urlpatterns = [
 
     url(r'^clusters/?$',
         views.ClustersViewSet.as_view({'get': 'list'})),
-    url(r'^clusters/(?P<cluster_id>[-_\w]+)?$',
+    url(r'^clusters/(?P<name>[-_\w]+)?$',
         views.ClustersViewSet.as_view({'get': 'retrieve'})),
 
-    url(r'^clusters/(?P<cluster_id>[-_\w]+)/(?P<proxy_url>.+)/?$',
+    url(r'^clusters/(?P<name>[-_\w]+)/(?P<proxy_url>.+)/?$',
         views.ClusterProxyViewSet.as_view({'get': 'list',
                                            'post': 'post'})),
 

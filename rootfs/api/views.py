@@ -159,28 +159,32 @@ class ClusterProxyViewSet(NormalUserViewSet):
 
     def get_cluster(self):
         cluster = get_object_or_404(models.Cluster,
-                                    pk=self.kwargs['cluster_id'])
+                                    name=self.kwargs['name'])
         return cluster
 
     def list(self, request, *args, **kwargs):
         # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user__social_auth.filter(provider='drycc').last(). \
+        token = request.user.social_auth.filter(provider='drycc').last(). \
             extra_data.get('id_token')
         cluster = self.get_cluster()
-        wfp = WorkflowProxy(cluster, request.user.username, token).get(
+        wfp = WorkflowProxy(token).get(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
             **request.query_params)
         if wfp.status_code == 200:
             return Response(wfp.json())
+        elif wfp.status_code in [401, 403]:
+            return Response(status=403)
+        elif wfp.status_code == 404:
+            return Response(status=404)
         else:
-            return Response(status=wfp.status_code)
+            return Response(wfp.body, status=wfp.status_code)
 
     def post(self, request, *args, **kwargs):
         # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user__social_auth.filter(provider='drycc').last(). \
+        token = request.user.social_auth.filter(provider='drycc').last(). \
             extra_data.get('id_token')
         cluster = self.get_cluster()
-        wfp = WorkflowProxy(cluster, request.user.username, token).post(
+        wfp = WorkflowProxy(token).post(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
             **request.data)
         if wfp.status_code in [200, 201]:
