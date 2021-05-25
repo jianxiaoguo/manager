@@ -85,7 +85,7 @@ class ClustersSerializer(serializers.ModelSerializer):
     class Meta:
         """Metadata options for a :class:`AppSerializer`."""
         model = models.Cluster
-        fields = ['uuid', 'name', 'ingress', 'created', 'updated']
+        fields = ['name', 'ingress', 'created', 'updated']
 
 
 class BillsSerializer(serializers.ModelSerializer):
@@ -111,6 +111,7 @@ class BillsProductSerializer(serializers.Serializer):
 class FundingsSerializer(serializers.ModelSerializer):
     """Serialize admin status for a Funding model."""
     owner = serializers.ReadOnlyField(source='owner.username')
+    trade_type = serializers.IntegerField(required=False)
 
     class Meta:
         model = models.Funding

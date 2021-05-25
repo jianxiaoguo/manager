@@ -25,6 +25,8 @@ urlpatterns = [
         views.BillsViewSet.as_view({'get': 'list'})),
     url(r'^bills_by_product/?$',
         views.BillsProductViewSet.as_view({'get': 'list'})),
+    url(r'^bills_by_app/?$',
+        views.BillsAppViewSet.as_view({'get': 'list'})),
 
     url(r'^fundings/?$',
         views.FundingsViewSet.as_view({'get': 'list'})),

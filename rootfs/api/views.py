@@ -128,6 +128,27 @@ class BillsProductViewSet(NormalUserViewSet):
             annotate(sum_total_price=Sum('total_price'))
 
 
+class BillsAppViewSet(NormalUserViewSet):
+    model = models.Bill
+    serializer_class = serializers.BillsProductSerializer
+
+    def get_queryset(self, **kwargs):
+        serializer = serializers.BillsProductSerializer(
+            data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        serializerlist = serializers.ListSerializer(
+            data=self.request.query_params)
+        serializerlist.is_valid(raise_exception=True)
+        q = Q(owner=self.request.user)
+        if serializerlist.validated_data.get('section'):
+            q &= Q(created__range=serializerlist.validated_data.get('section'))
+        return self.model.objects. \
+            filter(q, **serializer.validated_data). \
+            order_by('cluster_id', 'app_id'). \
+            annotate(sum_total_price=Sum('total_price'))
+
+
 class FundingsViewSet(ListViewSet):
     model = models.Funding
     serializer_class = serializers.FundingsSerializer

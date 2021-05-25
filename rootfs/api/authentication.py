@@ -37,10 +37,11 @@ class AnonymousOrAuthenticatedAuthentication(authentication.BaseAuthentication):
 
 class DryccOIDCAuthentication(SessionAuthentication):
     def authenticate(self, request):
-        if 'Drycc' in request.META.get('HTTP_USER_AGENT', ''):
+        if 'Drycc' in request.META.get('HTTP_USER_AGENT', '') and \
+                "Controller" not in request.META.get('HTTP_USER_AGENT', ''):
             auth = get_authorization_header(request).split()
 
-            if not auth or auth[0].lower() != "token":
+            if not auth or auth[0].lower() != b"token":
                 return None
 
             if len(auth) == 1:
