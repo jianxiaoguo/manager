@@ -85,9 +85,9 @@ class FundingAdmin(admin.ModelAdmin):
 
 class BillAdmin(admin.ModelAdmin):
     list_display = (
-        'uuid', 'owner', 'cluster', 'app_id', 'resource_type', 'price_unit',
-        'price', 'quantity', 'total_price', 'start_time', 'end_time', 'created')
-    list_filter = ('uuid', 'owner', 'resource_type')
+        'uuid', 'owner', 'cluster', 'app_id', 'charge_rule_info',
+        'resource_info', 'total_price', 'start_time', 'end_time', 'created')
+    list_filter = ('uuid', 'cluster', 'owner')
     search_fields = ('uuid', )
 
     def has_add_permission(self, request, obj=None):

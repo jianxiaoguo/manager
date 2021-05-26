@@ -124,7 +124,7 @@ class BillsProductViewSet(NormalUserViewSet):
             q &= Q(created__range=serializerlist.validated_data.get('section'))
         return self.model.objects. \
             filter(q, **serializer.validated_data). \
-            order_by('cluster_id', 'app_id'). \
+            order_by('cluster_id', 'resource_type'). \
             annotate(sum_total_price=Sum('total_price'))
 
 

@@ -39,4 +39,8 @@ class ChargeCalculator(object):
         else:
             raise
         _fee = self.quantity * duration * c[-1]
+        print(f"self.quantity: {self.quantity}")
+        print(f"duration: {duration}")
+        print(f"c[-1]: {c[-1]}")
+        print(f"_fee: {_fee}")
         return _fee

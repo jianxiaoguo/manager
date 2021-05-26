@@ -91,12 +91,13 @@ class ClustersSerializer(serializers.ModelSerializer):
 class BillsSerializer(serializers.ModelSerializer):
     """Serialize admin status for a Bill model."""
     owner = serializers.ReadOnlyField(source='owner.username')
+    resource_type = serializers.IntegerField(required=False)
 
     class Meta:
         model = models.Bill
         fields = '__all__'
-        read_only_fields = ['owner', 'cluster', 'app_id', 'resource_type',
-                            'price_unit', 'price', 'quantity', 'total_price',
+        read_only_fields = ['owner', 'cluster', 'app_id', 'charge_rule_info',
+                            'resource_info', 'total_price',
                             'start_time', 'end_time']
 
 

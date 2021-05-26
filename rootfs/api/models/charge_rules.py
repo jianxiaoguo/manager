@@ -20,6 +20,14 @@ class ChargeRule(UuidAuditedModel):
     def __str__(self):
         return self.name
 
+    def info(self):
+        return {
+            'name': self.name,
+            'resource_type': self.resource_type,
+            'price_unit': self.price_unit,
+            'price': str(self.price),
+        }
+
     @classmethod
     def query_rules(cls, resource_type):
         """
