@@ -116,16 +116,33 @@ ANONYMOUS_USER_ID = -1
 LOGIN_URL = '/accounts/login/'
 
 # Security settings
-CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
 CORS_ALLOW_HEADERS = (
+    'Access-Control-Allow-Origin',
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
     'content-type',
     'accept',
     'origin',
     'Authorization',
     'Host',
+    'user-agent',
+    'X-CSRFToken',
+    'DRYCC_API_VERSION',
+    'DRYCC_PLATFORM_VERSION',
 )
-
 CORS_EXPOSE_HEADERS = (
     'DRYCC_API_VERSION',
     'DRYCC_PLATFORM_VERSION',
@@ -134,7 +151,8 @@ CORS_EXPOSE_HEADERS = (
 X_FRAME_OPTIONS = 'DENY'
 # todo debug oauth2
 # CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = None
 # SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_DOMAIN = os.environ.get('SESSION_COOKIE_DOMAIN', None)
 SESSION_COOKIE_SAMESITE = os.environ.get('SESSION_COOKIE_SAMESITE', None)

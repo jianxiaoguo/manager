@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 from requests_toolbelt import user_agent
@@ -24,7 +25,7 @@ class WorkflowProxy(object):
         return self.session.get(url, params=kwargs)
 
     def post(self, url: str, **kwargs) -> requests.Response:
-        return self.session.post(url, data=kwargs)
+        return self.session.post(url, data=json.dumps(kwargs))
 
 # def user_token(cluster: Cluster, username: str) -> str:
 #     token = ''

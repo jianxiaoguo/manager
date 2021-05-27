@@ -11,7 +11,10 @@ urlpatterns = [
     url(r'accounts/', include('django.contrib.auth.urls')),
 
     url('', include('social_django.urls', namespace='social')),
-
+    url(r'^auth/csrf/?$',
+        views.UserCsrfViewSet.as_view({'get': 'get'})),
+    url(r'^auth/whoami/?$',
+        views.UserManagementViewSet.as_view({'get': 'retrieve'})),
     url(r'^clusters/?$',
         views.ClustersViewSet.as_view({'get': 'list'})),
     url(r'^clusters/(?P<name>[-_\w]+)?$',

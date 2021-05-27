@@ -1,5 +1,6 @@
 import logging
 
+import django
 from django.db.models import Q, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -75,6 +76,25 @@ class MeasurementsResourcesViewSet(MeasurementsViewSet):
 
 
 # UI request
+class UserCsrfViewSet(NormalUserViewSet):
+    def get(self, request, *args, **kwargs):
+        return Response({'token': request.headers['Cookie'].split('csrftoken=')[-1]})
+        # TODO debug
+        # token = request.headers['Cookie'].split('csrftoken=')[-1]
+        # res = Response({'token': token})
+        # res.set_cookie('csrftoken', token, samesite=None, secure=True)
+        # return res
+
+
+
+class UserManagementViewSet(NormalUserViewSet):
+    serializer_class = serializers.UserSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.get_serializer(request.user, many=False)
+        return Response(serializer.data)
+
+
 class ClustersViewSet(NormalUserViewSet):
     model = models.Cluster
     serializer_class = serializers.ClustersSerializer
