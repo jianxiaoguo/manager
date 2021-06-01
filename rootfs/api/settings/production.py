@@ -353,6 +353,13 @@ if OAUTH_ENABLE:
         'social_core.pipeline.social_auth.load_extra_data',
         'social_core.pipeline.user.user_details',
     )
+    SOCIAL_AUTH_DISCONNECT_PIPELINE = (
+        # 'social.pipeline.disconnect.allowed_to_disconnect',
+        'social_core.pipeline.disconnect.get_entries',
+        'social_core.pipeline.disconnect.revoke_tokens',
+        'social_core.pipeline.disconnect.disconnect'
+    )
+
     AUTHENTICATION_BACKENDS = ("api.backend.DryccOIDC",) + \
         AUTHENTICATION_BACKENDS
 

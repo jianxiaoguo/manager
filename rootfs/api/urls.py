@@ -21,8 +21,9 @@ urlpatterns = [
         views.ClustersViewSet.as_view({'get': 'retrieve'})),
 
     url(r'^clusters/(?P<name>[-_\w]+)/(?P<proxy_url>.+)/?$',
-        views.ClusterProxyViewSet.as_view({'get': 'list',
-                                           'post': 'post'})),
+        views.ClusterProxyViewSet.as_view({
+            'get': 'list', 'delete': 'delete', 'post': 'post'
+        })),
 
     url(r'^bills/?$',
         views.BillsViewSet.as_view({'get': 'list'})),

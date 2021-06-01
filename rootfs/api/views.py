@@ -78,8 +78,11 @@ class MeasurementsResourcesViewSet(MeasurementsViewSet):
 # UI request
 class UserCsrfViewSet(NormalUserViewSet):
     def get(self, request, *args, **kwargs):
-        return Response({'token': request.headers['Cookie'].split('csrftoken=')[-1]})
+        import re
+        token = re.findall(r'csrftoken=(.*?);', request.headers['Cookie']+';')[0]
+        return Response({'token': token})
         # TODO debug
+        # token = [_ for _ in request.headers['Cookie'].split('; ') if 'csrftoken' in _][0].split('=')[-1]
         # token = request.headers['Cookie'].split('csrftoken=')[-1]
         # res = Response({'token': token})
         # res.set_cookie('csrftoken', token, samesite=None, secure=True)
@@ -204,31 +207,61 @@ class ClusterProxyViewSet(NormalUserViewSet):
         return cluster
 
     def list(self, request, *args, **kwargs):
-        # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user.social_auth.filter(provider='drycc').last(). \
-            extra_data.get('id_token')
+        try:
+            token = request.user.social_auth.filter(provider='drycc').last(). \
+                extra_data.get('id_token')
+        except AttributeError:
+            return Response(status=401)
         cluster = self.get_cluster()
         wfp = WorkflowProxy(token).get(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
             **request.query_params)
         if wfp.status_code == 200:
-            return Response(wfp.json())
+            res = wfp.json()
+            if not isinstance(res, dict):
+                return Response(res)
+            if res.get('previous'):
+                res['previous'] = request.build_absolute_uri().split('?')[0] + \
+                                  '?' + res['previous'].split('?')[1]
+            if res.get('next'):
+                res['next'] = request.build_absolute_uri().split('?')[0] + '?' \
+                              + res['next'].split('?')[1]
+            return Response(res)
         elif wfp.status_code in [401, 403]:
             return Response(status=403)
         elif wfp.status_code == 404:
             return Response(status=404)
         else:
-            return Response(wfp.body, status=wfp.status_code)
+            return Response(wfp.content, status=wfp.status_code)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            token = request.user.social_auth.filter(provider='drycc').last(). \
+                extra_data.get('id_token')
+        except AttributeError:
+            return Response(status=401)
+        cluster = self.get_cluster()
+        wfp = WorkflowProxy(token).delete(
+            url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
+            **request.data)
+        if wfp.status_code == 204:
+            return Response(status=wfp.status_code)
+        else:
+            return Response(data=wfp.content, status=wfp.status_code)
 
     def post(self, request, *args, **kwargs):
-        # token = request.auth.token if hasattr(request, 'auth') else ''
-        token = request.user.social_auth.filter(provider='drycc').last(). \
-            extra_data.get('id_token')
+        try:
+            token = request.user.social_auth.filter(provider='drycc').last(). \
+                extra_data.get('id_token')
+        except AttributeError:
+            return Response(status=401)
         cluster = self.get_cluster()
         wfp = WorkflowProxy(token).post(
             url=cluster.ingress + '/v2/' + kwargs.get('proxy_url'),
             **request.data)
-        if wfp.status_code in [200, 201]:
+        if wfp.status_code in [200]:
             return Response(wfp.json(), status=wfp.status_code)
+        elif wfp.status_code in [201, 204]:
+            return Response(status=wfp.status_code)
         else:
             return Response(data=wfp.content, status=wfp.status_code)
