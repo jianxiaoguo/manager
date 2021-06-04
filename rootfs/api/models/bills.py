@@ -29,3 +29,6 @@ class Bill(UuidAuditedModel):
 
     def __str__(self):
         return str(self.uuid)
+
+    class Meta:
+        ordering = ['-created']

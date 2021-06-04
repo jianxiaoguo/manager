@@ -19,3 +19,6 @@ class Funding(UuidAuditedModel):
     trade_type = models.IntegerField(choices=trade_types, db_index=True)
     trade_credit = models.DecimalField(max_digits=12, decimal_places=2)
     remark = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created']

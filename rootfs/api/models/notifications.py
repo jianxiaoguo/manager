@@ -14,3 +14,6 @@ class Message(UuidAuditedModel):
     sender = models.CharField(max_length=32)
     body = models.CharField(max_length=63, db_index=True)
     is_deal = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created']

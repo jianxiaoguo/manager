@@ -20,6 +20,9 @@ class ChargeRule(UuidAuditedModel):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['-created']
+
     def info(self):
         return {
             'name': self.name,
