@@ -145,9 +145,10 @@ class BillsProductViewSet(NormalUserViewSet):
         q = Q(owner=self.request.user)
         if serializerlist.validated_data.get('section'):
             q &= Q(created__range=serializerlist.validated_data.get('section'))
-        return self.model.objects. \
-            filter(q, **serializer.validated_data). \
-            order_by('cluster_id', 'resource_type'). \
+        return self.model.objects.filter(q, **serializer.validated_data).\
+            order_by('resource_type', 'created').\
+            extra(select={'created':"TO_CHAR(api_bill.created, 'YYYY-MM')"}).\
+            values('resource_type', 'created').\
             annotate(sum_total_price=Sum('total_price'))
 
 
@@ -166,9 +167,10 @@ class BillsAppViewSet(NormalUserViewSet):
         q = Q(owner=self.request.user)
         if serializerlist.validated_data.get('section'):
             q &= Q(created__range=serializerlist.validated_data.get('section'))
-        return self.model.objects. \
-            filter(q, **serializer.validated_data). \
-            order_by('cluster_id', 'app_id'). \
+        return self.model.objects.filter(q, **serializer.validated_data).\
+            order_by('cluster__name', 'app_id', 'created').\
+            extra(select={'created':"TO_CHAR(api_bill.created, 'YYYY-MM')"}).\
+            values('created','cluster__name', 'app_id').\
             annotate(sum_total_price=Sum('total_price'))
 
 

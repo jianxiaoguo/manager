@@ -9,6 +9,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from api import models
+from api.utils import timestamp2datetime
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,7 @@ class JSONFieldSerializer(serializers.JSONField):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', "first_name", "last_name")
+        fields = ('username', 'email', "first_name", "last_name", "is_superuser")
 
     @staticmethod
     def update_or_create(data):
@@ -92,6 +93,7 @@ class BillsSerializer(serializers.ModelSerializer):
     """Serialize admin status for a Bill model."""
     owner = serializers.ReadOnlyField(source='owner.username')
     resource_type = serializers.IntegerField(required=False)
+    cluster = serializers.StringRelatedField()
 
     class Meta:
         model = models.Bill
@@ -102,9 +104,10 @@ class BillsSerializer(serializers.ModelSerializer):
 
 
 class BillsProductSerializer(serializers.Serializer):
-    cluster_id = serializers.ReadOnlyField()
+    cluster_name = serializers.ReadOnlyField(source ='cluster__name')
     owner = serializers.ReadOnlyField(source='owner.username')
     app_id = serializers.ReadOnlyField()
+    created = serializers.ReadOnlyField()
     resource_type = serializers.ReadOnlyField()
     sum_total_price = serializers.ReadOnlyField()
 
@@ -153,8 +156,8 @@ class ListSerializer(serializers.Serializer):
         #             1] else None  # noqa
         #     except ValueError as e:
         #         raise serializers.ValidationError(e)
-        return [datetime.datetime.strptime(field[0], '%Y-%m-%d %H:%M:%S'),
-                datetime.datetime.strptime(field[1], '%Y-%m-%d %H:%M:%S')]
+        return [timestamp2datetime(float(field[0])),
+                timestamp2datetime(float(field[1]))]
 
 
 class ConfigSerializer(serializers.ModelSerializer):
