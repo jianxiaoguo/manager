@@ -46,6 +46,6 @@ function on_exit() {
 trap on_exit TERM
 
 echo ""
-echo drycc-manage running...
+echo drycc-manager running...
 
 wait

@@ -27,7 +27,7 @@ env:
   valueFrom:
     secretKeyRef:
       name: database-creds
-      key: url
+      key: manager_db_url
 {{- else if eq .Values.global.database_location "on-cluster"  }}
 - name: DRYCC_DATABASE_USER
   valueFrom:
@@ -39,8 +39,13 @@ env:
     secretKeyRef:
       name: database-creds
       key: password
+- name: DRYCC_DATABASE_NAME
+  valueFrom:
+    secretKeyRef:
+      name: database-creds
+      key: manager_db_name
 - name: DRYCC_DATABASE_URL
-  value: "postgres://$(DRYCC_DATABASE_USER):$(DRYCC_DATABASE_PASSWORD)@$(DRYCC_DATABASE_SERVICE_HOST):$(DRYCC_DATABASE_SERVICE_PORT)/$(DRYCC_DATABASE_USER)"
+  value: "postgres://$(DRYCC_DATABASE_USER):$(DRYCC_DATABASE_PASSWORD)@$(DRYCC_DATABASE_SERVICE_HOST):$(DRYCC_DATABASE_SERVICE_PORT)/$(DRYCC_DATABASE_NAME)"
 {{- end }}
 - name: WORKFLOW_NAMESPACE
   valueFrom:
