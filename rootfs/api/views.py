@@ -229,10 +229,8 @@ class ClusterProxyViewSet(NormalUserViewSet):
                 res['next'] = request.build_absolute_uri().split('?')[0] + '?' \
                               + res['next'].split('?')[1]
             return Response(res)
-        elif wfp.status_code in [401, 403]:
-            return Response(status=403)
-        elif wfp.status_code == 404:
-            return Response(status=404)
+        elif wfp.status_code in [401, 403, 404]:
+            return Response(status=wfp.status_code)
         else:
             return Response(wfp.content, status=wfp.status_code)
 
