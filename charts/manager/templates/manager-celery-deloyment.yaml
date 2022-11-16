@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drycc-manager-celery
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.imageTag }}
+spec:
+  replicas: {{ .Values.replicas }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: drycc-controller-celery
+  template:
+    metadata:
+      labels:
+        app: drycc-controller-celery
+    spec:
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset.type "key" .Values.podAffinityPreset.key "values" .Values.podAffinityPreset.values ) | nindent 10 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset.type "key" .Values.podAntiAffinityPreset.key "values" .Values.podAntiAffinityPreset.values ) | nindent 10 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values ) | nindent 10 }}
+      serviceAccount: drycc-manager
+      initContainers:
+      - name: drycc-manager-celery-init
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/python-dev:latest
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+        - netcat
+        - -v
+        - -u
+        - $(DRYCC_DATABASE_URL),$(DRYCC_DATABASE_REPLICA_URL),$(DRYCC_RABBITMQ_URL),$(DRYCC_PASSPORT_URL)
+        - -a
+        - $(DRYCC_REDIS_ADDRS),$(DRYCC_MANAGER_SERVICE_HOST):$(DRYCC_MANAGER_SERVICE_PORT)
+        {{- include "manager.envs" . | indent 8 }}
+      containers:
+      - name: drycc-manager-celery-high
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+          - /bin/bash
+          - -c
+          - celery -A api worker -Q priority.high --autoscale=32,1 --loglevel=WARNING
+        {{- include "manager.limits" . | indent 8 }}
+        {{- include "manager.envs" . | indent 8 }}
+      - name: drycc-manager-celery-middle
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+          - /bin/bash
+          - -c
+          - celery -A api worker -Q priority.middle --autoscale=16,1 --loglevel=WARNING
+        {{- include "manager.limits" . | indent 8 }}
+        {{- include "manager.envs" . | indent 8 }}
+      - name: drycc-manager-celery-low
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+          - /bin/bash
+          - -c
+          - celery -A api worker -Q priority.low --autoscale=8,1 --loglevel=WARNING
+        {{- include "manager.limits" . | indent 8 }}
+        {{- include "manager.envs" . | indent 8 }}
+

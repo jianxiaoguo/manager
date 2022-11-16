@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drycc-manager
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.imageTag }}
+spec:
+  replicas: {{ .Values.replicas }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: drycc-manager
+  template:
+    metadata:
+      labels:
+        app: drycc-manager
+    spec:
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset.type "key" .Values.podAffinityPreset.key "values" .Values.podAffinityPreset.values ) | nindent 10 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset.type "key" .Values.podAntiAffinityPreset.key "values" .Values.podAntiAffinityPreset.values ) | nindent 10 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values ) | nindent 10 }}
+      serviceAccount: drycc-manager
+      initContainers:
+      - name: drycc-manager-init
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/python-dev:latest
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+        - netcat
+        - -v
+        - -u
+        - $(DRYCC_DATABASE_URL),$(DRYCC_DATABASE_REPLICA_URL),$(DRYCC_RABBITMQ_URL),$(DRYCC_PASSPORT_URL)
+        - -a
+        - $(DRYCC_REDIS_ADDRS)
+        {{- include "manager.envs" . | indent 8 }}
+      containers:
+        - name: drycc-manager
+          image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+          imagePullPolicy: {{.Values.imagePullPolicy}}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 5
+          ports:
+            - containerPort: 8000
+              name: http
+          {{- include "manager.limits" . | indent 10 }}
+          {{- include "manager.envs" . | indent 10 }}

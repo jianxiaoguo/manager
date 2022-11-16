@@ -1,0 +1,32 @@
+*.py[cod]
+
+# Packages
+.vscode
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+.DS_Store
+
+# coverage reports
+.coverage
+coverage.out
+coverage.xml
+htmlcov/
+
+# python virtual environments for testing
+venv/
+.venv/
+# env
+.env
+
+.idea
+node_modules

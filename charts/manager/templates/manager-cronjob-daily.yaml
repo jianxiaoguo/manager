@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: drycc-manager-cronjob-daily
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.imageTag }}
+spec:
+  timeZone: "Etc/UTC"
+  schedule: "0 1 * * *"
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccount: drycc-manager
+          initContainers:
+          - name: drycc-manager-init
+            image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/python-dev:latest
+            imagePullPolicy: {{.Values.imagePullPolicy}}
+            args:
+            - netcat
+            - -v
+            - -u
+            - $(DRYCC_DATABASE_URL),$(DRYCC_DATABASE_REPLICA_URL),$(DRYCC_RABBITMQ_URL),$(DRYCC_PASSPORT_URL)
+            - -a
+            - $(DRYCC_REDIS_ADDRS)
+            {{- include "manager.envs" . | indent 12 }}
+          containers:
+          - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+            imagePullPolicy: {{.Values.imagePullPolicy}}
+            name: drycc-manager-block-users
+            command:
+              - /bin/bash
+              - -c
+            args:
+              - python /workspace/manage.py block_users
+            {{- include "manager.limits" . | indent 12 }}
+            {{- include "manager.envs" . | indent 12 }}
+          - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+            imagePullPolicy: {{.Values.imagePullPolicy}}
+            name: drycc-manager-generate-bills
+            command:
+              - /bin/bash
+              - -c
+            args:
+              - python /workspace/manage.py generate_bills
+            {{- include "manager.limits" . | indent 12 }}
+            {{- include "manager.envs" . | indent 12 }}
+          - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+            imagePullPolicy: {{.Values.imagePullPolicy}}
+            name: drycc-manager-generate-invoices
+            command:
+              - /bin/bash
+              - -c
+            args:
+              - python /workspace/manage.py generate_invoices
+            {{- include "manager.limits" . | indent 12 }}
+            {{- include "manager.envs" . | indent 12 }}

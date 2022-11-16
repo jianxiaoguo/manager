@@ -1,0 +1,14 @@
+{
+    "title": "Drycc Manager",
+    "plugins": [
+        "theme-opendocs",
+        "-sharing",
+        "-fontsettings",
+        "include",
+        "simpletabs"
+    ],
+    "gitbook": ">=3.0.0",
+    "styles": {
+        "website": "styles/website.css"
+    }
+}

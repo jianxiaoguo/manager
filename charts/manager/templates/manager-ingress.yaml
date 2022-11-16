@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "manager-api-server"
+  labels:
+    app: "manager"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  {{- if not (eq .Values.global.ingressClass "") }}
+  ingressClassName: "{{ .Values.global.ingressClass }}"
+  {{ end }}
+  rules:
+  - host: drycc-manager.{{ .Values.global.platformDomain }}
+    http:
+      paths:
+      - pathType: Prefix
+      {{- if eq .Values.global.ingressClass "gce" "alb" }}
+        path: /*
+      {{- else }}{{/* Has annotations but ingress class is not "gce" nor "alb" */}}
+        path: /
+      {{- end }}
+        backend:
+          service:
+            name: drycc-manager
+            port:
+              number: 80
+  {{ if .Values.global.certManagerEnabled }}
+  tls:
+    - secretName: drycc-manager-certificate-auto
+      hosts:
+        - drycc.{{ .Values.global.platformDomain }}
+  {{- end }}
