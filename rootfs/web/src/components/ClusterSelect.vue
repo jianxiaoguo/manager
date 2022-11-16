@@ -1,7 +1,7 @@
 <!--集群选择器-->
 <template>
     <div class="context-switcher ember-view">
-        <el-dropdown trigger="click" class="ml1">
+        <el-dropdown trigger="click" class="ml1 mt1">
             <span class="el-dropdown-link">
                 <span class="dib pv--1">
                     <icon-server class="icon malibu-icon" fill="#409EFF"/>

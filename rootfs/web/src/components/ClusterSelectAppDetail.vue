@@ -2,7 +2,7 @@
 <template>
 <div id="'vue-content'+Math.random()" class="crumb-trail flex items-center flex-auto f3 lh-copy dark-gray nudge-left--5 pv--3 ember-view">
     <cluster-select class="ml1"/>
-    <span class="flex items-center mb1">
+    <span class="flex items-center">
         <span class="inline-flex pv--2 mr--2">
             <div class="relative ember-view mt1">
                 <icon-application-one class="icon malibu-icon v-mid" fill="#409EFF" />
