@@ -1,6 +1,8 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElLoading } from 'element-plus'
 
+//
+let axiosLoading
 // 环境的切换
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 axios.defaults.withCredentials = true
@@ -12,6 +14,7 @@ axios.interceptors.request.use(
         if(token){
             config.headers['X-CSRFToken'] = token;
         }
+        axiosLoading = ElLoading.service({ fullscreen: true , background: "rgba(122, 122, 122, 0.8)"})
         return config
     }
 )
@@ -19,6 +22,7 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(
     response => {
+      axiosLoading.close()
       // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
       // 否则的话抛出错误
       if ([200, 201, 204].indexOf(response.status) >= 0) {

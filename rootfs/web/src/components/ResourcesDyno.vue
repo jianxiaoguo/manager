@@ -22,7 +22,7 @@
                     <div class="truncate">
                         <div class="ember-view">
                             <div class="purple no-underline link dib pv1 hk-focus-ring b">
-                                {{proc.name}}:{{proc.cmd}}
+                                {{proc.name}}
                             </div>
                         </div>
                     </div>
@@ -36,10 +36,10 @@
                     </div>
                 </div>
                 <div class="dark-gray f5 dn dib-ns mr2 truncate"></div>
-                <div class="dark-gray f5 dn dib-ns mr2 truncate"><span>processes: {{proc.replicas}}</span></div>
+                <div class="dark-gray f5 dn dib-ns mr2 truncate"><span>{{proc.cmd}}</span></div>
                 <div class="dark-gray f5 dn dib-ns mr2 truncate w5 tr">
-                    <span class="f5 text-uppercase light-green" v-if="proc.replicas > 0">On</span>
-                    <span class="f5 text-uppercase light-red" v-if="proc.replicas < 1">Off</span>
+                    <span class="f5 text-uppercase light-green" v-if="proc.replicas > 0">{{proc.replicas}}D</span>
+                    <span class="f5 text-uppercase light-red" v-if="proc.replicas < 1">{{proc.replicas}}D</span>
                 </div>
             </div>
 

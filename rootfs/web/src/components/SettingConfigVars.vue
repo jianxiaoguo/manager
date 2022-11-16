@@ -76,7 +76,7 @@
                                 </tbody>
                             </table>
                             <button :class="{'hk-button--disabled-primary':!isCommit}" :disabled="!isCommit"
-                                    class="async-button default hk-button--success ember-view" type="button" @click="updateCondigs"> Save
+                                    class="async-button default hk-button--success ember-view" type="button" @click="updateConfigs"> Save
                             </button>
                         </form>
                     </div>

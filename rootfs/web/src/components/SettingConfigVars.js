@@ -68,14 +68,14 @@ export default {
             state.showConfigVars = false
         }
 
-        const updateCondigs = async () => {
+        const updateConfigs = async () => {
             var newConfigs = {}
             state.dealtConfigs.forEach(item=> {
                 newConfigs[item.name] = item.value
             })
             var currentCluster = store.getters.currentCluster
             postAppConfigs(currentCluster.uuid, params.id, newConfigs).then(res=>{
-                if (res.status == 200) {
+                if (res.status == 201) {
                     ElMessage({
                         message: 'Post app config ok.',
                         type: 'success',
@@ -93,7 +93,7 @@ export default {
             ...toRefs(state),
             showDetail,
             closeDetail,
-            updateCondigs,
+            updateConfigs,
             couldEdit,
             deleteConfig,
             addConfig
