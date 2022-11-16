@@ -12,8 +12,8 @@
             </a>
         </div>
 
-        <ul class="list pl0 flex mb5 bg-lightest-silver shadow-outer-1 br1 overflow-hidden" v-if="volumes.length > 0">
-            <li class="ph3 pv2 flex b--silver bg-white" v-for="volume in volumes" :key="volume.name">
+        <ul class="addons-grid list pl0 flex mb5 bg-lightest-silver shadow-outer-1 br1 overflow-hidden" v-if="volumes.length > 0">
+            <li class="addon ph3 pv2 flex b--silver bg-white" v-for="volume in volumes" :key="volume.name">
                 <a href="" class="mt1" target="_blank" rel="noopener noreferrer">
                     <div class="relative">
                         <icon-components size="2.5rem" fill="#409EFF" class="icon malibu-icon malibu-fill-gradient-purple nudge-left--2 nudge-up--1" />
