@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: manager-config
+  labels:
+    heritage: drycc
+data:
+data:
+  init-clusters.json: |-
+{{ toPrettyJson .Values.initClusters | indent 4}}

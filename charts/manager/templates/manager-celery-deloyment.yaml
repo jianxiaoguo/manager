@@ -66,4 +66,5 @@ spec:
           - celery -A api worker -Q priority.low --autoscale=8,1 --loglevel=WARNING
         {{- include "manager.limits" . | indent 8 }}
         {{- include "manager.envs" . | indent 8 }}
-
+        {{- include "manager.volumeMounts" . | indent 8 }}
+      {{- include "manager.volumes" . | indent 6 }}

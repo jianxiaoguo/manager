@@ -46,6 +46,13 @@ stripePublicKey: ""
 stripeSecretKey: ""
 stripeWebhookSecret: ""
 
+# The following configurations are used to initialize the clusters
+initClusters:
+# - name: local
+#   url: "https://drycc.drycc.com"
+#   key: "f8cde499-9f58-4b3e-81ad-c0f95e5db282"
+#   secret: "JcxoPGxG9fIiwUbTPcrk0wzU1nQvlCZRJ5ZyNvhyCdby9OFVVbcPGvgdLFUGZRyp"
+
 environment:
   ADMIN_ENABLED: true
   LEGAL_ENABLED: false
@@ -111,15 +118,22 @@ rabbitmq:
 
 
 passport:
-  initGrafanaKey: false
-  initManagerKey: true
-  initControllerKey: false
   # The following parameters are configured only when using an on-cluster passport
   # Set passport deployment replicas
   replicas: 1
   ## databaseUrl and databaseReplicaUrl are will no longer use the built-in database component
   databaseUrl: ""
   databaseReplicaUrl: ""
+  # The following configurations to initialize oauth2 application
+  # Names are all lowercase letters
+  # The key and secret are generated automatically if they are empty
+  # If prefix is not empty, it represents internal application.
+  initApplications:
+  - name: "manager"
+    key: ""
+    secret: ""
+    prefix: "drycc-manager"
+    redirect_uri: "/v1/complete/drycc/"
 
 global:
   # Set the location of Workflow's PostgreSQL database

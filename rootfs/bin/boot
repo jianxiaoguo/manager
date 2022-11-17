@@ -31,6 +31,10 @@ echo ""
 echo "Collect static files in a single location:"
 python manage.py collectstatic --noinput
 
+echo ""
+echo "Initialize cluster:"
+python manage.py init_clusters --path /etc/drycc/manager/init-clusters.json
+
 # spawn a gunicorn server in the background
 echo ""
 echo "Starting up Gunicorn"

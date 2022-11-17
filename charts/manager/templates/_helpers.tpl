@@ -132,3 +132,26 @@ resources:
 {{- end }}
 {{- end }}
 {{- end }}
+
+{{/* Generate manager deployment volumeMounts */}}
+{{- define "manager.volumeMounts" }}
+volumeMounts:
+  - name: manager-creds
+    mountPath: /var/run/secrets/drycc/manager
+    readOnly: true
+  - name: manager-config
+    mountPath: /etc/drycc/manager
+    readOnly: true
+{{- end }}
+
+
+{{/* Generate manager deployment volumes */}}
+{{- define "manager.volumes" }}
+volumes:
+  - name: manager-creds
+    secret:
+      secretName: manager-creds
+  - name: manager-config
+    configMap:
+      name: manager-config
+{{- end }}

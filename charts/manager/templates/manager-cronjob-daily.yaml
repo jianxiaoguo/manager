@@ -61,3 +61,5 @@ spec:
               - python /workspace/manage.py generate_invoices
             {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
+            {{- include "manager.volumeMounts" . | indent 12 }}
+          {{- include "manager.volumes" . | indent 10 }}

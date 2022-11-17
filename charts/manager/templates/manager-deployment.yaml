@@ -39,24 +39,26 @@ spec:
         - $(DRYCC_REDIS_ADDRS)
         {{- include "manager.envs" . | indent 8 }}
       containers:
-        - name: drycc-manager
-          image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
-          imagePullPolicy: {{.Values.imagePullPolicy}}
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 8000
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 8000
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 5
-          ports:
-            - containerPort: 8000
-              name: http
-          {{- include "manager.limits" . | indent 10 }}
-          {{- include "manager.envs" . | indent 10 }}
+      - name: drycc-manager
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+          periodSeconds: 5
+        ports:
+        - containerPort: 8000
+          name: http
+        {{- include "manager.limits" . | indent 8 }}
+        {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
+      {{- include "manager.volumes" . | indent 6 }}
