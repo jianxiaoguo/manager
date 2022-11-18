@@ -140,7 +140,7 @@ AUTHENTICATION_BACKENDS = (
 
 GUARDIAN_GET_INIT_ANONYMOUS_USER = 'api.models.base.get_anonymous_user_instance'
 
-LOGIN_URL = os.environ.get('LOGIN_URL', '/accounts/profile/')
+LOGIN_URL = os.environ.get('LOGIN_URL', '/')
 
 # Security settings
 CORS_ALLOW_CREDENTIALS = True
