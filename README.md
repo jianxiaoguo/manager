@@ -1,5 +1,5 @@
 # drycc manager
-[![Build Status](https://drone.drycc.cc/api/badges/drycc/manager/status.svg)](https://drone.drycc.cc/drycc/manager)
+[![Build Status](https://woodpecker.drycc.cc/api/badges/drycc/manager/status.svg)](https://woodpecker.drycc.cc/drycc/manager)
 [![codecov.io](https://codecov.io/github/drycc/manager/coverage.svg?branch=main)](https://codecov.io/github/drycc/manager?branch=main)
 
 The Workflow Manager is responsible for interfacing with Drycc Workflow data. It integrates the passport component and can manage one or more drycc clusters.
