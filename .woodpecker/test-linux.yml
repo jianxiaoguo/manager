@@ -12,7 +12,6 @@ pipeline:
 - name: test-linux
   image: bash
   commands:
-  - env
   - make test docker-build-test upload-coverage
   secrets:
   - dev_registry
