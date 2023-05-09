@@ -38,6 +38,7 @@ spec:
         - -a
         - $(DRYCC_REDIS_ADDRS)
         {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
       containers:
       - name: drycc-manager
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}

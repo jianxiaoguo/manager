@@ -4,9 +4,9 @@ kind: Certificate
 metadata:
   name: drycc-manager
 spec:
-  secretName: drycc-manager-certificate-auto
+  secretName: drycc-issuer-secret
   issuerRef:
-    name: drycc-cluster-issuer
+    name: drycc-issuer
     kind: ClusterIssuer
   dnsNames:
   - drycc-manager.{{ .Values.global.platformDomain }}

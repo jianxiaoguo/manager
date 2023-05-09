@@ -17,16 +17,21 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         base_path = options.get('path', '')
-        for item in json.loads(pathlib.Path(base_path).read_text()):
-            _, updated = Cluster.objects.update_or_create(
-                uuid=uuid.UUID(item["key"]),
-                defaults={
-                    'name': item["name"],
-                    'url': item["url"],
-                    'secret': item["secret"],
-                }
-            )
-            if updated:
-                self.stdout.write('Drycc %s cluster created' % item["name"])
-            else:
-                self.stdout.write('Drycc %s cluster updated' % item["name"])
+        clusters = json.loads(pathlib.Path(base_path).read_text())
+        if clusters:
+            for item in clusters:
+                _, updated = Cluster.objects.update_or_create(
+                    uuid=uuid.UUID(item["key"]),
+                    defaults={
+                        'name': item["name"],
+                        'url': item["url"],
+                        'secret': item["secret"],
+                    }
+                )
+                if updated:
+                    self.stdout.write('Drycc %s cluster created' % item["name"])
+                else:
+                    self.stdout.write('Drycc %s cluster updated' % item["name"])
+        else:
+            self.stdout.write('There are no clusters that need to be initialized')
+        self.stdout.write('Initializing cluster completed')

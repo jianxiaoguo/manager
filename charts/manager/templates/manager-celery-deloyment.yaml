@@ -38,6 +38,7 @@ spec:
         - -a
         - $(DRYCC_REDIS_ADDRS),$(DRYCC_MANAGER_SERVICE_HOST):$(DRYCC_MANAGER_SERVICE_PORT)
         {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
       containers:
       - name: drycc-manager-celery-high
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
@@ -48,6 +49,7 @@ spec:
           - celery -A api worker -Q priority.high --autoscale=32,1 --loglevel=WARNING
         {{- include "manager.limits" . | indent 8 }}
         {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
       - name: drycc-manager-celery-middle
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
         imagePullPolicy: {{.Values.imagePullPolicy}}
@@ -57,6 +59,7 @@ spec:
           - celery -A api worker -Q priority.middle --autoscale=16,1 --loglevel=WARNING
         {{- include "manager.limits" . | indent 8 }}
         {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
       - name: drycc-manager-celery-low
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
         imagePullPolicy: {{.Values.imagePullPolicy}}

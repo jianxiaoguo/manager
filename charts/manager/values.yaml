@@ -81,7 +81,7 @@ database:
   replicatorPassword: ""
   user: ""
   password: ""
-  initDatabases: "manager"
+  initDatabases: "manager,passport"
   persistence:
     enabled: false # Set to true to enable persistence
     size: 5Gi # PVC size
@@ -135,6 +135,19 @@ passport:
     prefix: "drycc-manager"
     redirect_uri: "/v1/complete/drycc/"
 
+# Drycc Gateway is a gateway chart that integrates cert-manager.
+gateway:
+  # acme configuration takes effect if and only if certManagerEnabled is true
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # EAB credentials
+    externalAccountBinding:
+      keyID: ""
+      keySecret: ""
+  # This will be the hostname prefix that is used to build endpoints
+  domainPrefixs:
+  - drycc-manager
+
 global:
   # Set the location of Workflow's PostgreSQL database
   #
@@ -173,4 +186,4 @@ global:
   # This will be the hostname that is used to build endpoints such as "drycc.$HOSTNAME"
   platformDomain: ""
   # Whether cert_manager is enabled to automatically generate manager certificates
-  certManagerEnabled: true
+  certManagerEnabled: false
