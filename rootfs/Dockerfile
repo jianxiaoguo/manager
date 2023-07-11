@@ -4,7 +4,7 @@ FROM registry.drycc.cc/drycc/base:${CODENAME} as build-app
 ADD web /web
 WORKDIR /web
 
-ENV NODE_VERSION="18"
+ENV NODE_VERSION="20"
 
 RUN install-stack node $NODE_VERSION && . init-stack \
   && npm install --global yarn \

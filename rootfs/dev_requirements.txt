@@ -1,7 +1,7 @@
 # test module
 # test
 # Run "make test-unit" for the % of code exercised during tests
-coverage==7.2.3
+coverage==7.2.5
 
 # Run "make test-style" to check python syntax and style
 flake8==6.0.0
@@ -10,4 +10,4 @@ flake8==6.0.0
 codecov==2.1.13
 
 # mock out python-requests, mostly k8s
-requests-mock==1.9.3
+requests-mock==1.10.0
