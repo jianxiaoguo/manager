@@ -44,8 +44,8 @@
                             ·
                             {{activity.version}}
 
-                            <span class="confirmable-action ember-view" v-if="activity.v > 1">·
-                                <a @click="openRollBack(activity.v)" href="#" class="hk-link rollback">
+                            <span class="confirmable-action ember-view" v-if="activity.version > 1">·
+                                <a @click="openRollBack(activity.version)" href="#" class="hk-link rollback">
                                     Roll back to here
                                 </a>
                             </span>

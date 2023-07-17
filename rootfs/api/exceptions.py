@@ -14,6 +14,10 @@ class DryccException(APIException):
     status_code = 400
 
 
+class NotAuthenticated(APIException):
+    status_code = 401
+
+
 class AlreadyExists(APIException):
     status_code = 409
 

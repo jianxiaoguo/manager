@@ -3,6 +3,7 @@ import hashlib
 import calendar
 import datetime
 import stripe
+import json
 from django.utils import timezone
 from django.conf import settings
 from django.db.models import Q, Sum
@@ -21,7 +22,7 @@ from api.utils import (
     euro_cent_to_platform_credit, next_month, last_month, timestamp2datetime,
     date2timestamp)
 from api import models, serializers
-from api.exceptions import ServiceUnavailable
+from api.exceptions import ServiceUnavailable, NotAuthenticated
 from api.viewset import NormalUserViewSet, DryccViewSet
 from api.drycc import DryccClient
 
@@ -181,10 +182,12 @@ class DryccProxyViewSet(NormalUserViewSet):
     @property
     def client(self):
         try:
-            token = self.request.user.social_auth.filter(provider='drycc').last(). \
-                extra_data.get('id_token')
+            social_auth = self.request.user.social_auth.filter(provider='drycc').last()
+            extra_data = json.loads(social_auth.extra_data) if \
+                isinstance(social_auth.extra_data, str) else social_auth.extra_data
+            token = extra_data["id_token"]
         except AttributeError:
-            return Response(status=401)
+            raise NotAuthenticated()
         return DryccClient(token)
 
     def get(self, request, *args, **kwargs):

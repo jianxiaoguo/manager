@@ -34,12 +34,16 @@ export default {
         })
 
         onMounted(async () => {
+            await fetchActivity()
+        })
+
+        const fetchActivity = async () => {
             var currentCluster = store.getters.currentCluster
             state.appDetail = store.getters.currentApp
-            const activityData = await getAppActivities(currentCluster.uuid, params.id)
+            const activityData = await getAppActivities(currentCluster.uuid, params.id, '')
 
             state.activities = activityData.data ? dealAppActivities(activityData) : null
-        })
+        }
 
         const closeRollBack = () => {
             state.rollBackIndex = 0
@@ -57,6 +61,7 @@ export default {
                         type: 'success',
                     })
                 }
+                fetchActivity()
             })
         }
 
