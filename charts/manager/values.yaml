@@ -12,21 +12,35 @@ replicas: 1
 # Replace: If it is time for a new job run and the previous job run hasn't finished yet, the cron job replaces the currently running job run with a new job run
 concurrencyPolicy: "Replace"
 
-nodeAffinityPreset:
-  key: "drycc.cc/node"
-  type: "soft"
-  values:
-  - "true"
-podAffinityPreset:
-  key: "security"
-  type: ""
-  values:
-  - "drycc-security"
-podAntiAffinityPreset:
-  key: "app"
-  type: "soft"
-  values:
-  - "drycc-manager"
+api:
+  nodeAffinityPreset:
+    key: "drycc.cc/node"
+    type: "soft"
+    values:
+    - "true"
+  podAffinityPreset:
+    type: ""
+    extraMatchLabels:
+      security: "drycc-security"
+  podAntiAffinityPreset:
+    type: "soft"
+    extraMatchLabels:
+      app: "drycc-manager"
+
+celery:
+  nodeAffinityPreset:
+    key: "drycc.cc/node"
+    type: "soft"
+    values:
+    - "true"
+  podAffinityPreset:
+    type: ""
+    extraMatchLabels:
+      security: "drycc-security"
+  podAntiAffinityPreset:
+    type: "soft"
+    extraMatchLabels:
+      app: "drycc-manager-celery"
 
 # Service
 service:
