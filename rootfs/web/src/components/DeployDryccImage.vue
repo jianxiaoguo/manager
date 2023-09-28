@@ -2,11 +2,11 @@
     <li class="list-group-item ember-view"><div class="panel-section ">
         <div class="section-description">
             <div class="section-title f3 purple" role="heading" aria-level="3">
-                Deploy your Docker-based app
+                Deploy your Container-based app
             </div>
 
             <div class="mt2 f5 lh-copy dark-gray">
-                Drycc Container Registry allows you to deploy your Docker-based app to Drycc. <br><a href="https://www.drycc.cc/applications/using-docker-images/" class="hk-link">Learn more</a>
+                Drycc Container Registry allows you to deploy your Container-based app to Drycc. <br><a href="https://www.drycc.cc/applications/using-container-images/" class="hk-link">Learn more</a>
             </div>
 
         </div>
@@ -18,7 +18,7 @@
             <pre>$ drycc login {{cluster.url}}</pre>
 
             <h4>Deploy the Application</h4>
-            <p>Use drycc pull to deploy your application from DockerHub or a public registry.</p>
+            <p>Use drycc pull to deploy your application from Container registry or a public registry.</p>
             <pre>$ drycc pull [image] -a {{appDetail.name}}</pre>
 
         </div>
