@@ -24,7 +24,7 @@ spec:
       affinity:
         podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.celery.podAffinityPreset.type "component" "" "extraMatchLabels" .Values.celery.podAffinityPreset.extraMatchLabels "topologyKey" "" "context" $) | nindent 10 }}
         podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.celery.podAntiAffinityPreset.type "component" "" "extraMatchLabels" .Values.celery.podAntiAffinityPreset.extraMatchLabels "topologyKey" "" "context" $) | nindent 10 }}
-        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.celery.nodeAffinityPreset.type "key" .Values.api.nodeAffinityPreset.key "values" .Values.celery.nodeAffinityPreset.values ) | nindent 10 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.celery.nodeAffinityPreset.type "key" .Values.celery.nodeAffinityPreset.key "values" .Values.celery.nodeAffinityPreset.values ) | nindent 10 }}
       serviceAccount: drycc-manager
       initContainers:
       - name: drycc-manager-celery-init
