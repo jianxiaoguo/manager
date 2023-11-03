@@ -158,9 +158,29 @@ gateway:
     externalAccountBinding:
       keyID: ""
       keySecret: ""
-  # This will be the hostname prefix that is used to build endpoints
-  domainPrefixs:
-  - drycc-manager
+  # gateway apps
+  apps:
+  - name: drycc-manager-rabbitmq
+    port: 80
+    hostname: drycc-manager-rabbitmq.{{ .Values.global.platformDomain }}
+    protocol: HTTP
+    services:
+    - name: drycc-rabbitmq
+      port: 15672
+  - name: drycc-passport
+    port: 80
+    hostname: drycc-passport.{{ .Values.global.platformDomain }}
+    protocol: HTTP
+    services:
+    - name: drycc-passport
+      port: 80
+  - name: drycc-manager
+    port: 80
+    hostname: drycc-manager.{{ .Values.global.platformDomain }}
+    protocol: HTTP
+    services:
+    - name: drycc-manager
+      port: 80
 
 global:
   # Set the location of Workflow's PostgreSQL database
