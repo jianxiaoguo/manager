@@ -5,9 +5,10 @@ from django.db import models, connections
 from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.core.cache import cache
 from api.utils import (
     platform_credit_to_euro_cent, euro_cent_to_platform_credit,
-    timestamp2datetime, next_month, RedisLock)
+    timestamp2datetime, next_month)
 from api.models.fund import FundFlow, PrepaidCard
 from .tax import ConsumerTaxInfo
 from .base import UuidAuditedModel
@@ -276,7 +277,7 @@ class Invoice(UuidAuditedModel):
         return False
 
     def pay(self):
-        with RedisLock("paying_by_invoice:%s" % self.owner_id, ttl=600):
+        with cache.lock("paying_by_invoice:%s" % self.owner_id, timeout=600):
             if self.status == 1 and self.unpaid > 0:
                 prepaid_card = PrepaidCard.objects.filter(
                     owner_id=self.owner_id, status=1).first()

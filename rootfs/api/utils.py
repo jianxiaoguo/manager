@@ -5,10 +5,7 @@ from builtins import globals
 import os
 import logging
 import datetime
-import redis
 import time
-import uuid
-import hashlib
 import pkgutil
 import inspect
 import random
@@ -20,7 +17,6 @@ from django.db import models
 from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
-from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -112,87 +108,6 @@ def timestamp2datetime(timestamp):
 def strtpime2timestamp(date_string, fmt="%Y%m%d%H"):
     return datetime.datetime.strptime(date_string, fmt).replace(
                 tzinfo=timezone.get_current_timezone()).timestamp()
-
-
-class RedisLock(object):
-
-    WAIT_DELAY = 0.01
-
-    def __init__(self, name, **kwargs):
-        self.key = name
-        self.value = uuid.uuid4().hex
-        self.ttl = kwargs.pop("ttl", 3600)
-        self.redis = self.connect(name)
-
-        self._acquire_lock = self.redis.register_script("""
-            local key = KEYS[1]
-            local value = ARGV[1]
-            local ttl = ARGV[2]
-            local current_value = redis.call('GET', key)
-            if current_value == value or current_value == false then
-                redis.call('PSETEX', key, ttl, value)
-                return 1
-            end
-            return 0
-        """)
-        self._release = self.redis.register_script("""
-            local key = KEYS[1]
-            local value = ARGV[1]
-            if redis.call("GET", key) == value then
-                return redis.call("DEL", key)
-            else
-                return 0
-            end
-        """)
-        self.locked = False
-        self.expiration = None
-
-    @staticmethod
-    def connect(name):
-        md5 = hashlib.md5()
-        md5.update(name.encode("utf8"))
-        index = int.from_bytes(md5.digest(), byteorder="little") % len(settings.DRYCC_REDIS_ADDRS)
-        host, port = settings.DRYCC_REDIS_ADDRS[index].split(":")
-        return redis.StrictRedis(
-            host=host,
-            port=port,
-            db=0,
-            password=settings.DRYCC_REDIS_PASSWORD
-        )
-
-    def __enter__(self):
-        self.acquire(blocking=True)
-        return self
-
-    def __exit__(self, cls, value, traceback):
-        self.release()
-
-    def acquire(self, blocking=False):
-        expiration = time.time() + self.ttl
-        self.locked = bool(
-            self._acquire_lock(keys=[self.key], args=[self.value, int(self.ttl * 1000)])
-        )
-        if self.locked:
-            self.expiration = expiration
-        if blocking:
-            self.wait()
-        return self.locked
-
-    def release(self):
-        return bool(self._release(keys=[self.key], args=[self.value]))
-
-    def renew(self):
-        return self.acquire(blocking=False)
-
-    def wait(self):
-        while not self.locked:
-            time.sleep(self._time_to_expire + RedisLock.WAIT_DELAY)
-            self.locked = self.acquire()
-        return True
-
-    @property
-    def _time_to_expire(self):
-        return float(self.redis.pttl(self.key) or 0) / 1000
 
 
 if __name__ == "__main__":
