@@ -274,7 +274,6 @@ class BillViewSet(NormalUserViewSet, viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.BillSerializer
 
     def get_queryset(self):
-        return self.model.objects.all()
         period = self.request.GET.get("period", None)
         app_id = self.request.GET.get("app_id", None)
         cluster_id = self.request.GET.get("cluster_id", None)
