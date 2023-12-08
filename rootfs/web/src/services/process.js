@@ -39,12 +39,9 @@ export function getAppProcesses(clusterID, appId) {
 
 export function dealAppProcesses(obj) {
     var appProcesses = []
-    for (let key in obj.data.procfile_structure) {
-        appProcesses.push({
-            "name": key,
-            "cmd": obj.data.procfile_structure[key],
-            'replicas': obj.data.structure[key]
-        })
+    for (let key in obj.data.structure) {
+        var cmd = key in obj.data.procfile_structure ? obj.data.procfile_structure[key] : "undefined"
+        appProcesses.push({"name": key, "cmd": cmd, "replicas": obj.data.structure[key]})
     }
     console.log("js appProcesses value: ", appProcesses)
     return appProcesses.map(item => {
@@ -65,7 +62,7 @@ export function getAppProcessTypes(clusterID, appId) {
 
 export function dealProcessTypes(obj) {
     var appProcessTypes = []
-    for (let i in obj.data.procfile_structure) {
+    for (let i in obj.data.structure) {
         appProcessTypes.push({"name": i})
     }
     console.log("js appProcessTypes value: ", appProcessTypes)
