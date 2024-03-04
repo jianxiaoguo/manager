@@ -12,6 +12,21 @@ replicas: 1
 # Replace: If it is time for a new job run and the previous job run hasn't finished yet, the cron job replaces the currently running job run with a new job run
 concurrencyPolicy: "Replace"
 
+## Enable diagnostic mode
+##
+diagnosticMode:
+  ## @param diagnosticMode.enabled Enable diagnostic mode (all probes will be disabled and the command will be overridden)
+  ##
+  enabled: false
+  ## @param diagnosticMode.command Command to override all containers
+  ##
+  command:
+    - sleep
+  ## @param diagnosticMode.args Args to override all containers
+  ##
+  args:
+    - infinity
+
 api:
   nodeAffinityPreset:
     key: "drycc.cc/node"

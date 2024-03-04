@@ -35,33 +35,48 @@ spec:
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
             imagePullPolicy: {{.Values.imagePullPolicy}}
             name: drycc-manager-block-users
+            {{- if .Values.diagnosticMode.enabled }}
+            command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 14 }}
+            args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 14 }}
+            {{- else }}
             command:
               - /bin/bash
               - -c
             args:
               - python /workspace/manage.py block_users
+            {{- end }}
             {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
             imagePullPolicy: {{.Values.imagePullPolicy}}
             name: drycc-manager-generate-bills
+            {{- if .Values.diagnosticMode.enabled }}
+            command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 14 }}
+            args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 14 }}
+            {{- else }}
             command:
               - /bin/bash
               - -c
             args:
               - python /workspace/manage.py generate_bills
+            {{- end }}
             {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
             imagePullPolicy: {{.Values.imagePullPolicy}}
             name: drycc-manager-generate-invoices
+            {{- if .Values.diagnosticMode.enabled }}
+            command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 14 }}
+            args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 14 }}
+            {{- else }}
             command:
               - /bin/bash
               - -c
             args:
               - python /workspace/manage.py generate_invoices
+            {{- end }}
             {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
