@@ -11,11 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import os
 import dj_database_url
-from distutils.util import strtobool
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(strtobool(os.environ.get('DEBUG', 'false')))
+DEBUG = os.environ.get('DEBUG', 'false').lower() == "true"
 
 # If set to True, Django's normal exception handling of view functions
 # will be suppressed, and exceptions will propagate upwards
@@ -23,10 +22,10 @@ DEBUG = bool(strtobool(os.environ.get('DEBUG', 'false')))
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
 # Enable Django admin
-ADMIN_ENABLED = bool(strtobool(os.environ.get('ADMIN_ENABLED', 'false')))
+ADMIN_ENABLED = os.environ.get('ADMIN_ENABLED', 'false').lower() == "true"
 
 # Enable drycc legal footer
-LEGAL_ENABLED = bool(strtobool(os.environ.get('LEGAL_ENABLED', 'false')))
+LEGAL_ENABLED = os.environ.get('LEGAL_ENABLED', 'false').lower() == "true"
 # Drycc Billing details
 BILLING_DETAILS = {
     "name": "DOOPAI LTD",
@@ -180,8 +179,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_DOMAIN = os.environ.get('SESSION_COOKIE_DOMAIN', None)
 SESSION_COOKIE_SAMESITE = os.environ.get('SESSION_COOKIE_SAMESITE', None)
-SESSION_COOKIE_SECURE = bool(strtobool(os.environ.get('SESSION_COOKIE_SECURE', 'false')))
-CSRF_COOKIE_SECURE = bool(strtobool(os.environ.get('CSRF_COOKIE_SECURE', 'false')))
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'false').lower() == "true"
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'false').lower() == "true"
 
 # Honor HTTPS from a trusted proxy
 # see https://docs.djangoproject.com/en/2.2/ref/settings/#secure-proxy-ssl-header
@@ -322,7 +321,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Avatar URL
 AVATAR_URL = "http://drycc-mirrors.drycc.cc/avatar/"
-OAUTH_ENABLE = bool(strtobool(os.environ.get('OAUTH_ENABLE', 'true')))
+OAUTH_ENABLE = os.environ.get('OAUTH_ENABLE', 'true').lower() == "true"
 if OAUTH_ENABLE:
     DRYCC_PASSPORT_URL = os.environ.get('DRYCC_PASSPORT_URL', 'https://127.0.0.1:8000')
     SOCIAL_AUTH_DRYCC_KEY = os.environ.get(
