@@ -32,17 +32,17 @@ class ChargeRule(UuidAuditedModel):
         }
 
     @classmethod
-    def get(cls, _type, unit, usage, cluster_id):
-        key = f"charge_rules:{cluster_id}:{_type}:{unit}"
+    def get(cls, name, mtype, unit, usage, cluster_id):
+        key = f"charge_rules:{cluster_id}:{name}:{mtype}:{unit}"
         charge_rules = cache.get_or_set(key, lambda: cls.objects.filter(
-                    type=_type, unit=unit, cluster_id=cluster_id), 3600)
+                    name=name, type=mtype, unit=unit, cluster_id=cluster_id), 3600)
         for charge_rule in charge_rules:
             if charge_rule.start <= usage \
                     and (charge_rule.end is None or usage >= charge_rule.end):
                 return charge_rule
         raise ValueError(
-            "charge_rule not found, type={}, unit={}, usage={}, cluster_id={}".format(
-                _type, unit, usage, cluster_id
+            "charge_rule not found, name={}, type={}, unit={}, usage={}, cluster_id={}".format(
+                name, mtype, unit, usage, cluster_id
             )
         )
 

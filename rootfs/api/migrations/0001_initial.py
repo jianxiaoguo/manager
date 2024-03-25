@@ -173,6 +173,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('app_id', models.CharField(db_index=True, max_length=64)),
+                ('name', models.CharField(max_length=64)),
                 ('type', models.CharField(max_length=16)),
                 ('charge', models.JSONField(default=dict)),
                 ('price', models.PositiveBigIntegerField()),

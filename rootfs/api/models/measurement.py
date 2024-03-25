@@ -13,6 +13,7 @@ class Measurement(UuidAuditedModel):
     type = models.CharField(max_length=64)
     unit = models.CharField(max_length=16)
     usage = models.PositiveBigIntegerField(db_index=True)
+    kwargs = models.JSONField(default=dict)
     timestamp = models.PositiveIntegerField(db_index=True)
     cluster = models.ForeignKey('Cluster', on_delete=models.PROTECT)
 

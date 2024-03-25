@@ -87,6 +87,7 @@ class BillSerializer(serializers.ModelSerializer):
 
 class BillSummarySerializer(serializers.Serializer):
     app_id = serializers.ReadOnlyField()
+    name = serializers.ReadOnlyField()
     type = serializers.ReadOnlyField()
     price = serializers.ReadOnlyField()
 
@@ -182,6 +183,7 @@ class MeasurementSerializer(serializers.ModelSerializer):
     type = serializers.CharField(max_length=64)
     unit = serializers.CharField(max_length=16)
     usage = serializers.IntegerField()
+    kwargs = serializers.JSONField()
     timestamp = serializers.IntegerField()
     cluster = serializers.PrimaryKeyRelatedField(
         many=False, read_only=False, queryset=models.cluster.Cluster.objects.all()

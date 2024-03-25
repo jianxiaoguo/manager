@@ -95,6 +95,7 @@ GROUP by app_id, type, unit, name, cluster_id
 class Bill(UuidAuditedModel):
     app_id = models.CharField(max_length=64, db_index=True)
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    name = models.CharField(max_length=64)
     type = models.CharField(max_length=16)
     charge = models.JSONField(default=dict)
     price = models.PositiveBigIntegerField()
@@ -114,12 +115,13 @@ class Bill(UuidAuditedModel):
                 timestamp = period + index * 3600
                 cursor.execute(query_charge_data_sql.format(
                     owner_id=owner_id, timestamp=timestamp))
-                for app_id, _type, unit, _, cluster_id, usage in cursor.fetchall():
-                    rule = ChargeRule.get(_type, unit, usage, cluster_id)
+                for app_id, mtype, unit, name, cluster_id, usage in cursor.fetchall():
+                    rule = ChargeRule.get(name, mtype, unit, usage, cluster_id)
                     bills.append(Bill(
                         app_id=app_id,
                         owner_id=owner_id,
-                        type=_type,
+                        name=name,
+                        type=mtype,
                         charge=model_to_dict(rule),
                         price=rule.calc(usage),
                         period=timestamp,
