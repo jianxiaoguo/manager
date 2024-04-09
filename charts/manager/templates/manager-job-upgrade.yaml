@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: drycc-manager-job-upgrade-{{ now | date "20060102150405" }}
+  labels:
+    heritage: drycc
+  annotations:
+    component.drycc.cc/version: {{ .Values.imageTag }}
+spec:
+  template:
+    metadata:
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        app: drycc-manager-job-upgrade
+    spec:
+      initContainers:
+      - name: drycc-manager-job-upgrade-init
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/python-dev:latest
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        args:
+        - netcat
+        - -v
+        - -u
+        - $(DRYCC_DATABASE_URL),$(DRYCC_DATABASE_REPLICA_URL),$(DRYCC_RABBITMQ_URL),$(DRYCC_PASSPORT_URL)
+        - -a
+        - $(DRYCC_REDIS_ADDRS)
+        {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
+      containers:
+      - name: drycc-manager-job-upgrade
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+        {{- if .Values.diagnosticMode.enabled }}
+        command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 8 }}
+        args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 8 }}
+        {{- else }}
+        args:
+        - /usr/bin/env
+        - bash
+        - -ec
+        - |
+          python -u /workspace/manage.py cluster_lock lock
+          python -u /workspace/manage.py migrate --noinput
+          python manage.py init_clusters --path /etc/drycc/manager/init-clusters.json
+          python -u /workspace/manage.py cluster_lock unlock
+        {{- end }}
+        {{- include "manager.envs" . | indent 8 }}
+        {{- include "manager.volumeMounts" . | indent 8 }}
+      {{- include "manager.volumes" . | indent 6 }}
+      restartPolicy: Never
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 3600

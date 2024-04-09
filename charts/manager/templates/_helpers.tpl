@@ -5,6 +5,8 @@ Set apiVersion based on .Capabilities.APIVersions
 {{/* Generate manager deployment envs */}}
 {{- define "manager.envs" }}
 env:
+- name: VERSION
+  value: {{ .Chart.AppVersion }}
 - name: DRYCC_REDIS_ADDRS
   valueFrom:
     secretKeyRef:

@@ -40,7 +40,7 @@ spec:
         {{- include "manager.envs" . | indent 8 }}
         {{- include "manager.volumeMounts" . | indent 8 }}
       containers:
-      - name: drycc-manager-celery-high
+      - name: drycc-manager-celery
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
         imagePullPolicy: {{.Values.imagePullPolicy}}
         {{- if .Values.diagnosticMode.enabled }}
@@ -50,37 +50,7 @@ spec:
         args:
           - /bin/bash
           - -c
-          - celery -A api worker -Q priority.high --autoscale=32,1 --loglevel=WARNING
-        {{- end }}
-        {{- include "manager.limits" . | indent 8 }}
-        {{- include "manager.envs" . | indent 8 }}
-        {{- include "manager.volumeMounts" . | indent 8 }}
-      - name: drycc-manager-celery-middle
-        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
-        imagePullPolicy: {{.Values.imagePullPolicy}}
-        {{- if .Values.diagnosticMode.enabled }}
-        command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 10 }}
-        args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 10 }}
-        {{- else }}
-        args:
-          - /bin/bash
-          - -c
-          - celery -A api worker -Q priority.middle --autoscale=16,1 --loglevel=WARNING
-        {{- end }}
-        {{- include "manager.limits" . | indent 8 }}
-        {{- include "manager.envs" . | indent 8 }}
-        {{- include "manager.volumeMounts" . | indent 8 }}
-      - name: drycc-manager-celery-low
-        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
-        imagePullPolicy: {{.Values.imagePullPolicy}}
-        {{- if .Values.diagnosticMode.enabled }}
-        command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 10 }}
-        args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 10 }}
-        {{- else }}
-        args:
-          - /bin/bash
-          - -c
-          - celery -A api worker -Q priority.low --autoscale=8,1 --loglevel=WARNING
+          - celery --app api worker --queues manager.low,manager.middle,manager.high --autoscale=32,1 --loglevel=WARNING
         {{- end }}
         {{- include "manager.limits" . | indent 8 }}
         {{- include "manager.envs" . | indent 8 }}
