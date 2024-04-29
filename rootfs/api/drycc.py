@@ -17,7 +17,7 @@ class DryccClient(object):
         session.headers = {
             'Content-Type': 'application/json',
             'User-Agent': user_agent('Drycc Manager ', drycc_version),
-            'Authorization': 'token ' + access_token
+            'Authorization': 'Bearer ' + access_token
         }
         return session
 

@@ -185,7 +185,7 @@ class DryccProxyViewSet(NormalUserViewSet):
             social_auth = self.request.user.social_auth.filter(provider='drycc').last()
             extra_data = json.loads(social_auth.extra_data) if \
                 isinstance(social_auth.extra_data, str) else social_auth.extra_data
-            token = extra_data["id_token"]
+            token = extra_data["access_token"]
         except AttributeError:
             raise NotAuthenticated()
         return DryccClient(token)
