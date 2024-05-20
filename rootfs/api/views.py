@@ -10,6 +10,7 @@ from django.db.models import Q, Sum
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from django.middleware.csrf import get_token
@@ -84,6 +85,8 @@ class MeasurementViewSet(DryccViewSet):
 
 class UserStatusViewSet(DryccViewSet):
 
+    @method_decorator(cache_page(60 * 30))
+    @method_decorator(vary_on_headers("Authorization"))
     def status(self, request, *args, **kwargs):
         user = User.objects.filter(pk=kwargs["id"]).first()
         if not user or not user.is_active or user.status == 0:
