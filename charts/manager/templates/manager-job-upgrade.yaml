@@ -1,16 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: drycc-manager-job-upgrade-{{ now | date "20060102150405" }}
-  labels:
-    heritage: drycc
+  name: drycc-manager-job-upgrade
   annotations:
     component.drycc.cc/version: {{ .Values.imageTag }}
+    helm.sh/hook: post-install,pre-upgrade,pre-rollback
+    helm.sh/hook-delete-policy: before-hook-creation
 spec:
   template:
-    metadata:
-      labels: {{- include "common.labels.standard" . | nindent 8 }}
-        app: drycc-manager-job-upgrade
     spec:
       initContainers:
       - name: drycc-manager-job-upgrade-init
@@ -38,14 +35,10 @@ spec:
         - bash
         - -ec
         - |
-          python -u /workspace/manage.py cluster_lock lock
           python -u /workspace/manage.py migrate --noinput
           python manage.py init_clusters --path /etc/drycc/manager/init-clusters.json
-          python -u /workspace/manage.py cluster_lock unlock
         {{- end }}
         {{- include "manager.envs" . | indent 8 }}
         {{- include "manager.volumeMounts" . | indent 8 }}
       {{- include "manager.volumes" . | indent 6 }}
       restartPolicy: Never
-  backoffLimit: 0
-  ttlSecondsAfterFinished: 3600

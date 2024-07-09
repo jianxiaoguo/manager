@@ -39,17 +39,6 @@ spec:
         - $(DRYCC_REDIS_ADDRS)
         {{- include "manager.envs" . | indent 8 }}
         {{- include "manager.volumeMounts" . | indent 8 }}
-      - name: drycc-manager-waitting
-        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
-        imagePullPolicy: {{.Values.imagePullPolicy}}
-        args:
-        - /usr/bin/env
-        - bash
-        - -ec
-        - |
-          python -u /workspace/manage.py cluster_lock waitting
-        {{- include "manager.envs" . | indent 8 }}
-        {{- include "manager.volumeMounts" . | indent 8 }}
       containers:
       - name: drycc-manager
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
