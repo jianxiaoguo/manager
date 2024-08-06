@@ -60,6 +60,6 @@ test-functional:
 
 upload-coverage:
 	$(eval CI_ENV := $(shell curl -s https://codecov.io/env | bash))
-	podman run ${CI_ENV} -v ${CURDIR}:/test -w /test/rootfs ${IMAGE}.test codecov --required
+	podman run ${CI_ENV} -v ${CURDIR}:/test -w /test/rootfs -e CODECOV_TOKEN=${CODECOV_TOKEN} ${IMAGE}.test /test/rootfs/bin/upload-coverage
 
 .PHONY: check-kubectl check-podman build podman-build podman-build-test deploy clean commit-hook full-clean test test-style test-unit test-functional upload-coverage
