@@ -38,6 +38,7 @@
 
       <div v-if="messages.length > 0" class="collaborator-list limit-width ember-view">
         <table class="w-100 mb5">
+          <thead>
           <tr class="w-100 f5">
             <th class="pv2 pr1 bb b--light-gray b">Sender</th>
             <th class="pv2 pr1 bb b--light-gray b">Message</th>
@@ -46,6 +47,8 @@
             <th class="pv2 pr1 bb b--light-gray b">Read</th>
             <th class="pv2 pr1 bb b--light-gray b">Action</th>
           </tr>
+          </thead>
+          <tbody>
           <template v-for="message in messages">
             <tr class="collaborator-item ember-view" :class="message.unread ? 'dark-gray': 'gray'">
               <td @click="openMessage(message)" class="w-20 bb b--light-silver pv2 pr1">{{message.sender}}</td>
@@ -56,6 +59,7 @@
               <td class="w-5 bb b--light-silver pv2 pr1"><icon-delete @click="deleteMessage(message)" class="ml3" /></td>
             </tr>      
           </template>
+          </tbody>
         </table>
       </div>
       <div class="limit-width bg-white mt4 pager">

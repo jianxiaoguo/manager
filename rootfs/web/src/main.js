@@ -8,7 +8,7 @@ import {install} from '@icon-park/vue-next/es/all';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import moment from 'moment/src/moment'
-import { dinero, toFormat} from 'dinero.js';
+import { dinero, toDecimal} from 'dinero.js';
 
 
 /**
@@ -40,7 +40,7 @@ app.config.globalProperties.$toPrice = function(amount, factor=5) {
         exponent: factor,
     };
     var d = dinero({ amount: amount, currency: currency})
-    return toFormat(d, function({ amount, currency }) {
+    return toDecimal(d, function({ amount, currency }) {
         return amount.toLocaleString(getLang(), {
             maximumSignificantDigits: factor,
             style: 'currency',

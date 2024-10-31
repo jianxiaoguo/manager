@@ -67,6 +67,7 @@
                     </el-row>
                 </div>
                 <table class="w-100 mb5">
+                    <thead>
                     <tr class="w-100 f5">
                         <th class="pl1 pr1 pv2 bb b--light-gray b">
                             trade no
@@ -90,6 +91,8 @@
                             remark
                         </th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <template v-for="funding in fundingList">
                         <tr class="ember-view">
                             <td class="bb b--light-silver pv2 pr1 gray">{{funding.tradeNo}}</td>
@@ -111,6 +114,7 @@
                             </td>
                         </tr>
                     </template>
+                </tbody> 
                 </table>
                 <div class="limit-width bg-white mt4 pager">
                     <el-pagination

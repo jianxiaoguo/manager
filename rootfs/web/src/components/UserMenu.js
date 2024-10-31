@@ -31,7 +31,7 @@ export default {
                 localStorage.clear()
                 document.cookie = ''
                 router.push({ path: '/login'})
-                location.replace(process.env.VUE_APP_BASE_URL + "/login/drycc/")
+                location.replace(process.env.VUE_APP_SERVICE_URL + "/login/drycc/")
             })
         }
         onMounted(async () => {

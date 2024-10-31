@@ -73,6 +73,7 @@
                 <div class="w-100 ma2 flex-column">
                     <div class="collaborator-list limit-width ember-view">
                         <table class="w-100 mb5">
+                            <thead>
                             <tr class="w-100 f5">
                                 <th class="pl1 pr1 pv2 bb b--light-gray b">
                                     UUID
@@ -96,6 +97,8 @@
                                     Remark
                                 </th> 
                             </tr>
+                            </thead>
+                            <tbody>
                             <tr class="ember-view"  v-for="bill in billList" :key="bill">
                                 <td class="bb b--light-silver pv2 pl1 gray">{{bill.uuid}}</td>
                                 <td class="bb b--light-silver pv2 pl1 gray">{{bill.app_id}}</td>
@@ -116,6 +119,7 @@
                                     <span v-else>{{bill.remark}}</span>
                                 </td>
                             </tr>
+                            </tbody>
                         </table>
                         <div class="limit-width bg-white mt4 pager">
                             <el-pagination

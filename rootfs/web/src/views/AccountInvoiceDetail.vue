@@ -1,9 +1,11 @@
 <template>
   <div class="invoice-box">
     <table cellpadding="0" cellspacing="0">
+      <tbody>
       <tr class="top">
         <td colspan="2">
           <table>
+            <tbody>
             <tr>
               <td class="title">
                 <img
@@ -18,6 +20,7 @@
                 To: {{toDate}}
               </td>
             </tr>
+            </tbody>
           </table>
         </td>
       </tr>
@@ -25,6 +28,7 @@
       <tr class="information">
         <td colspan="2">
           <table>
+            <tbody>
             <tr>
               <td>
                 {{fromCompany.name}}<br />
@@ -59,6 +63,7 @@
                 </template>
               </td>
             </tr>
+            </tbody>
           </table>
         </td>
       </tr>
@@ -99,6 +104,7 @@
         <td>GRAND TOTAL</td>
         <td>{{invoice.total > 0 ? this.$toPrice(invoice.total) : 0}}</td>
       </tr>
+      </tbody>
     </table>
   </div>
 </template>

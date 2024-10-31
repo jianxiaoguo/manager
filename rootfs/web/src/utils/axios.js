@@ -4,7 +4,7 @@ import { ElMessage, ElLoading } from 'element-plus'
 //
 let axiosLoading
 // 环境的切换
-axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL
 axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 

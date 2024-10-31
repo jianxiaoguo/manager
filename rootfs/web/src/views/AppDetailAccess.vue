@@ -19,6 +19,7 @@
             <main-nav :is-access-active="true" :app-detail="appDetail"/>
             <div class="collaborator-list limit-width ember-view">
                 <table class="w-100 mb5">
+                    <thead>
                     <tr class="w-100 f5">
                         <th class="pl1 pr1 pv2 bb b--light-gray b" colspan="2">
                             Collaborators
@@ -30,6 +31,8 @@
                             <button class="hk-button--secondary" @click="showEdit(null)">Add collaborator</button>
                         </th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <template v-for="access in accesses">
                         <tr class="collaborator-item ember-view">
                             <td class="bb b--light-silver pa2 dtc w--28">
@@ -48,6 +51,7 @@
                             </td>
                         </tr>
                     </template>
+                    </tbody>
                 </table>
             </div>
         </div>
