@@ -1,13 +1,13 @@
 <template>
     <div class="limit-width ember-view">
         <div class="group-header u-padding-Txs u-padding-Bxxs">
-            <h5>Add-ons</h5>
+            <h5>Resources</h5>
         </div>
 
         <div class="mv3 ember-view" v-if="addons.length<1">
             <div class="hk-well ember-view">
-                <div class="f3 dark-gray lh-title mv1 ember-view"> There are no add-ons for this app </div>
-                <div class="f5 gray lh-copy ember-view"> You can add add-ons to this app and they will show here.
+                <div class="f3 dark-gray lh-title mv1 ember-view"> There are no resources for this app </div>
+                <div class="f5 gray lh-copy ember-view"> You can add resources to this app and they will show here.
                     <a href="https://www.drycc.cc/applications/managing-app-resources/" class="hk-link" target="_blank">Learn more</a>
                 </div>
             </div>

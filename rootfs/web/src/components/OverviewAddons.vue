@@ -2,12 +2,12 @@
     <div class="add-ons ember-view">
         <div class="flex-ns items-center pv2">
             <div class="flex dark-gray mr2">
-                <div class="mr1">Installed add-ons</div>
+                <div class="mr1">Installed Resources</div>
             </div>
             <div class="flex-auto"></div>
 
             <a @click="goToResources" class="flex items-center hk-link no-underline f6 mv1 mv0-ns ember-view">
-                <span class="underline">Details Add-ons</span>
+                <span class="underline">Details Resources</span>
                 <icon-arrow-circle-right class="ml--3 nudge-down--1" size="1.2rem"/>
             </a>
         </div>
@@ -46,10 +46,10 @@
         <div class="mb5 ember-view" v-if="addons.length === 0">
             <div class="hk-well ember-view">
                 <div class="f3 dark-gray lh-title mv1 ember-view">
-                    There are no add-ons for this app
+                    There are no resources for this app
                 </div>
                 <div class="f5 gray lh-copy ember-view">
-                    You can add add-ons to this app and they will show here.
+                    You can add resources to this app and they will show here.
                     <a href="https://www.drycc.cc/applications/managing-app-resources" class="hk-link" target="_blank">Learn more</a>
                 </div>
             </div>

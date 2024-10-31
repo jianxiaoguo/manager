@@ -4,7 +4,7 @@
             <div class="section-description">
                 <div class="section-title f3 purple" role="heading" aria-level="3">Config Vars</div>
                 <div class="mt2 f5 lh-copy dark-gray">
-                    Config vars change the way your app behaves. In addition to creating your own, some add-ons come with their own.
+                    Config vars change the way your app behaves. In addition to creating your own, some resources come with their own.
                 </div>
             </div>
 

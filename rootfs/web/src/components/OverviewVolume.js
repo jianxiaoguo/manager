@@ -24,7 +24,6 @@ export default {
             var currentCluster = store.getters.currentCluster
             const data =  await getVolumes(currentCluster.uuid, params.id)
             state.volumes = dealVolumes(data)
-            console.log(state.volumes, state.volumes.length,  "=======")
         })
 
 

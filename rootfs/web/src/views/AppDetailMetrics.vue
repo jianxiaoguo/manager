@@ -4,7 +4,7 @@
     <div class="main-panel bg-lightest-silver relative">
         <nav-box>
             <template v-slot:nav-cluster>
-                <cluster-app-select :app-detail="appDetail"/>
+                <cluster-app-detail :app-detail="appDetail"/>
             </template>
             <template v-slot:navbox-extension>
                 <nav-box-app-detail-menu :app-detail="appDetail"/>
@@ -25,20 +25,22 @@
             <div class="limit-width">
                 <div class="flex flex-column metrics__charts-container">
                     <div id="process-picker" class="relative dib mb2">
-                        <el-select v-model="currentProcess" class="m-2" placeholder="Select">
-                            <el-option
-                            v-for="pt in processTypes"
-                            :key="pt.name"
-                            :label="pt.name"
-                            :value="pt.name"
-                            />
-                        </el-select>
+                        <div class="pull-left" style="width: 320px;">
+                            <el-select v-model="currentProcess" class="m-2" placeholder="Select">
+                                <el-option
+                                v-for="pt in processTypes"
+                                :key="pt.name"
+                                :label="pt.name"
+                                :value="pt.name"
+                                />
+                            </el-select>
+                        </div>
                         <div class="pull-right">
                             <el-radio-group v-model="interval">
-                                <el-radio-button label="1">1 hour</el-radio-button>
-                                <el-radio-button label="6">6 hour</el-radio-button>
-                                <el-radio-button label="12">12 hour</el-radio-button>
-                                <el-radio-button label="24">24 hour</el-radio-button>
+                                <el-radio-button value="1">1 hour</el-radio-button>
+                                <el-radio-button value="6">6 hour</el-radio-button>
+                                <el-radio-button value="12">12 hour</el-radio-button>
+                                <el-radio-button value="24">24 hour</el-radio-button>
                             </el-radio-group>
                         </div>
                     </div>

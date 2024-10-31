@@ -6,7 +6,7 @@
                 <!---->    </div>
 
             <div class="mt2 f5 lh-copy dark-gray">
-                Deleting your app and its add-ons is irreversible.
+                Deleting your app and its resources is irreversible.
             </div>
 
             <!---->  </div>

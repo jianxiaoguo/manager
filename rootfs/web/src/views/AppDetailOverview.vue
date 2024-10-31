@@ -4,7 +4,7 @@
     <div class="main-panel bg-lightest-silver relative">
         <nav-box>
             <template v-slot:nav-cluster>
-                <cluster-app-select :app-detail="appDetail"/>
+                <cluster-app-detail :app-detail="appDetail"/>
             </template>
             <template v-slot:navbox-extension>
                 <nav-box-app-detail-menu :app-detail="appDetail"/>

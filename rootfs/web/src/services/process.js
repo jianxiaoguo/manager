@@ -2,48 +2,14 @@ import axios from "../utils/axios";
 
 export function getAppProcesses(clusterID, appId) {
     return axios.get(`/clusters/${clusterID}/apps/${appId}/`)
-
-    // return new Promise((resolve, reject) => {
-    //     let res = axios.get(`/clusters/${clusterID}/apps/${appId}/`)
-    //     var procfile_structures = [];
-    //     res.then(function (value) {
-    //         for (var i in value.procfile_structure) {
-    //             procfile_structures.push({"name": i, "cmd": value.procfile_structure[i], 'status': 1})
-    //         }
-    //         console.log("js getAppProcesses value: ", value)
-    //         resolve(procfile_structures);
-    //     }, function (err) {
-    //         reject(err);
-    //     })
-    // });
-
-    // return [
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '1'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '2'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '3'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '4'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '5'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '6'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '7'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '8'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '9'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '10'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '11'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '12'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '13'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '14'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:80', 'status': 1, 'id': '15'},
-    //     {'name': 'web', 'cmd': 'python manage.py runserver 0.0.0.0:8000', 'status': 0, 'id': '16'}
-    // ]
 }
 
 export function dealAppProcesses(obj) {
     var appProcesses = []
     for (let key in obj.data.structure) {
-        var cmd = key in obj.data.procfile_structure ? obj.data.procfile_structure[key] : "undefined"
+        var cmd = key in obj.data.structure ? obj.data.structure[key] : "undefined"
         appProcesses.push({"name": key, "cmd": cmd, "replicas": obj.data.structure[key]})
     }
-    console.log("js appProcesses value: ", appProcesses)
     return appProcesses.map(item => {
         return {
             'name': item.name,
@@ -65,7 +31,6 @@ export function dealProcessTypes(obj) {
     for (let i in obj.data.structure) {
         appProcessTypes.push({"name": i})
     }
-    console.log("js appProcessTypes value: ", appProcessTypes)
     return appProcessTypes
 }
 

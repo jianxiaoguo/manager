@@ -29,7 +29,7 @@
                                                     <div class="cp-validating-gravatar-input form-group ember-view">
                                                         <div class="flex flex-auto">
                                                             <span style="width:30px; height:30px" class="gravatar-icon br-100 ember-view" >
-                                                                <img :src="'/v1/avatar/'+username">
+                                                                <icon-user theme="outline" size="24" fill="#333"/>
                                                             </span>
                                                             <input :disabled="editAccess" placeholder="user" class="hk-input flex-auto pl6 ember-text-field ember-view" required type="text" v-model="username">
                                                         </div>

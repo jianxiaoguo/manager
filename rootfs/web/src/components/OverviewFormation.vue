@@ -7,14 +7,14 @@
             <div class="flex-auto"></div>
 
             <a @click="goToResources" class="flex items-center hk-link no-underline f6 mv1 mv0-ns ember-view">
-                <span class="underline">Details Dynos</span>
+                <span class="underline">Details Ptypes</span>
                  <icon-arrow-circle-right class="ml--3 nudge-down--1" size="1.2rem"/>
             </a>
         </div>
 
         <div class="purple-box" v-if="processes.length > 0">
             <div class="formation-tier">
-                <p>This app is using {{processes.length}} dynos</p>
+                <p>This app is using {{processes.length}} ptypes</p>
             </div>
             <template v-for="process in processes">
             <div class="display-formation-list hk-hide-bb-last-row ember-view">

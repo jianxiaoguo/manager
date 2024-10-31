@@ -31,7 +31,7 @@
                                         <div class="bg-lightest-orange inline-flex ba b--light-orange br1 pa2">
                                             <div class="f5 orange">
                                                 Changes made to external resources will not be rolled back.
-                                                Add-ons that set config vars may stop working if a release with
+                                                Resources that set config vars may stop working if a release with
                                                 a config var change is rolled back.
                                                 <a href="https://www.drycc.cc/applications/managing-app-lifecycle/" target="_blank" class="hk-link orange">Learn more</a>.
                                             </div>

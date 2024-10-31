@@ -7,6 +7,7 @@ import { i18n, setLang, getUAgentLang, getLang } from './lang'
 import {install} from '@icon-park/vue-next/es/all';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import './styles/element-plus/index.css'
 import moment from 'moment/src/moment'
 import { dinero, toDecimal} from 'dinero.js';
 

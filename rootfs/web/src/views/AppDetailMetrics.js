@@ -1,9 +1,9 @@
 import { useRouter } from 'vue-router'
-import { reactive, toRefs, onMounted, ref, watch } from 'vue'
+import { reactive, toRefs, onBeforeMount, ref, watch } from 'vue'
 import NavBar from "../components/NavBar.vue";
 import NavBox from "../components/NavBox.vue";
 import MainFooter from "../components/MainFooter.vue";
-import ClusterSelectAppDetail from "../components/ClusterSelectAppDetail.vue";
+import ClusterAppDetail from "../components/ClusterAppDetail.vue";
 import NavBoxAppDetailMenu from "../components/NavBoxAppDetailMenu.vue"
 import MainNav from "../components/MainNav.vue";
 import MetricMemory from "../components/MetricMemory.vue";
@@ -19,7 +19,7 @@ export default {
         'nav-bar': NavBar,
         'nav-box': NavBox,
         'main-footer': MainFooter,
-        'cluster-app-select': ClusterSelectAppDetail,
+        'cluster-app-detail': ClusterAppDetail,
         'nav-box-app-detail-menu': NavBoxAppDetailMenu,
         'main-nav': MainNav,
         'metric-memory': MetricMemory,
@@ -31,7 +31,7 @@ export default {
         const router = useRouter()
         const params = router.currentRoute.value.params
         const state = reactive({
-            interval: ref(1),
+            interval: ref('1'),
             appDetail: Object,
             processTypes: Array,
             currentProcess: ref(''),
@@ -58,7 +58,7 @@ export default {
         watch(() => state.interval, async()=>{
             await fetchMetric()
         })
-        onMounted( async () => {
+        onBeforeMount( async () => {
             var currentCluster = store.getters.currentCluster
             state.appDetail = store.getters.currentApp
             let res = await getAppProcessTypes(currentCluster.uuid, params.id)
@@ -82,7 +82,6 @@ export default {
                 await fetchMetric()
             }
         })
-
         return {
             ...toRefs(state),
         }

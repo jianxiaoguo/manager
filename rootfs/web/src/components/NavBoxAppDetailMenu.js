@@ -23,7 +23,7 @@ export default {
             var currentApp = store.getters.currentApp
             var currentCluster = store.getters.currentCluster
             const res = await getAppDomains(currentCluster.uuid, currentApp.id)
-            state.domain = res ? "http://" + dealAppDomains(res)[0].domain : null
+            state.domain = res.data.count > 0 ? "http://" + dealAppDomains(res)[0].domain : null
         }
         onMounted(async () => {
             await fetchDomains()

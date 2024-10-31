@@ -20,8 +20,8 @@
                 </div>
 
                 <div class="panel-content">
-                    <h4>Dynos</h4>
-                    <p>Drycc runs your app in lightweight, isolated Linux containers called "dynos". As a small start-up team, you can focus more on the business itself, you can view it this way.</p>
+                    <h4>Ptypes</h4>
+                    <p>Drycc runs your app in lightweight, isolated Linux containers called "ptypes". As a small start-up team, you can focus more on the business itself, you can view it this way.</p>
                     <pre>$ drycc ps:list -a yourapp </pre>
                     <h4>Resources</h4>
                     <p>Drycc different from other cloud computing vendors, drycc's CPU, memory and volume can be customized, like this.</p>
@@ -49,7 +49,7 @@
                     <p>Drycc resources are components that support your application, such as data storage, monitoring, analytics, data processing, and more. </p>
                     <pre>$ drycc resources --help </pre>
                     <h4>Resource Install</h4>
-                    <p>Resources are installed onto applications by using the drycc. Most add-ons offer multiple plans, with different features, capabilities, and prices.</p>
+                    <p>Resources are installed onto applications by using the drycc. Most resources offer multiple plans, with different features, capabilities, and prices.</p>
                     <pre>$ drycc resources:create mysql:plan-250 -a yourapp </pre>
                     
                     <h4>Why Use Resources</h4>

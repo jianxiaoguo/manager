@@ -1,7 +1,7 @@
 <template>
     <div class="limit-width ember-view">
         <div class="group-header u-padding-Txs u-padding-Bxxs">
-            <h5>Dynos</h5>
+            <h5>Ptypes</h5>
         </div>
 
         <div class="mv3 ember-view" v-if="processes.length<1">

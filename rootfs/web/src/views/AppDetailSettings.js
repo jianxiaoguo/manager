@@ -3,7 +3,7 @@ import { reactive, toRefs, onMounted } from 'vue'
 import NavBar from "../components/NavBar.vue";
 import NavBox from "../components/NavBox.vue";
 import MainFooter from "../components/MainFooter.vue";
-import ClusterSelectAppDetail from "../components/ClusterSelectAppDetail.vue";
+import ClusterAppDetail from "../components/ClusterAppDetail.vue";
 import NavBoxAppDetailMenu from "../components/NavBoxAppDetailMenu.vue"
 import MainNav from "../components/MainNav.vue";
 import SettingAppInfo from "../components/SettingAppInfo.vue";
@@ -19,7 +19,7 @@ export default {
         'nav-bar': NavBar,
         'nav-box': NavBox,
         'main-footer': MainFooter,
-        'cluster-app-select': ClusterSelectAppDetail,
+        'cluster-app-detail': ClusterAppDetail,
         'nav-box-app-detail-menu': NavBoxAppDetailMenu,
         'main-nav': MainNav,
         'setting-app-info': SettingAppInfo,

@@ -1,12 +1,12 @@
 <!--集群选择器-->
 <template>
-    <div class="context-switcher ember-view">
+    <div class="flex items-center">
         <el-dropdown trigger="click" class="ml1 mt1">
             <span class="el-dropdown-link">
                 <span class="dib pv--1">
                     <icon-server class="icon malibu-icon" fill="#409EFF"/>
                 </span>
-                <span class="ml2 mr1 mb1 purple">{{currentCluster.name}}</span>
+                <span class="f3 ml2 mr1 mb1 purple">{{currentCluster.name}}</span>
                 <icon-down class="icon malibu-icon mr2" fill="#409EFF"/>
             </span>
             <template #dropdown>
@@ -29,6 +29,9 @@ export default ClusterSelect
 </script>
 
 <style scoped>
+    .el-dropdown-link span {
+        font-weight: 700;
+    }
     .context-switcher__list {
         width: 160px;
     }
