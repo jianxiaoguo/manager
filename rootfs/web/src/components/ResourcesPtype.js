@@ -5,7 +5,7 @@ import { getAppProcesses, dealAppProcesses } from "../services/process";
 import { useStore } from "vuex"
 
 export default {
-    name: "ResourcesDyno",
+    name: "ResourcesPtype",
     props: {
         appDetail: [Object, Function]
     },

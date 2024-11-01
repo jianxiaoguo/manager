@@ -6,7 +6,7 @@ import MainFooter from "../components/MainFooter.vue";
 import ClusterAppDetail from "../components/ClusterAppDetail.vue";
 import NavBoxAppDetailMenu from "../components/NavBoxAppDetailMenu.vue"
 import MainNav from "../components/MainNav.vue";
-import ResourcesDyno from "../components/ResourcesDyno.vue";
+import ResourcesPtype from "../components/ResourcesPtype.vue";
 import ResourcesAddons from "../components/ResourcesAddons.vue";
 import ResourcesVolume from "../components/ResourcesVolume.vue";
 import { useStore } from "vuex";
@@ -20,7 +20,7 @@ export default {
         'cluster-app-detail': ClusterAppDetail,
         'nav-box-app-detail-menu': NavBoxAppDetailMenu,
         'main-nav': MainNav,
-        'resources-dyno': ResourcesDyno,
+        'resources-ptype': ResourcesPtype,
         'resources-addons': ResourcesAddons,
         'resources-volume': ResourcesVolume
     },

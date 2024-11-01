@@ -2,7 +2,7 @@
     <div class="ember-view">
         <div class="flex-ns items-center pv2">
             <div class="flex dark-gray mr2">
-                <div class="mr1">Dyno formation</div>
+                <div class="mr1">Ptypes formation</div>
             </div>
             <div class="flex-auto"></div>
 
@@ -22,12 +22,11 @@
                     <div class="mr3 flex-auto">
                         <div class="flex flex-row w-90">
                             <div class="mr2">{{process.name}}</div>
-                            <div class="mid-gray f5 code truncate">{{process.cmd}}</div>
                         </div>
                     </div>
                     <span class="text-uppercase b f5">
-                        <span class="light-green" v-if="process.status === 1">On</span>
-                        <span class="light-red" v-if="process.status === 0">Off</span>
+                        <span class="light-green" v-if="process.replicas > 0">{{process.cmd}} replicas</span>
+                        <span class="light-red" v-else>{{process.cmd}} replicas</span>
                     </span>
                 </div>
             </div>

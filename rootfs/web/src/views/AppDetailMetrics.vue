@@ -40,7 +40,7 @@
                                 <el-radio-button value="5">5 minute</el-radio-button>
                                 <el-radio-button value="10">10 minute</el-radio-button>
                                 <el-radio-button value="20">20 minute</el-radio-button>
-                                <el-radio-button value="20">30 minute</el-radio-button>
+                                <el-radio-button value="30">30 minute</el-radio-button>
                             </el-radio-group>
                         </div>
                     </div>

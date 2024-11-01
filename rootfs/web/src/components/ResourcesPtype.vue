@@ -36,10 +36,9 @@
                     </div>
                 </div>
                 <div class="dark-gray f5 dn dib-ns mr2 truncate"></div>
-                <div class="dark-gray f5 dn dib-ns mr2 truncate"><span>{{proc.cmd}}</span></div>
                 <div class="dark-gray f5 dn dib-ns mr2 truncate w5 tr">
-                    <span class="f5 text-uppercase light-green" v-if="proc.replicas > 0">{{proc.replicas}}D</span>
-                    <span class="f5 text-uppercase light-red" v-if="proc.replicas < 1">{{proc.replicas}}D</span>
+                    <span class="f5 text-uppercase light-green" v-if="proc.replicas > 0">{{proc.replicas}} replicas</span>
+                    <span class="f5 text-uppercase light-red" v-else>{{proc.replicas}} replicas</span>
                 </div>
             </div>
 
@@ -48,8 +47,8 @@
 </template>
 
 <script>
-import ResourcesDyno from "./ResourcesDyno"
-export default ResourcesDyno
+import ResourcesPtype from "./ResourcesPtype";
+export default ResourcesPtype
 </script>
 
 <style scoped>

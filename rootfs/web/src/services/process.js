@@ -21,9 +21,6 @@ export function dealAppProcesses(obj) {
 
 export function getAppProcessTypes(clusterID, appId) {
     return axios.get(`/clusters/${clusterID}/apps/${appId}/`)
-    // return [
-    //     {'name': 'web'}, {'name': 'celery'}, {'name': 'cbeat'}, {'name': 'cron'}, {'name': 'sync1'}, {'name': 'sync2'}
-    // ]
 }
 
 export function dealProcessTypes(obj) {
