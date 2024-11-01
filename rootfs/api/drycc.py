@@ -24,8 +24,11 @@ class DryccClient(object):
     def get(self, url: str, **kwargs) -> requests.Response:
         return self.session.get(url, params=kwargs)
 
-    def delete(self, url: str, **kwargs) -> requests.Response:
-        return self.session.delete(url, params=kwargs)
-
     def post(self, url: str, **kwargs) -> requests.Response:
         return self.session.post(url, data=json.dumps(kwargs))
+
+    def put(self, url: str, **kwargs) -> requests.Response:
+        return self.session.put(url, data=json.dumps(kwargs))
+
+    def delete(self, url: str, **kwargs) -> requests.Response:
+        return self.session.delete(url, params=kwargs)

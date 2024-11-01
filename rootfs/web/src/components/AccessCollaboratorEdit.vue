@@ -6,10 +6,6 @@
                     <div class="ml4 flex-auto f3 dark-gray truncate lh-copy" >
                         {{!editAccess? 'New collaborator':'Edit collaborator'}}
                     </div>
-<!--                    <div v-if="editAccess"  class="ml4 flex-auto f3 dark-gray truncate lh-copy" >-->
-<!--                        Edit collaborator-->
-<!--                    </div>-->
-
                     <button @click="canelEdit" class="flex bg-transparent bn mr2 mt0 pa1 pointer" type="button">
                         <svg style="height: 16px; width: 16px;" class="icon malibu-icon fill-gray" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1158" width="200" height="200"><path d="M574.55 522.35L904.4 192.5c16.65-16.65 16.65-44.1 0-60.75l-1.8-1.8c-16.65-16.65-44.1-16.65-60.75 0L512 460.25l-329.85-330.3c-16.65-16.65-44.1-16.65-60.75 0l-1.8 1.8c-17.1 16.65-17.1 44.1 0 60.75l329.85 329.85L119.6 852.2c-16.65 16.65-16.65 44.1 0 60.75l1.8 1.8c16.65 16.65 44.1 16.65 60.75 0L512 584.9l329.85 329.85c16.65 16.65 44.1 16.65 60.75 0l1.8-1.8c16.65-16.65 16.65-44.1 0-60.75L574.55 522.35z" p-id="1159"></path></svg>
                     </button>
@@ -28,10 +24,19 @@
                                                     <label class="f5 b gray mb2" for="e-mail-address">Username</label>
                                                     <div class="cp-validating-gravatar-input form-group ember-view">
                                                         <div class="flex flex-auto">
-                                                            <span style="width:30px; height:30px" class="gravatar-icon br-100 ember-view" >
-                                                                <icon-user theme="outline" size="24" fill="#333"/>
-                                                            </span>
-                                                            <input :disabled="editAccess" placeholder="user" class="hk-input flex-auto pl6 ember-text-field ember-view" required type="text" v-model="username">
+                                                            <input :disabled="editAccess" placeholder="user" class="hk-input flex-auto ember-text-field ember-view" required type="text" v-model="username">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <label class="f5 b gray mb2" for="e-mail-address">Permissions</label>
+                                                    <div class="cp-validating-gravatar-input form-group ember-view">
+                                                        <div class="flex flex-auto">
+                                                            <el-checkbox-group v-model="permissions">
+                                                                <el-checkbox value="view">View</el-checkbox>
+                                                                <el-checkbox value="change">Delete</el-checkbox>
+                                                                <el-checkbox value="delete">Change</el-checkbox>
+                                                            </el-checkbox-group>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -48,7 +53,7 @@
                 <div class="mh4 ember-view"></div>
                 <div class="hk-slide-panel-footer relative shadow-outer-1 flex justify-center items-center z-2 pa4 ember-view">
                     <button @click="canelEdit" class="async-button w-50 mr2 default hk-button--secondary ember-view" type="button">Cancel</button>
-                    <button @click="addPerm" class="async-button w-50 default hk-button--primary ember-view" type="submit">Save changes</button>
+                    <button @click="savePerm" class="async-button w-50 default hk-button--primary ember-view" type="submit">Save changes</button>
                 </div>
             </div>
         </div>

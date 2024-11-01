@@ -213,8 +213,8 @@ class DryccProxyViewSet(NormalUserViewSet):
             content_type=response.headers.get('Content-Type')
         )
 
-    def delete(self, request, *args, **kwargs):
-        response = self.client.delete(
+    def post(self, request, *args, **kwargs):
+        response = self.client.post(
             self.base_url + kwargs.get('proxy_url'),
             **request.data
         )
@@ -224,8 +224,19 @@ class DryccProxyViewSet(NormalUserViewSet):
             content_type=response.headers.get('Content-Type')
         )
 
-    def post(self, request, *args, **kwargs):
-        response = self.client.post(
+    def put(self, request, *args, **kwargs):
+        response = self.client.put(
+            self.base_url + kwargs.get('proxy_url'),
+            **request.data
+        )
+        return Response(
+            data=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type')
+        )
+
+    def delete(self, request, *args, **kwargs):
+        response = self.client.delete(
             self.base_url + kwargs.get('proxy_url'),
             **request.data
         )

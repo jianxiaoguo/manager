@@ -7,7 +7,7 @@ import ClusterAppDetail from "../components/ClusterAppDetail.vue";
 import NavBoxAppDetailMenu from "../components/NavBoxAppDetailMenu.vue"
 import MainNav from "../components/MainNav.vue";
 import AccessCollaboratorEdit from "../components/AccessCollaboratorEdit.vue";
-import { getAppAccesses, dealAppAccesses } from "../services/access"
+import { getAppAccesses } from "../services/access"
 import { useStore } from "vuex"
 
 export default {
@@ -42,8 +42,7 @@ export default {
         const fetchAccesses = async () => {
             var currentCluster = store.getters.currentCluster
             state.appDetail = store.getters.currentApp
-            let accessData = await getAppAccesses(currentCluster.uuid, params.id)
-            state.accesses = accessData ? dealAppAccesses(state.appDetail, accessData) : null
+            state.accesses = (await getAppAccesses(currentCluster.uuid, params.id)).data.results
         }
 
         const closeEdit = async () => {

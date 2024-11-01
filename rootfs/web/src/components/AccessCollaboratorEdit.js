@@ -1,5 +1,5 @@
-import { reactive, toRefs } from 'vue'
-import { addAppAccesses, deleteAppAccesses } from "../services/access";
+import { reactive, ref, toRefs } from 'vue'
+import { addAppAccesses, deleteAppAccesses, updateAppAccesses } from "../services/access";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from 'element-plus'
@@ -15,21 +15,26 @@ export default {
         const router = useRouter()
         const params = router.currentRoute.value.params
         const state = reactive({
-            username: null,
-            // newUser: null
+            username: ref(''),
+            permissions: ref([])
         })
         
         if (props.editAccess) {
             state.username = props.editAccess.username
+            state.permissions = props.editAccess.permissions
         }
 
         const canelEdit = () => {
             context.emit('closeEdit')
         }
-        const addPerm = async () => {
+        const savePerm = async () => {
             var currentCluster = store.getters.currentCluster
-            addAppAccesses(currentCluster.uuid, params.id, state.username).then(res=>{
-                if (res.status == 201) {
+            var action = addAppAccesses
+            if (props.editAccess) {
+                action = updateAppAccesses
+            }
+            action(currentCluster.uuid, params.id, state.username, state.permissions).then(res=>{
+                if (res.status >= 200  && res.status < 300) {
                     ElMessage({
                         message: 'OK',
                         type: 'success',
@@ -53,7 +58,7 @@ export default {
         return {
             ...toRefs(state),
             canelEdit,
-            addPerm,
+            savePerm,
             deletePerm
         }
     }

@@ -21,13 +21,11 @@ urlpatterns = [
     re_path(
         r'^clusters/(?P<name>[-_\w]+)?$',
         views.ClusterViewSet.as_view({'get': 'retrieve'})),
-
     re_path(
         r'^clusters/(?P<uuid>[-_\w]+)/(?P<proxy_url>.+)/?$',
         views.DryccProxyViewSet.as_view({
-            'get': 'get', 'delete': 'delete', 'post': 'post'
+            'get': 'get', 'delete': 'delete', 'post': 'post', 'put': 'put'
         })),
-
     re_path(
         r'^bills/?$',
         views.BillViewSet.as_view({'get': 'list'})),
