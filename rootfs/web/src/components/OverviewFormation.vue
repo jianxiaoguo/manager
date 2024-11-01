@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <div class="purple-box" v-if="processes.length > 0">
+        <div class="bule-box" v-if="processes.length > 0">
             <div class="formation-tier">
                 <p>This app is using {{processes.length}} ptypes</p>
             </div>

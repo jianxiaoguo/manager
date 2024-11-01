@@ -36,6 +36,7 @@ export function dealAppActivities(obj) {
             username: item.owner,
             version: item.version,
             failed: item.failed,
+            deployed_ptypes: item.deployed_ptypes,
             created_time: item.created
         }
     })

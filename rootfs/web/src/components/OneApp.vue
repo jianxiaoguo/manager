@@ -3,7 +3,7 @@
     <a @click="goToAppDetail()" class="ember-view link cursor-hand dark-gray">
         <div class="flex items-baseline limit-width">
             <div class="relative w3 mr1 ember-view">
-                <icon-application-one size="2rem" class="icon malibu-icon v-mid malibu-fill-gradient-purple o-60" fill="#409EFF"/>
+                <icon-application-one size="2rem" class="icon malibu-icon v-mid malibu-fill-gradient-bule o-60" fill="#409EFF"/>
             </div>
             <span class="f3 dark-gray"> {{name}} </span>
             <div class="flex-auto"></div>

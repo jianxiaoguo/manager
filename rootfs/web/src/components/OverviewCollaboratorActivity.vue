@@ -12,7 +12,7 @@
                 <icon-arrow-circle-right class="ml--3 nudge-down--1" size="1.2rem"/>
             </a>
         </div>
-        <div class="purple-box">
+        <div class="bule-box">
             <div class="ph3 pv1">
                 <div class="collaborator f5 ember-view">
                     <div class="mv2 flex items-center" v-for="ca in activities" :key="ca.username">

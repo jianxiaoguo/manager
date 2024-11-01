@@ -9,7 +9,7 @@ import MainNav from "../components/MainNav.vue";
 import ActivityRollBack from "../components/ActivityRollBack.vue";
 import { useStore } from "vuex"
 import { getAppActivities, dealAppActivities, postAppActivitieRollback } from "../services/activity";
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
     name: "AppDetailActivity",
@@ -36,7 +36,6 @@ export default {
         onMounted(async () => {
             await fetchActivity()
         })
-
         const fetchActivity = async () => {
             var currentCluster = store.getters.currentCluster
             state.appDetail = store.getters.currentApp
@@ -54,14 +53,18 @@ export default {
             state.rollBackVersion = v
             state.isShowRollBack = true
             var currentCluster = store.getters.currentCluster
-            postAppActivitieRollback(currentCluster.uuid, params.id, v).then(res=>{
-                if (res.status == 201){
-                    ElMessage({
-                        message: 'Post app activitie rollback ok.',
-                        type: 'success',
-                    })
-                }
-                fetchActivity()
+            ElMessageBox.confirm(`Are you sure rollback to version ${v}?`, 'Warning').then(async () => {
+                postAppActivitieRollback(currentCluster.uuid, params.id, v).then(res=>{
+                    if (res.status == 201){
+                        ElMessage({
+                            message: 'Post app activitie rollback ok.',
+                            type: 'success',
+                        })
+                    }
+                    fetchActivity()
+                })
+            }).catch(() => {
+                console.log("Ignore rollback to version", v)
             })
         }
 
@@ -69,7 +72,7 @@ export default {
         return {
             ...toRefs(state),
             openRollBack,
-            closeRollBack
+            closeRollBack,
         }
     },
 }

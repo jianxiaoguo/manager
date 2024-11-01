@@ -1,7 +1,7 @@
 <template>
   <div class="panel-section">
     <div class="section-description">
-      <div class="section-title f3 purple">Invoices</div>
+      <div class="section-title f3 bule">Invoices</div>
     </div>
 
     <div v-if="lessInvoices.length > 0" class="panel-content">

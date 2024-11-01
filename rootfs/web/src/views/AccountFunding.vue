@@ -35,7 +35,7 @@
                 <div class="w-100 mb5">
                     <el-row :gutter="20">
                         <el-col :span="6">
-                            <el-select clearable class="purple" v-model="direction" placeholder="Direction">
+                            <el-select clearable class="bule" v-model="direction" placeholder="Direction">
                                 <el-option
                                 v-for="item in directionOptions"
                                 :key="item.value"
@@ -46,7 +46,7 @@
                             </el-select>
                         </el-col>
                         <el-col :span="6">
-                            <el-select clearable class="purple" v-model="tradingType" placeholder="Trading Type">
+                            <el-select clearable class="bule" v-model="tradingType" placeholder="Trading Type">
                                 <el-option
                                 v-for="item in tradingTypeOptions"
                                 :key="item.value"

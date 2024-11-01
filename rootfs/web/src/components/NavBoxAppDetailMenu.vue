@@ -6,7 +6,7 @@
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#favorite-option-16"></use>
                 </svg>
             </button>
-            <a v-bind:href="domain" title="Open Application" target="_blank" class="hk-button--secondary ml3 open-app-button purple">
+            <a v-bind:href="domain" title="Open Application" target="_blank" class="hk-button--secondary ml3 open-app-button bule">
                 Open app
             </a>
             <div class="ember-view">

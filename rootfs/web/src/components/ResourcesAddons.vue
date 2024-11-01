@@ -22,7 +22,7 @@
                 <div class="mr4 flex dark-gray w-100 w-25-ns">
                     <div class="truncate">
                         <div class="ember-view">
-                            <div class="purple no-underline link dib pv1 hk-focus-ring b">
+                            <div class="bule no-underline link dib pv1 hk-focus-ring b">
                                 {{addon.name}}
                             </div>
                         </div>

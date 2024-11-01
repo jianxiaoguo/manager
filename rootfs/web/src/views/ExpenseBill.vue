@@ -30,7 +30,7 @@
             <div class="w-100 flex limit-width">
                 <el-row :gutter="20">
                     <el-col :span="6">
-                        <el-select clearable class="purple" v-model="cluster" placeholder="Select Cluster">
+                        <el-select clearable class="bule" v-model="cluster" placeholder="Select Cluster">
                             <el-option
                             v-for="item in clusterOptions"
                             :key="item.code"

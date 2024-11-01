@@ -2,7 +2,7 @@
   <div class="panel-section">
     <account-bill-payment-card :publicKey="publicKey" v-if="editPaymentCard" @closePaymentCardAction="closePaymentCardAction" />
     <div class="section-description">
-      <div class="section-title f3 purple">Billing Information</div>
+      <div class="section-title f3 bule">Billing Information</div>
     </div>
 
     <div class="panel-content">

@@ -3,7 +3,7 @@
         <li class="list-group-item ember-view">
             <div class="panel-section">
                 <div class="section-description">
-                    <div class="section-title f3 purple">Profile</div>
+                    <div class="section-title f3 bule">Profile</div>
                     <div class="mt2 f5 lh-copy dark-gray">
                         Your email address is your identity on Drycc and is used to log in.
                     </div>
@@ -59,7 +59,7 @@
         <li class="list-group-item ember-view">
             <div class="panel-section">
                 <div class="section-description">
-                    <div class="section-title f3 purple">Platform Credits</div>
+                    <div class="section-title f3 bule">Platform Credits</div>
                     <div class="mt2 f5 lh-copy dark-gray">
                         Platform Credits will be applied only to offset eligible fees.
                     </div>

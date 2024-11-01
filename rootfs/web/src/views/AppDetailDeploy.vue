@@ -17,20 +17,20 @@
                     <li class="deploy-github list-group-item ember-view">
                         <div class="panel-section ">
                             <div class="section-description">
-                                <div class="section-title f3 purple">Deployment method</div>
+                                <div class="section-title f3 bule">Deployment method</div>
                             </div>
                             <div class="panel-content">
                                 <ul class="nav deploy-nav nav-pills">
                                     <li class="deploy-tab tab-heroku-git">
                                         <a @click="goToDryccGit" href="#" class="ember-view" :class="{'active': depolyType==='drycc-git'}">
-                                            <icon-branch size="2.5rem" class="icon malibu-icon tab-icon malibu-fill-gradient-purple" fill="#409EFF"/>
+                                            <icon-branch size="2.5rem" class="icon malibu-icon tab-icon malibu-fill-gradient-bule" fill="#409EFF"/>
                                             <div class="service">Drycc Git</div>
                                             <small>Use Drycc CLI</small>
                                         </a>
                                     </li>
                                     <li class="deploy-tab tab-containers">
                                         <a @click="goToDryccImage" href="#" class="ember-view" :class="{'active': depolyType==='drycc-image'}">
-                                            <icon-box size="2.5rem" class="icon malibu-icon tab-icon malibu-fill-gradient-purple" fill="#409EFF"/>
+                                            <icon-box size="2.5rem" class="icon malibu-icon tab-icon malibu-fill-gradient-bule" fill="#409EFF"/>
                                             <div class="service">Container</div>
                                             <small>Use Drycc CLI</small>
                                         </a>

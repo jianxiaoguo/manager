@@ -6,7 +6,7 @@
                 <span class="dib pv--1">
                     <icon-server class="icon malibu-icon" fill="#409EFF"/>
                 </span>
-                <span class="f3 ml2 mr1 mb1 purple">{{currentCluster.name}}</span>
+                <span class="f3 ml2 mr1 mb1 bule">{{currentCluster.name}}</span>
                 <icon-down class="icon malibu-icon mr2" fill="#409EFF"/>
             </span>
             <template #dropdown>
@@ -35,7 +35,7 @@ export default ClusterSelect
     .context-switcher__list {
         width: 160px;
     }
-    .bg-lightest-purple {
+    .bg-lightest-bule {
         background: #ffffff;
     }
 </style>

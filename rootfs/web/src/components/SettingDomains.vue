@@ -13,7 +13,7 @@
     />
     <li class="list-group-item ember-view"><div class="panel-section ">
         <div class="section-description">
-            <div class="section-title f3 purple" role="heading" aria-level="3">
+            <div class="section-title f3 bule" role="heading" aria-level="3">
                 Domains
             </div>
 
@@ -56,7 +56,7 @@
                 </div>
 
                 <form v-if="domains.length>0">
-                  <table class="table editable-list table-auto purple-list domains-list-table">
+                  <table class="table editable-list table-auto bule-list domains-list-table">
                     <thead>
                     <tr>
                       <th class="pa0">Domain Name</th>

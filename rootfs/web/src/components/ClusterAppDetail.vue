@@ -22,7 +22,7 @@ export default ClusterAppDetail
     .context-switcher__list {
         width: 160px;
     }
-    .bg-lightest-purple {
+    .bg-lightest-bule {
         background: #ffffff;
     }
 </style>

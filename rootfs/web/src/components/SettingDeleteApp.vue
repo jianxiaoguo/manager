@@ -1,7 +1,7 @@
 <template>
     <li class="list-group-item ember-view"><div class="panel-section danger app-deletion">
         <div class="section-description">
-            <div class="section-title f3 purple" role="heading" aria-level="3">
+            <div class="section-title f3 bule" role="heading" aria-level="3">
                 Delete App
                 <!---->    </div>
 

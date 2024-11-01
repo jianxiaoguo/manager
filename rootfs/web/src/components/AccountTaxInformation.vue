@@ -1,7 +1,7 @@
 <template>
   <div class="panel-section">
     <div class="section-description">
-      <div class="section-title f3 purple" role="heading" aria-level="3">
+      <div class="section-title f3 bule" role="heading" aria-level="3">
         Tax Information
         <!---->
       </div>

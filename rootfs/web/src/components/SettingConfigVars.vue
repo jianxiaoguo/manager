@@ -2,7 +2,7 @@
     <li class="list-group-item ember-view">
         <div class="panel-section ">
             <div class="section-description">
-                <div class="section-title f3 purple" role="heading" aria-level="3">Config Vars</div>
+                <div class="section-title f3 bule" role="heading" aria-level="3">Config Vars</div>
                 <div class="mt2 f5 lh-copy dark-gray">
                     Config vars change the way your app behaves. In addition to creating your own, some resources come with their own.
                 </div>
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <form>
-                            <table class="table editable-list purple-list config-vars-list-table">
+                            <table class="table editable-list bule-list config-vars-list-table">
                                 <tbody>
                                 <template v-for="(dealtConfig, index) in dealtConfigs">
                                 <tr class="config-var-item ember-view">
@@ -42,7 +42,7 @@
                                     <td class="action-cell ember-view">
                                         <button @click="couldEdit(dealtConfig)" class="bg-transparent hk-focus-ring--blue:focus cursor-hand br1 ba0 b--none pa--1 pr3" title="Edit" type="button" >
                                             <span class="clip">Edit</span>
-                                            <svg style="height: 20px; width: 20px;" class="icon malibu-icon malibu-fill-gradient-purple" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M862.72 306.346667l60.16-60.16c20.053333-20.053333 20.053333-52.48 0-72.533334l-72.533333-72.533333c-20.053333-20.053333-52.48-20.053333-72.533334 0l-60.16 60.16 145.066667 145.066667zM669.44 209.493333L158.293333 720.64l-72.106666 217.173333 217.173333-72.106666L814.506667 354.56z" fill="#409EFF" ></path></svg>
+                                            <svg style="height: 20px; width: 20px;" class="icon malibu-icon malibu-fill-gradient-bule" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M862.72 306.346667l60.16-60.16c20.053333-20.053333 20.053333-52.48 0-72.533334l-72.533333-72.533333c-20.053333-20.053333-52.48-20.053333-72.533334 0l-60.16 60.16 145.066667 145.066667zM669.44 209.493333L158.293333 720.64l-72.106666 217.173333 217.173333-72.106666L814.506667 354.56z" fill="#409EFF" ></path></svg>
                                         </button>
                                         <button @click="deleteConfig(index)" class="bg-transparent hk-focus-ring--blue:focus cursor-hand br1 ba0 b--none pa--1 mr2" title="Delete" type="button" >
                                             <span class="clip">Delete</span>

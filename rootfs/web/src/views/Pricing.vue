@@ -11,7 +11,7 @@
           <li class="list-group-item ember-view">
             <div class="panel-section">
                 <div class="section-description">
-                    <div class="section-title f3 purple" role="heading" aria-level="3">
+                    <div class="section-title f3 bule" role="heading" aria-level="3">
                         Drycc Basic Pricing
                     </div>
                     <div class="mt2 f5 lh-copy dark-gray">
@@ -36,7 +36,7 @@
           <li class="list-group-item ember-view">
             <div class="panel-section">
                 <div class="section-description">
-                    <div class="section-title f3 purple" role="heading" aria-level="3">
+                    <div class="section-title f3 bule" role="heading" aria-level="3">
                         Drycc Resource Pricing
                     </div>
                     <div class="mt2 f5 lh-copy dark-gray">
@@ -67,7 +67,7 @@
             <li class="list-group-item ember-view">
               <div class="panel-section">
                   <div class="section-description">
-                      <div class="section-title f3 purple" role="heading" aria-level="3">
+                      <div class="section-title f3 bule" role="heading" aria-level="3">
                           Price Calculator
                       </div>
                       <div class="mt2 f5 lh-copy dark-gray">
@@ -126,7 +126,7 @@
              <li class="list-group-item ember-view">
               <div class="panel-section">
                   <div class="section-description">
-                      <div class="section-title f3 purple" role="heading" aria-level="3">
+                      <div class="section-title f3 bule" role="heading" aria-level="3">
                           Total
                       </div>
                   </div>          

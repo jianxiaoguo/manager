@@ -16,14 +16,14 @@
             <li class="addon ph3 pv2 flex b--silver bg-white" v-for="volume in volumes" :key="volume.name">
                 <a href="" class="mt1" target="_blank" rel="noopener noreferrer">
                     <div class="relative">
-                        <icon-components size="2.5rem" fill="#409EFF" class="icon malibu-icon malibu-fill-gradient-purple nudge-left--2 nudge-up--1" />
+                        <icon-components size="2.5rem" fill="#409EFF" class="icon malibu-icon malibu-fill-gradient-bule nudge-left--2 nudge-up--1" />
                     </div>
                 </a>
                 <div class="ember-view ma0 pl2 flex-auto-l">
                     <div>
                         <div class="fl">
                             <div>
-                                <span class="hk-link purple no-underline ">
+                                <span class="hk-link bule no-underline ">
                                     {{volume.name}}               
                                 </span>
                             </div>

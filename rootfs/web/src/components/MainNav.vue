@@ -3,7 +3,7 @@
         <div class="limit-width">
             <div class="sub-nav-item ember-view">
                 <a @click="goToAppDetail" class="ember-view" :class="{'active': isOverviewActive}">
-                    <svg style="height: 24px; width: 24px;"  class="icon malibu-icon fill-purple" >
+                    <svg style="height: 24px; width: 24px;"  class="icon malibu-icon fill-bule" >
                         <title >Overview</title>
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#overview-28"></use>
                     </svg>

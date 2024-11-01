@@ -1,7 +1,7 @@
 <template>
     <li class="list-group-item ember-view"><div class="panel-section ">
         <div class="section-description">
-            <div class="section-title f3 purple" role="heading" aria-level="3">
+            <div class="section-title f3 bule" role="heading" aria-level="3">
                 Transfer Ownership
                 <!---->    </div>
 

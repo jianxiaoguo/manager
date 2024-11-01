@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     
-                    <div class="purple-box mt2 mb4">
+                    <div class="bule-box mt2 mb4">
                         <div class="ember-view">
                             <div class="ember-view">
                                 <div class="metrics__main__charts metrics__chart-sorting is-vertical">

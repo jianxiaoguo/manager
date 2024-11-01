@@ -1,7 +1,7 @@
 <template>
     <div class="panel-section danger">
         <div class="section-description">
-            <div class="section-title f3 purple">Close Account</div>
+            <div class="section-title f3 bule">Close Account</div>
             <div class="mt2 f5 lh-copy dark-gray">
                 You must delete all apps on this account first. <br><strong>Warning:</strong> Closing your account is irreversible.
             </div>

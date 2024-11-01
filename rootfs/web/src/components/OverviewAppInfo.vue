@@ -6,13 +6,13 @@
             </div>
             <div class="flex-auto"></div>
         </div>
-        <div class="purple-box">
+        <div class="bule-box">
             <div class="ph3 pv1">
                 <div class="formation-tier">
                   <b>Application</b>
                 </div>
                 <div class="collaborator f5 ember-view">
-                  <div class="purple-box">
+                  <div class="bule-box">
                     <template v-for="(value, name, index) in appDetail">
                       <div class="display-formation-list hk-hide-bb-last-row ember-view">
                         <div class="flex pa3 items-center bb b--light-silver">
@@ -34,7 +34,7 @@
                 <b>Domains</b>
               </div>
               <div class="collaborator f5 ember-view">
-                <div class="purple-box">
+                <div class="bule-box">
                   <template v-for="domain in domains">
                     <div class="display-formation-list hk-hide-bb-last-row ember-view" >
                       <div class="flex pa3 items-center bb b--light-silver">
@@ -55,7 +55,7 @@
                 <b>Processes</b>
               </div>
               <div class="collaborator f5 ember-view">
-                <div class="purple-box">
+                <div class="bule-box">
                   <template v-for="p in ps">
                     <div class="display-formation-list hk-hide-bb-last-row ember-view" >
                       <div class="flex pa3 items-center bb b--light-silver">
