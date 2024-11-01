@@ -1,4 +1,4 @@
-import { ref, reactive, toRefs, onMounted } from 'vue'
+import { ref, reactive, toRefs, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { getSettings } from '../services/settings'
 import { getConsumerTaxInfo } from '../services/tax'
@@ -51,7 +51,7 @@ export default {
             return `${date.getDay()} ${months[date.getMonth()]} ${date.getFullYear()}`
         }
 
-        onMounted(async () => {
+        onBeforeMount(async () => {
             var res = await getInvoice(params.id)
             state.invoice = res.data
             res = await getInvoiceAddress()

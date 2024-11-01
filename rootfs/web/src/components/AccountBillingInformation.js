@@ -1,4 +1,4 @@
-import {onMounted, reactive, ref, toRefs} from "vue";
+import {onBeforeMount, reactive, ref, toRefs} from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {getBalance} from '../services/fund'
 import AccountBillingPaymentCard from "../components/AccountBillingPaymentCard.vue"
@@ -49,7 +49,7 @@ export default {
             }
         }
 
-        onMounted(async () => {
+        onBeforeMount(async () => {
             let res = await getPaymentCard()
             if(Object.keys(res.data).length != 0) {
                 state.paymentCard = res.data

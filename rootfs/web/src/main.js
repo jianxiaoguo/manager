@@ -42,6 +42,7 @@ app.config.globalProperties.$toPrice = function(amount, factor=5) {
     };
     var d = dinero({ amount: amount, currency: currency})
     return toDecimal(d, function({ amount, currency }) {
+        amount = amount ? amount : 0
         return amount.toLocaleString(getLang(), {
             maximumSignificantDigits: factor,
             style: 'currency',

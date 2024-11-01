@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import { getAPPList, dealAPPList } from "../services/app";
 import { getBills } from "../services/bill";
 import { useStore } from "vuex";
-import { reactive, toRefs, onMounted, watch, ref} from 'vue'
+import { reactive, toRefs, onBeforeMount, watch, ref} from 'vue'
 
 export default {
     name: "ExpenseBill",
@@ -73,7 +73,7 @@ export default {
         const goToExpenseBillsDetails = () => {
             router.push({ path: `/expense-bills/details` })
         }
-        onMounted(async()=>{
+        onBeforeMount(async()=>{
             await fetchBills()
             state.clusterOptions = store.getters.clusters
         })
