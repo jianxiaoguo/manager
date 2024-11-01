@@ -25,7 +25,7 @@
             <div class="limit-width">
                 <div class="flex flex-column metrics__charts-container">
                     <div id="process-picker" class="relative dib mb2">
-                        <div class="pull-left" style="width: 320px;">
+                        <div class="pull-left" style="width: 384.36px;">
                             <el-select v-model="currentProcess" class="m-2" placeholder="Select">
                                 <el-option
                                 v-for="pt in processTypes"
@@ -37,10 +37,10 @@
                         </div>
                         <div class="pull-right">
                             <el-radio-group v-model="interval">
-                                <el-radio-button value="1">1 hour</el-radio-button>
-                                <el-radio-button value="6">6 hour</el-radio-button>
-                                <el-radio-button value="12">12 hour</el-radio-button>
-                                <el-radio-button value="24">24 hour</el-radio-button>
+                                <el-radio-button value="5">5 minute</el-radio-button>
+                                <el-radio-button value="10">10 minute</el-radio-button>
+                                <el-radio-button value="20">20 minute</el-radio-button>
+                                <el-radio-button value="20">30 minute</el-radio-button>
                             </el-radio-group>
                         </div>
                     </div>

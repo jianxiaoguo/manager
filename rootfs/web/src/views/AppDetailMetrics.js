@@ -31,7 +31,7 @@ export default {
         const router = useRouter()
         const params = router.currentRoute.value.params
         const state = reactive({
-            interval: ref('1'),
+            interval: ref('5'),
             appDetail: Object,
             processTypes: Array,
             currentProcess: ref(''),
