@@ -28,10 +28,7 @@
                                             <div class="metrics__summary-row__label">latest</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{latestMem}}<span class="metrics__summary-row__unit">KB</span>
-                                                </div>
-                                                <div class="metrics__summary-row__value metrics__summary-row__value--secondary">
-                                                    {{latestPercent}}<span class="metrics__summary-row__unit">%</span>
+                                                    {{minMem}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,10 +40,7 @@
                                             <div class="metrics__summary-row__label">max</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{maxMem}}<span class="metrics__summary-row__unit">KB</span>
-                                                </div>
-                                                <div class="metrics__summary-row__value metrics__summary-row__value--secondary">
-                                                    {{maxPercent}}<span class="metrics__summary-row__unit">%</span>
+                                                    {{maxMem}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -58,7 +52,7 @@
                                             <div class="metrics__summary-row__label">average</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{avgMem}}<span class="metrics__summary-row__unit">KB</span>
+                                                    {{avgMem}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,4 +1,4 @@
-import { reactive, computed, toRefs, onMounted} from 'vue'
+import { reactive, computed, toRefs} from 'vue'
 
 export default {
     name: "MetricMemory",
@@ -6,6 +6,9 @@ export default {
         metricMemory: String,
     },
     setup(props) {
+        const factor = 1024
+        const memList = []
+        JSON.parse(props.metricMemory)[0].data.forEach(item => {memList[memList.length] = Math.ceil(item[1] / factor)})
         const state = reactive({
             options: {
                 noData: {
@@ -37,7 +40,7 @@ export default {
                     tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / 1024) + ' ' + 'KB'
+                            return Math.ceil(value / factor) + ' ' + 'KiB'
                         }
                     }
                 },
@@ -47,7 +50,7 @@ export default {
                 },
                 tooltip: {
                     y: {
-                        formatter: function (val) {return Math.ceil(val / 1024) }
+                        formatter: function (val) {return Math.ceil(val / factor) }
                     },
                     x: {
                         format: 'dd MMM HH:mm:ss'
@@ -60,71 +63,9 @@ export default {
                 }
                 return JSON.parse(props.metricMemory)
             }),
-            latestMem: computed(() => {
-                try {
-                    length = JSON.parse(props.metricMemory)[0].data.length
-                    var latestMem = Math.ceil(JSON.parse(props.metricMemory)[0].data[length-1][1] / 1024)
-                    var count = 0
-                    JSON.parse(props.metricMemory)[0].data.reduce(function(preItem, item){
-                        if(Math.ceil(preItem[1] / 1024) == latestMem){
-                            count += 1
-                        }
-                        return item
-                    })
-                    state.latestPercent = Math.ceil((count / length) * 100)
-                    return latestMem
-                }catch(e){
-                    return 0
-                }
-            }),
-            latestPercent: 0,
-            maxMem: computed(() => {
-                try{
-                    if(props.metricMemory === ""){
-                        return 0
-                    }
-
-                    var max = 0
-                    JSON.parse(props.metricMemory)[0].data.reduce(function(preItem, item){
-                        if(max < preItem[1]){
-                            max = preItem[1]
-                        }
-                        return item
-                    })
-                    var maxMem = Math.ceil(max / 1024)
-
-                    length = JSON.parse(props.metricMemory)[0].data.length
-                    var count = 0
-                    JSON.parse(props.metricMemory)[0].data.reduce(function(preItem, item){
-                        if(Math.ceil(preItem[1] / 1024) == maxMem){
-                            count += 1
-                        }
-                        return item
-                    })
-                    state.maxPercent = Math.ceil((count / length) * 100)
-
-                    return maxMem
-                }catch(e){
-                    return 0
-                }
-            }),
-            maxPercent: 0,
-            avgMem: computed(() => {
-                try{
-                    if(props.metricMemory === ""){
-                        return 0
-                    }
-                    length = JSON.parse(props.metricMemory)[0].data.length
-                    var total = 0
-                    JSON.parse(props.metricMemory)[0].data.reduce(function(preItem, item){
-                        total += preItem[1]
-                        return item
-                    })
-                    return Math.ceil(total / (1024 * length))
-                }catch(e){
-                    return 0
-                }
-            }),
+            minMem: computed(() => memList.length > 0 ? Math.min.apply(Math, memList) : 0),
+            maxMem: computed(() => memList.length > 0 ? Math.max.apply(Math, memList) : 0),
+            avgMem: computed(() => Math.ceil(memList.reduce((total, current) => total + current) / memList.length)),
             avgPercent: 0,
             isHide: false,
             hideStyle: Object
@@ -143,11 +84,6 @@ export default {
             }
 
         }
-
-        onMounted(async () => {
-
-        })
-
         return {
             ...toRefs(state),
             hideOrShowChart,

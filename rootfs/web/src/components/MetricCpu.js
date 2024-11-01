@@ -7,6 +7,9 @@ export default {
         metricCpus: String
     },
     setup(props) {
+        const factor = 1
+        const cpuList = []
+        JSON.parse(props.metricCpus)[0].data.forEach(item => {cpuList[cpuList.length] = Math.ceil(item[1] / factor)})
         const state = reactive({
             options: {
                 noData: {
@@ -38,7 +41,7 @@ export default {
                     tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / 1000) + ' ' + 'MCORE'
+                            return Math.ceil(value / factor) + ' ' + 'NCORE'
                         }
                     }
 
@@ -50,7 +53,7 @@ export default {
                 tooltip: {
                     y: {
                         formatter: function (val) {
-                            return Math.ceil(val / 1000)
+                            return Math.ceil(val / factor)
                         }
                     },
                     x: {
@@ -64,74 +67,9 @@ export default {
                 }
                 return JSON.parse(props.metricCpus)
             }),
-            latestCpus: computed(() => {
-                try{
-                    if(props.metricCpus === ""){
-                        return 0
-                    }
-                    length = JSON.parse(props.metricCpus)[0].data.length
-                    var latestMem = Math.ceil(JSON.parse(props.metricCpus)[0].data[length-1][1] / 1024)
-                    var count = 0
-                    JSON.parse(props.metricCpus)[0].data.reduce(function(preItem, item){
-                        if(Math.ceil(preItem[1] / 1024) == latestMem){
-                            count += 1
-                        }
-                        return item
-                    })
-                    state.latestPercent = Math.ceil((count / length) * 100)
-                    return latestMem
-                }catch(e){
-                    return 0
-                }
-            }),
-            latestPercent: 0,
-            maxCpus:  computed(() => {
-                try{
-                    if(props.metricCpus === ""){
-                        return 0
-                    }
-
-                    var max = 0
-                    JSON.parse(props.metricCpus)[0].data.reduce(function(preItem, item){
-                        if(max < preItem[1]){
-                            max = preItem[1]
-                        }
-                        return item
-                    })
-                    var maxMem = Math.ceil(max / 1024)
-
-                    length = JSON.parse(props.metricCpus)[0].data.length
-                    var count = 0
-                    JSON.parse(props.metricCpus)[0].data.reduce(function(preItem, item){
-                        if(Math.ceil(preItem[1] / 1024) == maxMem){
-                            count += 1
-                        }
-                        return item
-                    })
-                    state.maxPercent = Math.ceil((count / length) * 100)
-
-                    return maxMem
-                }catch(e){
-                    return 0
-                }
-            }),
-            maxPercent: 0,
-            avgCpus: computed(() => {
-                try{
-                    if(props.metricCpus === ""){
-                        return 0
-                    }
-                    length = JSON.parse(props.metricCpus)[0].data.length
-                    var total = 0
-                    JSON.parse(props.metricCpus)[0].data.reduce(function(preItem, item){
-                        total += preItem[1]
-                        return item
-                    })
-                    return Math.ceil(total / (1024 * length))
-                }catch(e){
-                    return 0
-                }
-            }),
+            minCpus: computed(() => cpuList.length > 0 ? Math.min.apply(Math, cpuList) : 0),
+            maxCpus: computed(() => cpuList.length > 0 ? Math.max.apply(Math, cpuList) : 0),
+            avgCpus: computed(() => Math.ceil(cpuList.reduce((total, current) => total + current) / cpuList.length)),
             isHide: false,
             hideStyle: Object
         })

@@ -6,6 +6,9 @@ export default {
         metricNetworks: String
     },
     setup(props) {
+        const factor = 1024
+        const netList = []
+        JSON.parse(props.metricNetworks)[0].data.forEach(item => {netList[netList.length] = Math.ceil(item[1] / factor)})
         const state = reactive({
             options: {
                 noData: {
@@ -35,7 +38,7 @@ export default {
                     // tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / 1024) + ' ' + 'KB'
+                            return Math.ceil(value / 1024) + ' ' + 'KiB'
                         }
                     }
 
@@ -60,50 +63,9 @@ export default {
                 }
                 return JSON.parse(props.metricNetworks)
             }),
-            latest: computed(() => {
-                try{
-                    if(props.metricNetworks === ""){
-                        return 0
-                    }
-                    length = JSON.parse(props.metricNetworks)[0].data.length
-                    return Math.ceil(JSON.parse(props.metricNetworks)[0].data[length-1][1] / 1024)
-                }catch(e){
-                    return 0
-                }
-            }),
-            max: computed(() => {
-                try{
-                    if(props.metricNetworks === ""){
-                        return 0
-                    }
-                    var max = 0
-                    JSON.parse(props.metricNetworks)[0].data.reduce(function(preItem, item){
-                        if(max < preItem[1]){
-                            max = preItem[1]
-                        }
-                        return item
-                    })
-                    return Math.ceil(max / 1024)
-                }catch(e){
-                    return 0
-                }
-            }),
-            average: computed(() => {
-                try{
-                    if(props.metricNetworks === ""){
-                        return 0
-                    }
-                    length = JSON.parse(props.metricNetworks)[0].data.length
-                    var total = 0
-                    JSON.parse(props.metricNetworks)[0].data.reduce(function(preItem, item){
-                        total += preItem[1]
-                        return item
-                    })
-                    return Math.ceil(total / (1024 * length))
-                }catch(e){
-                    return 0
-                }
-            }),
+            minNets: computed(() => netList.length > 0 ? Math.min.apply(Math, netList) : 0),
+            maxNets: computed(() => netList.length > 0 ? Math.max.apply(Math, netList) : 0),
+            avgNets: computed(() => Math.ceil(netList.reduce((total, current) => total + current) / netList.length)),
             isHide: false,
             hideStyle: Object
         })

@@ -25,13 +25,10 @@
                                 <div class="metrics__summary-row__item ember-view">
                                     <span title="" class="tooltip-component ember-view" >
                                         <div class="ph3">
-                                            <div class="metrics__summary-row__label">latest</div>
+                                            <div class="metrics__summary-row__label">min</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{latestCpus}}<span class="metrics__summary-row__unit">MCORE</span>
-                                                </div>
-                                                <div class="metrics__summary-row__value metrics__summary-row__value--secondary">
-                                                    {{latestPercent}}<span class="metrics__summary-row__unit">%</span>
+                                                    {{minCpus}}<span class="metrics__summary-row__unit">NCORE</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,10 +40,7 @@
                                             <div class="metrics__summary-row__label">max</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{maxCpus}}<span class="metrics__summary-row__unit">MCORE</span>
-                                                </div>
-                                                <div class="metrics__summary-row__value metrics__summary-row__value--secondary">
-                                                    {{maxPercent}}<span class="metrics__summary-row__unit">%</span>
+                                                    {{maxCpus}}<span class="metrics__summary-row__unit">NCORE</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -58,7 +52,7 @@
                                             <div class="metrics__summary-row__label">average</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{avgCpus}}<span class="metrics__summary-row__unit">MCORE</span>
+                                                    {{avgCpus}}<span class="metrics__summary-row__unit">NCORE</span>
                                                 </div>
                                             </div>
                                         </div>

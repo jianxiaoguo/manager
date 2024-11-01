@@ -28,7 +28,7 @@
                                             <div class="metrics__summary-row__label">LATEST</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{latest}}<span class="metrics__summary-row__unit">KB</span>
+                                                    {{minNets}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
 
                                             </div>
@@ -41,7 +41,7 @@
                                             <div class="metrics__summary-row__label">MAX</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{max}}<span class="metrics__summary-row__unit">KB</span>
+                                                    {{maxNets}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
 
                                             </div>
@@ -54,7 +54,7 @@
                                             <div class="metrics__summary-row__label">AVERAGE</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{average}}<span class="metrics__summary-row__unit">KB</span>
+                                                    {{avgNets}}<span class="metrics__summary-row__unit">KiB</span>
                                                 </div>
 
                                             </div>
