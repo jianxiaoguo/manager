@@ -5,7 +5,6 @@ from celery import Celery
 
 class Config(object):
     # Celery Configuration Options
-    timezone = "Asia/Shanghai"
     enable_utc = True
     task_serializer = 'pickle'
     accept_content = frozenset([
@@ -17,69 +16,70 @@ class Config(object):
     task_track_started = True
     task_time_limit = 30 * 60
     worker_max_tasks_per_child = 200
+    worker_prefetch_multiplier = 1
     result_expires = 24 * 60 * 60
-    broker_url = os.environ.get('DRYCC_RABBITMQ_URL', 'amqp://guest:guest@127.0.0.1:5672/')  # noqa
     cache_backend = 'django-cache'
-    task_default_queue = 'manager.low'
+    task_default_queue = 'manager.middle'
     task_default_exchange = 'manager.priority'
-    task_default_routing_key = 'manager.priority.low'
+    task_default_routing_key = 'manager.priority.middle'
+    broker_transport_options = {"queue_order_strategy": "sorted"}
+    task_create_missing_queues = True
+    task_inherit_parent_priority = True
+    broker_connection_retry_on_startup = True
     worker_cancel_long_running_tasks_on_connection_loss = True
 
 
-app = Celery('drycc')
+app = Celery('manager')
 app.config_from_object(Config())
 app.conf.update(
+    timezone=os.environ.get('TZ', 'UTC'),
     task_routes={
         'api.tasks.generate_bill': {
             'queue': 'manager.low',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.low',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.low',
         },
         'api.tasks.paying_by_bill': {
             'queue': 'manager.low',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.low',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.low',
         },
         'api.tasks.block_user': {
             'queue': 'manager.middle',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.middle',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.middle',
         },
         'api.tasks.unblock_user': {
             'queue': 'manager.middle',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.middle',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.middle',
         },
         'api.tasks.supplementary_payment': {
             'queue': 'manager.high',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.high',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.high',
         },
         'api.tasks.generate_charge_user': {
             'queue': 'manager.high',
-            'exchange': 'manager.priority',
-            'routing_key': 'manager.priority.high',
+            'exchange': 'manager.priority', 'routing_key': 'manager.priority.high',
         },
     },
     task_queues=(
         Queue(
-            'manager.low',
-            exchange=Exchange('manager.priority', type="direct"),
+            'manager.low', exchange=Exchange('manager.priority', type="direct"),
             routing_key='manager.priority.low',
-            queue_arguments={'x-max-priority': 16},
         ),
         Queue(
-            'manager.high',
-            exchange=Exchange('manager.priority', type="direct"),
+            'manager.high', exchange=Exchange('manager.priority', type="direct"),
             routing_key='manager.priority.high',
-            queue_arguments={'x-max-priority': 64},
         ),
         Queue(
-            'manager.middle',
-            exchange=Exchange('manager.priority', type="direct"),
+            'manager.middle', exchange=Exchange('manager.priority', type="direct"),
             routing_key='manager.priority.middle',
-            queue_arguments={'x-max-priority': 32},
         ),
     ),
+)
+
+# SET valkey
+DRYCC_VALKEY_URL = os.environ.get('DRYCC_VALKEY_URL', 'redis://:@127.0.0.1:6379')
+app.conf.update(
+    broker_url=DRYCC_VALKEY_URL,
+    result_backend=DRYCC_VALKEY_URL,
+    broker_transport_options={"queue_order_strategy": "sorted", "visibility_timeout": 43200},
 )
 app.autodiscover_tasks()

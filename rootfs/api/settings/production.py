@@ -300,20 +300,13 @@ if DRYCC_DATABASE_REPLICA_URL is not None:
 # database routers
 DATABASE_ROUTERS = ['api.routers.DefaultReplicaRouter', ]
 
-# Redis Configuration
-DRYCC_REDIS_ADDRS = os.environ.get('DRYCC_REDIS_ADDRS', '127.0.0.1:6379').split(",")
-DRYCC_REDIS_PASSWORD = os.environ.get('DRYCC_REDIS_PASSWORD', '')
-
-# Cache Configuration
+# Cache Valkey Configuration
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": [
-            'redis://:{}@{}'.format(
-                DRYCC_REDIS_PASSWORD, DRYCC_REDIS_ADDR) for DRYCC_REDIS_ADDR in DRYCC_REDIS_ADDRS
-        ],
+        "LOCATION": os.environ.get('DRYCC_VALKEY_URL', 'redis://:@127.0.0.1:6379'),
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.ShardClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }

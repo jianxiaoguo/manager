@@ -7,16 +7,21 @@ Set apiVersion based on .Capabilities.APIVersions
 env:
 - name: VERSION
   value: {{ .Chart.AppVersion }}
-- name: DRYCC_REDIS_ADDRS
+{{- if (.Values.valkeyUrl) }}
+- name: DRYCC_VALKEY_URL
   valueFrom:
     secretKeyRef:
-      name: redis-creds
-      key: addrs
-- name: DRYCC_REDIS_PASSWORD
+      name: manager-creds
+      key: valkey-url
+{{- else if eq .Values.global.valkeyLocation "on-cluster"  }}
+- name: VALKEY_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: redis-creds
+      name: valkey-creds
       key: password
+- name: DRYCC_VALKEY_URL
+  value: "redis://:$(VALKEY_PASSWORD)@drycc-valkey.{{.Release.Namespace}}.svc.{{.Values.global.clusterDomain}}:16379/10"
+{{- end }}
 {{- if (.Values.databaseUrl) }}
 - name: DRYCC_DATABASE_URL
   valueFrom:
@@ -45,26 +50,6 @@ env:
   value: "postgres://$(DRYCC_DATABASE_USER):$(DRYCC_DATABASE_PASSWORD)@drycc-database.{{.Release.Namespace}}.svc.{{.Values.global.clusterDomain}}:5432/manager"
 - name: DRYCC_DATABASE_REPLICA_URL
   value: "postgres://$(DRYCC_DATABASE_USER):$(DRYCC_DATABASE_PASSWORD)@drycc-database-replica.{{.Release.Namespace}}.svc.{{.Values.global.clusterDomain}}:5432/manager"
-{{- end }}
-{{- if (.Values.rabbitmqUrl) }}
-- name: DRYCC_RABBITMQ_URL
-  valueFrom:
-    secretKeyRef:
-      name: manager-creds
-      key: rabbitmq-url
-{{- else if eq .Values.global.rabbitmqLocation "on-cluster" }}
-- name: "DRYCC_RABBITMQ_USERNAME"
-  valueFrom:
-    secretKeyRef:
-      name: rabbitmq-creds
-      key: username
-- name: "DRYCC_RABBITMQ_PASSWORD"
-  valueFrom:
-    secretKeyRef:
-      name: rabbitmq-creds
-      key: password
-- name: "DRYCC_RABBITMQ_URL"
-  value: "amqp://$(DRYCC_RABBITMQ_USERNAME):$(DRYCC_RABBITMQ_PASSWORD)@drycc-rabbitmq.{{$.Release.Namespace}}.svc.{{$.Values.global.clusterDomain}}:5672/drycc"
 {{- end }}
 {{- if eq .Values.global.passportLocation "on-cluster"}}
 - name: "DRYCC_PASSPORT_URL"

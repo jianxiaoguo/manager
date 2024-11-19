@@ -63,9 +63,9 @@ service:
   annotations: {}
 
 # external service configuration
+valkeyUrl: ""
 databaseUrl: ""
 databaseReplicaUrl: ""
-rabbitmqUrl: ""
 passportUrl: ""
 passportKey: ""
 passportSecret: ""
@@ -87,13 +87,11 @@ environment:
   LEGAL_ENABLED: false
 
 # The following is the configuration of external dependent services.
-# Including database, rabbitmq, passport and Redis.
-redis:
-  # The addrs parameters are configured only when using an off-cluster Redis instance
+# Including Valkey, database and passport.
+valkey:
+  # The addrs parameters are configured only when using an off-cluster Valkey instance
   addrs: "" # A list of clusters: "127.0.0.1:7001/1,127.0.0.2:7002/1"
-  password: "redis password" # "" == no password
-  # The following parameters are configured only when using an on-cluster Redis instance
-  replicas: 1
+  password: "valkey password" # "" == no password
   persistence:
     enabled: false # Set to true to enable persistence
     size: 5Gi
@@ -125,27 +123,6 @@ database:
     ## If the PV uses a different storage class, specify that here.
     storageClass: ""
 
-rabbitmq:
-  # The following parameters are configured only when using an on-cluster Rabbitmq instance
-  # If left empty they will be generated using randAlphaNum
-  username: ""
-  password: ""
-  # GCP PDs and EBS volumes are supported only
-  persistence:
-    enabled: false # Set to true to enable persistence
-    size: 5Gi # PVC size
-    ## rabbitmq data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    ## Storage class of PV to bind. By default it looks for standard storage class.
-    ## If the PV uses a different storage class, specify that here.
-    storageClass: ""
-
-
 passport:
   # The following parameters are configured only when using an on-cluster passport
   # Set passport deployment replicas
@@ -175,13 +152,6 @@ gateway:
       keySecret: ""
   # gateway apps
   apps:
-  - name: drycc-manager-rabbitmq
-    port: 80
-    hostname: drycc-manager-rabbitmq.{{ .Values.global.platformDomain }}
-    protocol: HTTP
-    services:
-    - name: drycc-rabbitmq
-      port: 15672
   - name: drycc-passport
     port: 80
     hostname: drycc-passport.{{ .Values.global.platformDomain }}
@@ -206,17 +176,12 @@ global:
   #   configured above)
   # - off-cluster: Run PostgreSQL outside the Kubernetes cluster
   databaseLocation: "on-cluster"
-  # Set the location of Workflow's Redis instance
+  # Set the location of Workflow's Valkey instance
   #
   # Valid values are:
-  # - on-cluster: Run Redis within the Kubernetes cluster
-  # - off-cluster: Run Redis outside the Kubernetes cluster (configure in redis section)
-  redisLocation: "on-cluster"
-  # Set the location of Workflow's rabbitmq instance
-  # Valid values are:
-  # - on-cluster: Run Rabbitmq within the Kubernetes cluster
-  # - off-cluster: Run Rabbitmq outside the Kubernetes cluster (configure in controller section)
-  rabbitmqLocation: "on-cluster"
+  # - on-cluster: Run Valkey within the Kubernetes cluster
+  # - off-cluster: Run Valkey outside the Kubernetes cluster (configure in valkey section)
+  valkeyLocation: "on-cluster"
   # Set the location of Workflow's passport
   #
   # Valid values are:
