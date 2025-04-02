@@ -23,4 +23,5 @@ steps:
     event:
     - push
     - tag
+    - cron
     - pull_request
