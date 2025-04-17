@@ -7,9 +7,14 @@ export default {
         metricCpus: String
     },
     setup(props) {
-        const factor = 1
-        const cpuList = []
-        JSON.parse(props.metricCpus)[0].data.forEach(item => {cpuList[cpuList.length] = Math.ceil(item[1] / factor)})
+        const factor = 1000 // MCORE
+        const parsedCpus = computed(() => {
+            try {
+                return props.metricCpus ? JSON.parse(props.metricCpus) : {}
+            } catch {
+                return {}
+            }
+        })
         const state = reactive({
             options: {
                 noData: {
@@ -41,7 +46,7 @@ export default {
                     tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / factor) + ' ' + 'NCORE'
+                            return value.toFixed(2) + ' ' + 'MCORE'
                         }
                     }
 
@@ -51,25 +56,39 @@ export default {
                     width: 1
                 },
                 tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return Math.ceil(val / factor)
-                        }
-                    },
                     x: {
                         format: 'dd MMM HH:mm:ss'
                     }
                 },
             },
             series : computed(() => {
-                if(props.metricCpus === ""){
+                const data = parsedCpus.value
+                if (!data || Object.keys(data).length === 0) {
                     return []
                 }
-                return JSON.parse(props.metricCpus)
+                return Object.entries(data).map(([name, points]) => ({
+                    name,
+                    data: points.map(([timestamp, value]) => [timestamp * 1000, ((typeof value === 'string' ? parseFloat(value) : value) * factor).toFixed(2)])
+                }))
             }),
-            minCpus: computed(() => cpuList.length > 0 ? Math.min.apply(Math, cpuList) : 0),
-            maxCpus: computed(() => cpuList.length > 0 ? Math.max.apply(Math, cpuList) : 0),
-            avgCpus: computed(() => Math.ceil(cpuList.reduce((total, current) => total + current) / cpuList.length)),
+            minCpus: computed(() => {
+                const metrics = parsedCpus.value
+                if (!metrics || Object.keys(metrics).length === 0) return 0
+                const values = Object.values(metrics).flat().map(item => Number(item[1]))
+                return Math.ceil(Math.min(...values) * factor)
+            }),
+            maxCpus: computed(() => {
+                const metrics = parsedCpus.value
+                if (!metrics || Object.keys(metrics).length === 0) return 0
+                const values = Object.values(metrics).flat().map(item => Number(item[1]))
+                return Math.ceil(Math.max(...values) * factor)
+            }),
+            avgCpus: computed(() => {
+                const metrics = parsedCpus.value
+                if (!metrics || Object.keys(metrics).length === 0) return 0
+                const values = Object.values(metrics).flat().map(item => Number(item[1]))
+                return Math.ceil(values.reduce((sum, value) => sum + value, 0) / values.length * factor)
+            }),
             isHide: false,
             hideStyle: Object
         })

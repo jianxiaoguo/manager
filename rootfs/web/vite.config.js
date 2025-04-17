@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// https://vitejs.dev/config/
 
 const USE_PROXY = true
-const MANAGER_SERVICE_URL = process.env.MANAGER_SERVICE_URL ? process.env.MANAGER_SERVICE_URL : '/v1'
+const MANAGER_SERVICE_URL = process.env.MANAGER_SERVICE_URL || '/v1'
 
 export default defineConfig(async ({ command, mode }) => {
   return {
@@ -24,7 +23,7 @@ export default defineConfig(async ({ command, mode }) => {
       }
     },
     server: {
-      proxy: { // 代理配置
+      proxy: {
         '/v1': {
           target: MANAGER_SERVICE_URL,
           rewrite: path => path.replace(/^\/v1/, ''),

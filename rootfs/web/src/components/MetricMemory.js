@@ -6,9 +6,14 @@ export default {
         metricMemory: String,
     },
     setup(props) {
-        const factor = 1024
-        const memList = []
-        JSON.parse(props.metricMemory)[0].data.forEach(item => {memList[memList.length] = Math.ceil(item[1] / factor)})
+        const factor = 1024 * 1024 // MiB
+        const parsedMemory = computed(() => {
+            try {
+                return props.metricMemory ? JSON.parse(props.metricMemory) : {}
+            } catch {
+                return {}
+            }
+        })
         const state = reactive({
             options: {
                 noData: {
@@ -40,7 +45,7 @@ export default {
                     tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / factor) + ' ' + 'KiB'
+                            return value.toFixed(2) + ' ' + 'MiB'
                         }
                     }
                 },
@@ -49,23 +54,39 @@ export default {
                     width: 1
                 },
                 tooltip: {
-                    y: {
-                        formatter: function (val) {return Math.ceil(val / factor) }
-                    },
                     x: {
                         format: 'dd MMM HH:mm:ss'
                     }
                 },
             },
             series : computed(() => {
-                if(props.metricMemory === ""){
+                const data = parsedMemory.value
+                if (!data || Object.keys(data).length === 0) {
                     return []
                 }
-                return JSON.parse(props.metricMemory)
+                return Object.entries(data).map(([name, points]) => ({
+                    name,
+                    data: points.map(([timestamp, value]) => [timestamp * 1000, ((typeof value === 'string' ? parseFloat(value) : value) / factor).toFixed(2)])
+                }))
             }),
-            minMem: computed(() => memList.length > 0 ? Math.min.apply(Math, memList) : 0),
-            maxMem: computed(() => memList.length > 0 ? Math.max.apply(Math, memList) : 0),
-            avgMem: computed(() => Math.ceil(memList.reduce((total, current) => total + current) / memList.length)),
+            minMem: computed(() => {
+                const metrics = parsedMemory.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => (typeof item[1] === 'string' ? parseFloat(item[1]) : item[1]) / factor)
+                return Math.min(...values).toFixed(2)
+            }),
+            maxMem: computed(() => {
+                const metrics = parsedMemory.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => (typeof item[1] === 'string' ? parseFloat(item[1]) : item[1]) / factor)
+                return Math.max(...values).toFixed(2)
+            }),
+            avgMem: computed(() => {
+                const metrics = parsedMemory.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => (typeof item[1] === 'string' ? parseFloat(item[1]) : item[1]) / factor)
+                return (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2)
+            }),
             avgPercent: 0,
             isHide: false,
             hideStyle: Object

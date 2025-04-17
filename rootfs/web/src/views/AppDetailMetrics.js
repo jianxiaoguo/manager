@@ -11,7 +11,7 @@ import MetricNetwork from "../components/MetricNetwork.vue";
 import MetricCpu from "../components/MetricCpu.vue";
 import { useStore } from "vuex";
 import { getAppProcessTypes, dealProcessTypes } from "../services/process";
-import { getMetricStatus, dealMetricCpus, dealMetricMemory, dealMetricNetworks } from "../services/metric";
+import { getMetricStatus } from "../services/metric";
 
 export default {
     name: "AppDetailMetrics",
@@ -37,7 +37,8 @@ export default {
             currentProcess: ref(''),
             metricCpus: ref(''),
             metricMemory: ref(''),
-            metricNetworks : ref(''),
+            metricReceiveNetworks : ref(''),
+            metricTransmitNetworks : ref(''),
         })
 
         const fetchMetric = async () =>{
@@ -46,9 +47,10 @@ export default {
                 currentCluster.uuid,
                 params.id, state.currentProcess, state.interval)
             if(res.data){
-                state.metricCpus = JSON.stringify(dealMetricCpus(res))
-                state.metricMemory = JSON.stringify(dealMetricMemory(res))
-                state.metricNetworks = JSON.stringify(dealMetricNetworks(res))
+                state.metricCpus = JSON.stringify(res.data.usage.cpus)
+                state.metricMemory = JSON.stringify(res.data.usage.memory)
+                state.metricReceiveNetworks = JSON.stringify(res.data.usage.networks.receive)
+                state.metricTransmitNetworks = JSON.stringify(res.data.usage.networks.transmit)
             }
         }
         watch(()=>state.currentProcess,async()=>{

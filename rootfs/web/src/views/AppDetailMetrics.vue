@@ -49,9 +49,10 @@
                         <div class="ember-view">
                             <div class="ember-view">
                                 <div class="metrics__main__charts metrics__chart-sorting is-vertical">
-                                    <metric-memory :key="Math.random()" :metricMemory="metricMemory"/>
-                                    <metric-network :key="Math.random()" :metricNetworks="metricNetworks"/>
                                     <metric-cpu :key="Math.random()" :metricCpus="metricCpus"/>
+                                    <metric-memory :key="Math.random()" :metricMemory="metricMemory"/>
+                                    <metric-network :key="Math.random()" :metricNetworks="metricReceiveNetworks" title="Network RX Usage"/>
+                                    <metric-network :key="Math.random()" :metricNetworks="metricTransmitNetworks" title="Network TX Usage"/>
                                 </div>
                             </div>
                         </div>

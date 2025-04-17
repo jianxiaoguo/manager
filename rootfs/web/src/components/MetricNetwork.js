@@ -3,13 +3,24 @@ import { reactive, toRefs, computed, onMounted} from 'vue'
 export default {
     name: "MetricNetwork",
     props: {
+        title: String,
         metricNetworks: String
     },
     setup(props) {
-        const factor = 1024
-        const netList = []
-        JSON.parse(props.metricNetworks)[0].data.forEach(item => {netList[netList.length] = Math.ceil(item[1] / factor)})
+        const factor = 1024 // KiB
+        const parsedNetworks = computed(() => {
+            try {
+                return props.metricNetworks ? 
+                    (typeof props.metricNetworks === 'string' 
+                        ? JSON.parse(props.metricNetworks) 
+                        : props.metricNetworks) 
+                    : {}
+            } catch {
+                return {}
+            }
+        })
         const state = reactive({
+            title: props.title,
             options: {
                 noData: {
                     text: 'Loading...'
@@ -35,22 +46,18 @@ export default {
                     position: 'bottom',
                 },
                 yaxis: {
-                    // tickAmount: 4,
+                    tickAmount: 4,
                     labels: {
                         formatter: (value) => {
-                            return Math.ceil(value / 1024) + ' ' + 'KiB'
+                            return value.toFixed(2) + ' ' + 'KiB'
                         }
                     }
-
                 },
                 stroke: {
                     curve: 'stepline',
                     width: 1
                 },
                 tooltip: {
-                    y: {
-                        formatter: function (val) {return Math.ceil(val / 1024) }
-                    },
                     x: {
                         format: 'dd MMM HH:mm:ss'
                     }
@@ -58,14 +65,36 @@ export default {
             },
             //series: props.metricNetworks ? props.metricNetworks : [],
             series : computed(() => {
-                if(props.metricNetworks === ""){
+                const data = parsedNetworks.value
+                if (!data || Object.keys(data).length === 0) {
                     return []
                 }
-                return JSON.parse(props.metricNetworks)
+                return Object.entries(data).map(([podName, points]) => ({
+                    name: podName,
+                    data: points.map(([timestamp, value]) => ({
+                        x: timestamp * 1000, // 转换为毫秒
+                        y: ((typeof value === 'string' ? parseFloat(value) : value) / factor).toFixed(2)
+                    }))
+                }))
             }),
-            minNets: computed(() => netList.length > 0 ? Math.min.apply(Math, netList) : 0),
-            maxNets: computed(() => netList.length > 0 ? Math.max.apply(Math, netList) : 0),
-            avgNets: computed(() => Math.ceil(netList.reduce((total, current) => total + current) / netList.length)),
+            minNets: computed(() => {
+                const metrics = parsedNetworks.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => typeof item[1] === 'string' ? parseFloat(item[1]) : item[1])
+                return (Math.min(...values) / factor).toFixed(2)
+            }),
+            maxNets: computed(() => {
+                const metrics = parsedNetworks.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => typeof item[1] === 'string' ? parseFloat(item[1]) : item[1])
+                return (Math.max(...values) / factor).toFixed(2)
+            }),
+            avgNets: computed(() => {
+                const metrics = parsedNetworks.value
+                if (!metrics || Object.keys(metrics).length === 0) return "0.00"
+                const values = Object.values(metrics).flat().map(item => typeof item[1] === 'string' ? parseFloat(item[1]) : item[1])
+                return ((values.reduce((sum, value) => sum + value, 0) / values.length) / factor).toFixed(2)
+            }),
             isHide: false,
             hideStyle: Object
         })
@@ -83,11 +112,6 @@ export default {
             }
 
         }
-
-        onMounted(async () => {
-            //
-        })
-
         return {
             ...toRefs(state),
             hideOrShowChart

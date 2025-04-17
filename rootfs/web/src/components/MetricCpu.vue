@@ -28,7 +28,7 @@
                                             <div class="metrics__summary-row__label">min</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{minCpus}}<span class="metrics__summary-row__unit">NCORE</span>
+                                                    {{minCpus}}<span class="metrics__summary-row__unit">MCORE</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -40,7 +40,7 @@
                                             <div class="metrics__summary-row__label">max</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{maxCpus}}<span class="metrics__summary-row__unit">NCORE</span>
+                                                    {{maxCpus}}<span class="metrics__summary-row__unit">MCORE</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,7 +52,7 @@
                                             <div class="metrics__summary-row__label">average</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
-                                                    {{avgCpus}}<span class="metrics__summary-row__unit">NCORE</span>
+                                                    {{avgCpus}}<span class="metrics__summary-row__unit">MCORE</span>
                                                 </div>
                                             </div>
                                         </div>

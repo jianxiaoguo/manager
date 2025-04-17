@@ -11,7 +11,7 @@
                             </button>
 
                             <div class="flex flex-row">
-                                <div class="f5 b dark-gray pointer ">Network Usage</div>
+                                <div class="f5 b dark-gray pointer ">{{title}}</div>
                                 <span title="" class="ml1 tooltip-component ember-view">
                                     <svg style="height: 14px; width: 14px;" class="icon malibu-icon metrics__chart__devcenter-link malibu-fill-gradient-dark-gray pointer nudge-right--1" data-test-icon-name="info-badge-16" data-test-target="malibu-icon" aria-hidden="true" role="img">
                                 <!---->  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#info-badge-16"></use>
@@ -25,7 +25,7 @@
                                 <div class="metrics__summary-row__item ember-view">
                                     <span title="" class="tooltip-component ember-view" >
                                         <div class="ph3">
-                                            <div class="metrics__summary-row__label">LATEST</div>
+                                            <div class="metrics__summary-row__label">MIN</div>
                                             <div class="metrics__summary-row__values">
                                                 <div class="metrics__summary-row__value metrics__summary-row__value--default metrics__summary-row__value--primary metrics__summary-row__value">
                                                     {{minNets}}<span class="metrics__summary-row__unit">KiB</span>
