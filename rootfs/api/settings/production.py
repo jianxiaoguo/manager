@@ -31,6 +31,10 @@ ADMIN_ENABLED = os.environ.get('ADMIN_ENABLED', 'false').lower() == "true"
 
 # Enable drycc legal footer
 LEGAL_ENABLED = os.environ.get('LEGAL_ENABLED', 'false').lower() == "true"
+
+# Xterm pod timeout in seconds
+XTERM_POD_TIMEOUT = int(os.environ.get('XTERM_POD_TIMEOUT', '1800'))
+
 # Drycc Billing details
 BILLING_DETAILS = {
     "name": "DOOPAI LTD",

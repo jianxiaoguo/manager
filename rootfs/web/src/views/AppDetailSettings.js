@@ -7,7 +7,6 @@ import ClusterAppDetail from "../components/ClusterAppDetail.vue";
 import NavBoxAppDetailMenu from "../components/NavBoxAppDetailMenu.vue"
 import MainNav from "../components/MainNav.vue";
 import SettingAppInfo from "../components/SettingAppInfo.vue";
-import SettingConfigVars from "../components/SettingConfigVars.vue";
 import SettingDeleteApp from "../components/SettingDeleteApp.vue";
 import SettingDomains from "../components/SettingDomains.vue";
 import SettingTransferOwnership from "../components/SettingTransferOwnership.vue";
@@ -23,7 +22,6 @@ export default {
         'nav-box-app-detail-menu': NavBoxAppDetailMenu,
         'main-nav': MainNav,
         'setting-app-info': SettingAppInfo,
-        'setting-config-vars': SettingConfigVars,
         'setting-domains': SettingDomains,
         'setting-transfer-ownership': SettingTransferOwnership,
         'setting-delete-app': SettingDeleteApp

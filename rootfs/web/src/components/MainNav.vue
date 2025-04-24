@@ -70,6 +70,17 @@
                     <span class="sub-nav-item-name gray">Settings</span>
                 </a>
             </div>
+
+            <div class="sub-nav-item ember-view">
+                <a @click="goToTerminal" class="ember-view" :class="{'active': isTerminalActive}">
+                    <svg style="height: 24px; width: 24px;"  class="icon malibu-icon fill-gray" >
+                        <title >Terminal</title>
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings-28"></use>
+                    </svg>
+
+                    <span class="sub-nav-item-name gray">Terminal</span>
+                </a>
+            </div>
         </div>
     </nav>
 </template>

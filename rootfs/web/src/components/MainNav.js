@@ -32,6 +32,10 @@ export default {
             type: Boolean,
             default: false
         },
+        isTerminalActive: {
+            type: Boolean,
+            default: false
+        },
         appDetail: [Object, Function]
     },
     setup(props) {
@@ -64,6 +68,10 @@ export default {
             router.push({ path: `/apps/${props.appDetail.id}/settings` })
         }
 
+        const goToTerminal = () => {
+            router.push({ path: `/apps/${props.appDetail.id}/terminal` })
+        }
+
         return {
             goToAppDetail,
             goToAccess,
@@ -71,7 +79,8 @@ export default {
             goToDeploy,
             goToMetrics,
             goToResources,
-            goToSettings
+            goToSettings,
+            goToTerminal
         }
     },
 

@@ -28,6 +28,7 @@ export default defineConfig(async ({ command, mode }) => {
           target: MANAGER_SERVICE_URL,
           rewrite: path => path.replace(/^\/v1/, ''),
           changeOrigin: true,
+          ws: true,
         }
       },
     },

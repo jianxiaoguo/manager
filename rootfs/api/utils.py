@@ -3,6 +3,7 @@ Helper functions used by the Drycc Manager server.
 """
 from builtins import globals
 import os
+import json
 import logging
 import datetime
 import time
@@ -45,6 +46,13 @@ def get_user_by_name(username):
     return cache.get_or_set(f'user_{username}',
                             lambda: _get_user(username),
                             5 * 60)
+
+
+def get_oauth_token(user):
+    social_auth = user.social_auth.filter(provider='drycc').last()
+    extra_data = json.loads(social_auth.extra_data) if \
+        isinstance(social_auth.extra_data, str) else social_auth.extra_data
+    return extra_data["access_token"]
 
 
 def _get_user(username):

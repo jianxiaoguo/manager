@@ -7,6 +7,8 @@ Set apiVersion based on .Capabilities.APIVersions
 env:
 - name: VERSION
   value: {{ .Chart.AppVersion }}
+- name: XTERM_POD_TIMEOUT
+  value: {{ .Values.xtermPodTimeout }}
 {{- if (.Values.valkeyUrl) }}
 - name: DRYCC_VALKEY_URL
   valueFrom:

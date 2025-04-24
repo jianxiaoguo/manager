@@ -17,6 +17,7 @@ import AccountNotifications from '../views/AccountNotifications.vue'
 import ExpenseBill from '../views/ExpenseBill.vue'
 import ExpenseBillDetail from '../views/ExpenseBillDetail.vue'
 import Pricing from '../views/Pricing.vue'
+import AppTerminal from '../views/AppTerminal.vue'
 
 const routes = [
   {
@@ -72,6 +73,11 @@ const routes = [
     path: '/apps/:id/access',
     name: 'AppDetailAccess',
     component: AppDetailAccess,
+  },
+  {
+    path: '/apps/:id/terminal',
+    name: 'AppTerminal',
+    component: AppTerminal,
   },
   {
     path: '/apps/:id/settings',

@@ -1,0 +1,15 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ printf "%s:drycc-manager" .Release.Namespace | quote }}
+  labels:
+    app: drycc-manager
+    heritage: drycc
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ printf "%s:drycc-manager" .Release.Namespace | quote }}
+subjects:
+- kind: ServiceAccount
+  name: drycc-manager
+  namespace: {{ .Release.Namespace }}

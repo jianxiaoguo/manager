@@ -82,6 +82,22 @@ initClusters:
 #   key: "f8cde499-9f58-4b3e-81ad-c0f95e5db282"
 #   secret: "JcxoPGxG9fIiwUbTPcrk0wzU1nQvlCZRJ5ZyNvhyCdby9OFVVbcPGvgdLFUGZRyp"
 
+# xterm pod configuration
+xtermPodTimeout: 1800
+xtermPodImageTag: canary
+xtermPodTemplate:
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    namespace: "{{ .Release.Namespace }}"
+  spec:
+    containers:
+    - image: registry.drycc.cc/drycc/workflow-cli:{{ .Values.xtermPodImageTag }}
+      name: xterm
+      args:
+      - wait
+    restartPolicy: Never
+
 environment:
   ADMIN_ENABLED: true
   LEGAL_ENABLED: false

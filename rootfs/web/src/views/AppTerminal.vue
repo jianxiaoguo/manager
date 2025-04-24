@@ -11,24 +11,24 @@
                 </template>
             </nav-box>
             <div class="main-content">
-                <main-nav :is-settings-active="true" :app-detail="appDetail"/>
-                <ul class="list-group list-group-lg">
-                    <setting-app-info :app-detail="appDetail"/>
-                    <setting-domains />
-                    <setting-transfer-ownership />
-                    <setting-delete-app />
-                </ul>
+                <main-nav :is-terminal-active="true" :app-detail="appDetail"/>
+                <div v-loading="loading" class="limit-width ember-view b--silver">
+                    <div id="terminal"></div>
+                </div>
             </div>
         </div>
         <main-footer />
     </div>
-</template>
-
-<script>
-import AppDetailSettings from  "./AppDetailSettings"
-export default AppDetailSettings
-</script>
-
-<style scoped>
-
-</style>
+    </template>
+    
+    <script>
+    import AppTerminal from  "./AppTerminal"
+    export default AppTerminal
+    </script>
+    
+    <style scoped>
+    #terminal {
+        background-color: v-bind(background);
+        padding: .4rem 0rem .4rem .4rem;
+    }
+    </style>

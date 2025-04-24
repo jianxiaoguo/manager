@@ -36,11 +36,11 @@ class AnonymousOrAuthenticatedAuthentication(authentication.BaseAuthentication):
 
 
 class DryccOIDCAuthentication(SessionAuthentication):
+
     def authenticate(self, request):
         if 'Drycc' in request.META.get('HTTP_USER_AGENT', '') and \
                 "Controller" not in request.META.get('HTTP_USER_AGENT', ''):
             auth = get_authorization_header(request).split()
-
             if not auth or auth[0].lower() != b"token":
                 return None
 
@@ -54,11 +54,11 @@ class DryccOIDCAuthentication(SessionAuthentication):
 
             try:
                 token = auth[1].decode()
+                return cache.get_or_set(
+                    token, lambda: self._get_user(token), settings.OAUTH_CACHE_USER_TIME), None  # noqa
             except UnicodeError:
                 msg = gettext_lazy('Invalid token header. Token string should not contain invalid characters.')  # noqa
                 raise exceptions.AuthenticationFailed(msg)
-            return cache.get_or_set(
-                token, lambda: self._get_user(token), settings.OAUTH_CACHE_USER_TIME), None  # noqa
         return super(DryccOIDCAuthentication, self).authenticate(request)  # noqa
 
     @staticmethod

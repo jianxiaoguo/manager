@@ -8,3 +8,5 @@ data:
 data:
   init-clusters.json: |-
 {{ toPrettyJson .Values.initClusters | indent 4}}
+  xterm-pod-template.json: |-
+{{ tpl (toPrettyJson .Values.xtermPodTemplate) $ | indent 4}}

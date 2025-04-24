@@ -48,6 +48,22 @@ spec:
             {{- include "manager.volumeMounts" . | indent 12 }}
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
             imagePullPolicy: {{.Values.imagePullPolicy}}
+            name: drycc-manager-clean-xterms
+            {{- if .Values.diagnosticMode.enabled }}
+            command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 14 }}
+            args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 14 }}
+            {{- else }}
+            command:
+              - /bin/bash
+              - -c
+            args:
+              - python /workspace/manage.py clean_xterms
+            {{- end }}
+            {{- include "manager.limits" . | indent 12 }}
+            {{- include "manager.envs" . | indent 12 }}
+            {{- include "manager.volumeMounts" . | indent 12 }}
+          - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
+            imagePullPolicy: {{.Values.imagePullPolicy}}
             name: drycc-manager-generate-bills
             {{- if .Values.diagnosticMode.enabled }}
             command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 14 }}
