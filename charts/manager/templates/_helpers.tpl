@@ -15,7 +15,7 @@ env:
     secretKeyRef:
       name: manager-creds
       key: valkey-url
-{{- else if eq .Values.global.valkeyLocation "on-cluster"  }}
+{{- else if .Values.valkey.enabled }}
 - name: VALKEY_PASSWORD
   valueFrom:
     secretKeyRef:
@@ -37,7 +37,7 @@ env:
       name: manager-creds
       key: database-replica-url
 {{- end }}
-{{- else if eq .Values.global.databaseLocation "on-cluster"  }}
+{{- else if .Values.database.enabled }}
 - name: DRYCC_DATABASE_USER
   valueFrom:
     secretKeyRef:
@@ -53,7 +53,7 @@ env:
 - name: DRYCC_DATABASE_REPLICA_URL
   value: "postgres://$(DRYCC_DATABASE_USER):$(DRYCC_DATABASE_PASSWORD)@drycc-database-replica.{{.Release.Namespace}}.svc.{{.Values.global.clusterDomain}}:5432/manager"
 {{- end }}
-{{- if eq .Values.global.passportLocation "on-cluster"}}
+{{- if .Values.passport.enabled }}
 - name: "DRYCC_PASSPORT_URL"
 {{- if .Values.global.certManagerEnabled }}
   value: https://drycc-passport.{{ .Values.global.platformDomain }}

@@ -188,26 +188,6 @@ gateway:
       port: 80
 
 global:
-  # Set the location of Workflow's PostgreSQL database
-  #
-  # Valid values are:
-  # - on-cluster: Run PostgreSQL within the Kubernetes cluster (credentials are generated
-  #   automatically; backups are sent to object storage
-  #   configured above)
-  # - off-cluster: Run PostgreSQL outside the Kubernetes cluster
-  databaseLocation: "on-cluster"
-  # Set the location of Workflow's Valkey instance
-  #
-  # Valid values are:
-  # - on-cluster: Run Valkey within the Kubernetes cluster
-  # - off-cluster: Run Valkey outside the Kubernetes cluster (configure in valkey section)
-  valkeyLocation: "on-cluster"
-  # Set the location of Workflow's passport
-  #
-  # Valid values are:
-  # - on-cluster: Run passport within the Kubernetes cluster
-  # - off-cluster: Use passport outside the Kubernetes cluster
-  passportLocation: "on-cluster"
   # Please check `kubernetes.io/ingress.class`
   ingressClass: ""
   # A domain name consists of one or more parts.
