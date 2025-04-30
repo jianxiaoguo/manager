@@ -105,6 +105,7 @@ environment:
 # The following is the configuration of external dependent services.
 # Including Valkey, database and passport.
 valkey:
+  enabled: true
   # The addrs parameters are configured only when using an off-cluster Valkey instance
   addrs: "" # A list of clusters: "127.0.0.1:7001/1,127.0.0.2:7002/1"
   password: "valkey password" # "" == no password
@@ -114,6 +115,7 @@ valkey:
     storageClass: ""
 
 database:
+  enabled: true
   # The following parameters are configured only when using an on-cluster Database instance
   # The username and password to be used by the on-cluster database.
   # If left empty they will be generated
@@ -140,6 +142,7 @@ database:
     storageClass: ""
 
 passport:
+  enabled: true
   # The following parameters are configured only when using an on-cluster passport
   # Set passport deployment replicas
   replicas: 1
@@ -159,6 +162,7 @@ passport:
 
 # Drycc Gateway is a gateway chart that integrates cert-manager.
 gateway:
+  enabled: true
   # acme configuration takes effect if and only if certManagerEnabled is true
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
