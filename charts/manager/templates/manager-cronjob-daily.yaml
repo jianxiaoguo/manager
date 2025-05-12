@@ -43,7 +43,6 @@ spec:
             args:
               - python /workspace/manage.py block_users
             {{- end }}
-            {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
@@ -75,7 +74,6 @@ spec:
             args:
               - python /workspace/manage.py generate_bills
             {{- end }}
-            {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
           - image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/manager:{{.Values.imageTag}}
@@ -91,7 +89,6 @@ spec:
             args:
               - python /workspace/manage.py generate_invoices
             {{- end }}
-            {{- include "manager.limits" . | indent 12 }}
             {{- include "manager.envs" . | indent 12 }}
             {{- include "manager.volumeMounts" . | indent 12 }}
           {{- include "manager.volumes" . | indent 10 }}

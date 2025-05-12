@@ -108,20 +108,6 @@ env:
 {{- end }}
 {{- end }}
 
-{{/* Generate manager deployment limits */}}
-{{- define "manager.limits" -}}
-{{- if or (.Values.limitsCpu) (.Values.limitsMemory) }}
-resources:
-  limits:
-{{- if (.Values.limitsCpu) }}
-    cpu: {{.Values.limitsCpu}}
-{{- end }}
-{{- if (.Values.limitsMemory) }}
-    memory: {{.Values.limitsMemory}}
-{{- end }}
-{{- end }}
-{{- end }}
-
 {{/* Generate manager deployment volumeMounts */}}
 {{- define "manager.volumeMounts" }}
 volumeMounts:

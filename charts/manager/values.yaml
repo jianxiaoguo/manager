@@ -4,8 +4,6 @@ imageRegistry: "registry.drycc.cc"
 imagePullPolicy: "Always"
 # Set manager deployment replicas
 replicas: 1
-# limitsCpu: "100m"
-# limitsMemory: "50Mi"
 # Set manager cronjob concurrencyPolicy
 # Allow (default): The cron job allows concurrently running jobs
 # Forbid: The cron job does not allow concurrent runs; if it is time for a new job run and the previous job run hasn't finished yet, the cron job skips the new job run
@@ -28,6 +26,13 @@ diagnosticMode:
     - infinity
 
 api:
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 50Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 30Mi
   nodeAffinityPreset:
     key: "drycc.cc/node"
     type: "soft"
@@ -43,6 +48,13 @@ api:
       app: "drycc-manager"
 
 celery:
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 50Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 30Mi
   nodeAffinityPreset:
     key: "drycc.cc/node"
     type: "soft"
