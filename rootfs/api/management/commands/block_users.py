@@ -17,7 +17,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        last_date = int((timezone.now().date() - datetime.timedelta(days=32)).timestamp())
+        last_date = int((timezone.now() - datetime.timedelta(days=32)).replace(hour=0, minute=0, second=0, microsecond=0).timestamp())  # noqa
         for owner_id, in Invoice.objects.filter(
             ~Exists(User.objects.filter(pk=OuterRef('owner_id'), status=0)),
             period__lt=last_date, status=1).order_by(

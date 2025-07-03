@@ -14,8 +14,6 @@ from channels.exceptions import DenyConnection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .xterm import Xterm
-from .models.cluster import Cluster
-from .utils import get_oauth_token
 
 
 logger = logging.getLogger(__name__)
@@ -32,6 +30,8 @@ class BaseAppConsumer(AsyncWebsocketConsumer):
 class AppTerminalConsumer(BaseAppConsumer):
 
     async def mkxterm(self):
+        from .utils import get_oauth_token
+        from .models.cluster import Cluster
         user = self.scope["user"]
         token = await sync_to_async(get_oauth_token)(user)
         app_id = self.scope["url_route"]["kwargs"]["app"]

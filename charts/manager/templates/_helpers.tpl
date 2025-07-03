@@ -8,7 +8,7 @@ env:
 - name: VERSION
   value: {{ .Chart.AppVersion }}
 - name: XTERM_POD_TIMEOUT
-  value: {{ .Values.xtermPodTimeout }}
+  value: {{ .Values.xtermPodTimeout | quote }}
 {{- if (.Values.valkeyUrl) }}
 - name: DRYCC_VALKEY_URL
   valueFrom:

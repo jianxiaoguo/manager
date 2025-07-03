@@ -1,6 +1,6 @@
 # Drycc manager requirements
 authlib==1.5.1
-django==4.2.20
+django==4.2.22
 pytz==2025.2
 django-cors-headers==4.7.0
 django-guardian==2.4.0
